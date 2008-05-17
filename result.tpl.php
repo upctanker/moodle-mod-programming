@@ -28,8 +28,9 @@
 -->
 </div>
 
-<?php if ($submit->userid == $USER->id || has_capability('mod/programming:viewotherresult', $context)): ?>
-<?php if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL): ?>
+<?php if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL
+          && $submit->userid == $USER->id
+          || has_capability('mod/programming:viewotherresult', $context)): ?>
 <div id="test-result-detail">
 <p><?php echo get_string('testresult', 'programming'); ?>: <?php echo programming_get_test_results_desc($submit, $results) ?></p>
 <p><?php echo get_string('iostripped', 'programming', '1'); ?></p>
@@ -166,8 +167,6 @@
     echo programming_contest_get_judgeresult($results);
 ?>
 <?php endif; /* showmode == NORMAL */ ?>
-
-<?php endif; ?>
 
 <?php endif; /* status == FINISH */ ?>
 
