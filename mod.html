@@ -1,0 +1,288 @@
+<!-- This page defines the form to create or edit an instance of this module -->
+<!-- It is used from /course/mod.php.  The whole instance is available as $form. -->
+
+<?php
+
+require_once($CFG->dirroot."/mod/programming/lib.php");
+
+if (!isset($form->name)) {
+    $form->name = '';
+}
+
+if (!isset($form->description)) {
+    $form->description = '';
+}
+
+if (!isset($form->descformat)) {
+    $form->descformat = 0;
+}
+
+if (!isset($form->timeopen)) {
+    $form->timeopen = time();
+}
+
+if (!isset($form->timeclose)) {
+    $form->timeclose = $form->timeopen + 3600 * 24 * 3;
+}
+
+if (!isset($form->timediscount) || $form->timediscount == 0) {
+    $form->timediscount = $form->timeopen + 3600 * 3;
+}
+
+if (!isset($form->discount)) {
+    $form->discount = 8;
+}
+
+if (!isset($form->timelimit)) {
+    $form->timelimit = 1; /* 1 seconds */
+}
+
+if (!isset($form->memlimit)) {
+    $form->memlimit = 0; /* no limit */
+}
+
+if (!isset($form->allowlate)) {
+    $form->allowlate = 0;
+}
+
+if (!isset($form->langlimit)) {
+    $form->langlimit = array();
+    $rows = get_records('programming_langlimit', 'programmingid', $form->instance);
+    if (is_array($rows)) {
+        foreach ($rows as $row) {
+            $form->langlimit[] = $row->languageid;
+        }
+    }
+}
+
+if (!isset($form->grade)) {
+    $form->grade = 0;
+}
+
+if (!isset($form->attempts)) {
+    $form->attempts = 0;
+}
+
+if (!isset($form->keeplatestonly)) {
+    $form->keeplatestonly = 1;
+}
+
+$yesnooptions = programming_get_yesno_options();
+$timelimitoptions = programming_get_timelimit_options();
+$memlimitoptions = programming_get_memlimit_options();
+$languages = get_records('programming_languages', '', '', 'id');
+$showmodeoptions = programming_get_showmode_options();
+
+$attemptoptions = array();
+$attemptoptions[0] = get_string('attemptsunlimited', 'programming');
+$attemptoptions[1] = get_string('1attempt', 'programming');
+for ($i = 2; $i <= PROGRAMMING_MAX_ATTEMPTS; $i++) {
+    $attemptoptions[$i] = get_string('nattempts', 'programming', $i);
+}
+
+$gradeoptions = array();
+$gradeoptions[0] = get_string('nograde', 'programming');
+for ($i = 5; $i <= 100; $i += 5) {
+    $gradeoptions[$i] = $i;
+}
+
+$discountoptions = array();
+for ($i = 10; $i > 0; $i -= 1) {
+    $discountoptions[$i] = $i / 10.0;
+}
+
+// More similar blocks go here...
+?>
+
+<form name="form" method="post" action="mod.php">
+<center>
+<table cellpadding="5">
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('globalid', 'programming') ?>:</b></td>
+     <td align="left">
+       <input type="text" name="globalid" size="10" value="<?php  p($form->globalid) ?>">
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php  print_string("name") ?>:</b></td>
+    <td>
+        <input type="text" name="name" size="30" value="<?php  p($form->name) ?>">
+    </td>
+</tr>
+<tr valign="top">
+    <td align="right"><b><?php print_string("description", "programming") ?>:</b><br /><br />
+     <?php
+        if ($usehtmleditor) {
+           helpbutton("richtext", get_string("helprichtext"), "moodle", true, true);
+        } else {
+           helpbutton("text", get_string("helptext"), "moodle", true, true);
+           echo '<br />';
+           emoticonhelpbutton("form", "description");
+           echo '<br />';
+        }
+      ?>
+    </td>
+    <td align="left">
+    <?php
+        print_textarea($usehtmleditor, 20, 50, 680, 400, "description", $form->description);
+        if ($usehtmleditor) {
+            echo '<input type="hidden" name="format" value="'.FORMAT_HTML.'" />';
+        } else {
+            echo '<p align="right">';
+            helpbutton('textformat', get_string('formattexttype'));
+            print_string('formattexttype');
+            echo ':&nbsp;';
+            if (!$form->descformat) {
+                $form->descformat = $defaultformat;
+            }
+            choose_from_menu(format_text_menu(), 'descformat', $form->descformat, '');
+            echo "</p>";
+        }
+        ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string("timeopen", "programming") ?>:</b></td>
+     <td align="left">
+    <?php
+        if (!$form->timeopen and $course->format == "weeks") {
+            $form->timeopen  = $course->startdate + (($form->section - 1) * 608400);
+        }
+        print_date_selector("openday", "openmonth", "openyear", $form->timeopen);
+        print_time_selector("openhour", "openminute", $form->timeopen);
+        // helpbutton("timeopen", get_string("quizopen","quiz"), "quiz");
+     ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string("timediscount", "programming") ?>:</b></td>
+     <td align="left">
+    <?php
+        if (!$form->timediscount and $course->format == "weeks") {
+            $form->timediscount = $course->startdate + (($form->section) * 608400);
+        }
+        print_date_selector("discountday", "discountmonth", "discountyear", $form->timediscount);
+        print_time_selector("discounthour", "discountminute", $form->timediscount);
+        // helpbutton("timeopen", get_string("quizclose","quiz"), "quiz");
+     ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string("timeclose", "programming") ?>:</b></td>
+     <td align="left">
+    <?php
+        if (!$form->timeclose and $course->format == "weeks") {
+            $form->timeclose  = $course->startdate + (($form->section) * 608400);
+        }
+        print_date_selector("closeday", "closemonth", "closeyear", $form->timeclose);
+        print_time_selector("closehour", "closeminute", $form->timeclose);
+        // helpbutton("timeopen", get_string("quizclose","quiz"), "quiz");
+     ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('grade') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($gradeoptions, 'grade', $form->grade, '');
+        // helpbutton('grade', get_string('grade', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('discount', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($discountoptions, 'discount', $form->discount, '');
+        // helpbutton('grade', get_string('grade', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('timelimit', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($timelimitoptions, 'timelimit', $form->timelimit, '');
+        // helpbutton('timelimit', get_string('timelimit', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('memlimit', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($memlimitoptions, 'memlimit', $form->memlimit, '');
+        // helpbutton('memlimit', get_string('memlimit', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('attempts', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($attemptoptions, 'attempts', $form->attempts, '');
+        // helpbutton('memlimit', get_string('memlimit', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('keeplatestonly', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($yesnooptions, 'keeplatestonly', $form->keeplatestonly, '');
+        // helpbutton('memlimit', get_string('memlimit', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('allowlate', 'programming') ?>:</b></td>
+    <td align="left"><?php
+        choose_from_menu($yesnooptions, 'allowlate', $form->allowlate, '');
+        // helpbutton('allowlate', get_string('allowlate', 'programming'), 'programming');
+    ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('langlimit', 'programming') ?>:</b></td>
+    <td align="left">
+<?php foreach ($languages as $language): ?>
+    <input type='checkbox' name='langlimit[]' value='<?php echo $language->id ?>' <?php echo count($form->langlimit) == 0 || in_array($language->id, $form->langlimit) ? 'checked' : ''?> /> <?php echo $language->name; ?>
+<?php endforeach; ?>
+    </td>
+</tr>
+
+<tr valign="top">
+    <td align="right"><b><?php print_string('showmode', 'programming') ?>:</b></td>
+    <td align="left">
+        <?php choose_from_menu($showmodeoptions, 'showmode', $form->showmode, ''); ?>
+    </td>
+</tr>
+
+<!-- More rows go in here... -->
+
+<!-- The following line for Moodle 1.5 prints the visibility setting form element -->
+<?php print_visible_setting($form); ?>
+<!-- and if your module uses groups you would also have -->
+<?php print_groupmode_setting($form); ?>
+
+</table>
+<!-- These hidden variables are always the same -->
+<input type="hidden" name=course        value="<?php  p($form->course) ?>" />
+<input type="hidden" name="sesskey"     value="<?php  p($form->sesskey) ?>" />
+<input type="hidden" name=coursemodule  value="<?php  p($form->coursemodule) ?>" />
+<input type="hidden" name=section       value="<?php  p($form->section) ?>" />
+<input type="hidden" name=module        value="<?php  p($form->module) ?>" />
+<input type="hidden" name=modulename    value="<?php  p($form->modulename) ?>" />
+<input type="hidden" name=instance      value="<?php  p($form->instance) ?>" />
+<input type="hidden" name=mode          value="<?php  p($form->mode) ?>" />
+<input type="submit" value="<?php  print_string("savechanges") ?>" />
+</center>
+
+</form>

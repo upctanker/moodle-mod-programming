@@ -1,0 +1,188 @@
+.userpicture {
+    vertical-align: middle;
+}
+
+.mod-programming .maincontent,
+.blocks-programming_standing .maincontent {
+	text-align: center;
+    padding: 4px;
+}
+.mod-programming .maincontent table { margin: auto; }
+.mod-programming .maincontent td { padding: 3px; }
+.mod-programming td.programming-io { vertical-align: top; }
+.mod-programming .cell { vertical-align: middle; } 
+
+#mod-programming-view #description { text-align: left; padding: 0em 1em 0em 1em; }
+#mod-programming-view #description p { padding: 0em 0.5em 0em 0.5em; text-indent: 2em;}
+#mod-programming-view #description pre { padding: 0em 0.5em 0em 3.5em; }
+#mod-programming-view #presetcode { text-align: left; padding: 0em 1em 0em 1em; }
+#mod-programming-view #presetcode pre { background-color: #eeeeee; padding: 0em 0.5em 0em 2.5em; }
+#mod-programming-view #testcase-table { padding: 1em; }
+#mod-programming-view #time-table th { text-align: right }
+#mod-programming-view #time-table td { text-align: left }
+
+#mod-programming-result #compilemessage { text-align: left }
+
+#mod-programming-result #test-result-detail tr.passed,
+#mod-programming-result #test-result-detail tr.passed .cell {
+    background-color: #f2fff2; /* light green */
+}
+#mod-programming-result #test-result-detail tr.notpassed,
+#mod-programming-result #test-result-detail tr.notpassed .cell {
+    background-color: #fff2f2; /* light red */
+}
+
+#programming-standing-full-standing, #standing-result {
+    text-align: center
+}
+
+#mod-programming-history td { vertical-align: top; }
+#mod-programming-history #submittime {
+    display: block;
+    width: 12em;
+}
+#mod-programming-submit #codeview {
+    display: block;
+    width: 46em;
+    height: 29em;
+    text-align: left;
+    overflow: scroll;
+    margin: auto;
+}
+#mod-programming-history #codeview {
+    display: block;
+    width: 46em;
+    height: 29em;
+    text-align: left;
+    overflow: scroll;
+}
+
+#mod-programming-resemble_compare #info { padding-bottom: 1em; }
+#mod-programming-resemble_compare #program {
+    text-align: left;
+    height: 30em;
+}
+#mod-programming-resemble_compare #program #submit1{
+    width: 48%;
+    float: left;
+    overflow: scroll;
+    height: 30em;
+}
+#mod-programming-resemble_compare #program #submit2{
+    width: 48%;
+    float: right;
+    overflow: scroll;
+    height: 30em;
+}
+#mod-programming-resemble_compare .code {
+    font-family: monospace;
+    background-color: #e7e7e7;
+}
+#mod-programming-resemble_compare .match1 { color: Red; }
+#mod-programming-resemble_compare .match2 { color: BlueViolet; }
+#mod-programming-resemble_compare .match3 { color: Brown; }
+#mod-programming-resemble_compare .match4 { color: BurlyWood; }
+#mod-programming-resemble_compare .match5 { color: CadetBlue; }
+#mod-programming-resemble_compare .match6 { color: DarkGoldenRod; }
+#mod-programming-resemble_compare .match7 { color: Chocolate; }
+#mod-programming-resemble_compare .match8 { color: DarkGreen; }
+
+.resemble-list .warned { background-color: #feffa6; }
+.resemble-list .confirmed { background-color: #ffdddd; }
+
+div.programming-io-sizelimit {
+    width: 12em;
+    height: 10em;
+    overflow: scroll;
+}
+
+table.programming-io-block {
+    display: table;
+    overflow: scroll;
+    text-align: left;
+    max-width: 100px;
+}
+tr.programming-io-line {
+    display: table-row;
+    vertical-align: baseline;
+}
+td.programming-io-linenumber {
+    display: table-cell;
+    border-right: 1px dotted gray;
+    font-size: 9pt;
+    padding: 0px;
+}
+span.programming-io-linenumber {
+    color: Gray;
+}
+td.programming-io {
+    display: table-cell;
+    padding: 0px 5px 0px 0px;
+}
+span.programming-io {
+    background: #CCCCCC;
+    font-family: monospace;
+    font-size: 12pt;
+    white-space: nowrap;
+}
+.hl-default {
+    color: Black;
+}
+.hl-code {
+    color: Gray;
+}
+.hl-brackets {
+    color: Olive;
+}
+.hl-comment {
+    color: Orange;
+}
+.hl-quotes {
+    color: Darkred;
+}
+.hl-string {
+    color: Red;
+}
+.hl-identifier {
+    color: Blue;
+}
+.hl-builtin {
+    color: Teal;
+}
+.hl-reserved {
+    color: Green;
+}
+.hl-inlinedoc {
+    color: Blue;
+}
+.hl-var {
+    color: Darkblue;
+}
+.hl-url {
+    color: Blue;
+}
+.hl-special {
+    color: Navy;
+}
+.hl-number {
+    color: Maroon;
+}
+.hl-inlinetags {
+    color: Blue;
+}
+.hl-main { 
+    background-color: White;
+}
+.hl-gutter {
+    background-color: #999999;
+    color: White
+}
+.hl-table {
+    font-family: courier;
+    font-size: 12px;
+    border: solid 1px Lightgrey;
+}
+
+.small {
+    font-size: 9pt;
+}
