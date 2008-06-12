@@ -14,12 +14,72 @@
 
 <div class="maincontent generalbox">
 
+<?php
+    $strall = get_string('all');
+    $alphabet = explode(',', get_string('alphabet'));
+
+    echo "<p style=\"text-align:center\">";
+    $ne = get_string('nameedit', 'langconfig');
+    for ($i = 0; $i < strlen($ne); $i++) {
+        if ($i > 0) echo '<br />';
+        if (substr($ne, $i, 1) == 'F') {
+            /// Bar of first initials
+
+            echo get_string("firstname")." : ";
+            if ($firstinitial) {
+                echo " <a href=\"reports_detail.php?a=$a&amp;".
+                     "latestonly=$latestonly&amp;orderby=$orderby&amp;".
+                     "group=$groupid&amp;lastinitial=$lastinitial".
+                     "\">$strall</a> ";
+            } else {
+                echo " <b>$strall</b> ";
+            }
+            foreach ($alphabet as $letter) {
+                if ($letter == $firstinitial) {
+                    echo " <b>$letter</b> ";
+                } else {
+                    echo " <a href=\"reports_detail.php?a=$a&amp;".
+                         "latestonly=$latestonly&amp;orderby=$orderby&amp;".
+                         "group=$groupid&amp;lastinitial=$lastinitial&amp;".
+                         "firstinitial=$letter\">$letter</a> ";
+                }
+            }
+
+        } else if (substr($ne, $i, 1) == 'L') {
+
+            /// Bar of last initials
+
+            echo get_string("lastname")." : ";
+            if ($lastinitial) {
+                echo " <a href=\"reports_detail.php?a=$a&amp;".
+                     "latestonly=$latestonly&amp;orderby=$orderby&amp;".
+                     "group=$groupid&amp;firstinitial=$firstinitial".
+                     "\">$strall</a> ";
+            } else {
+                echo " <b>$strall</b> ";
+            }
+            foreach ($alphabet as $letter) {
+                if ($letter == $lastinitial) {
+                    echo " <b>$letter</b> ";
+                } else {
+                    echo " <a href=\"reports_detail.php?a=$a&amp;".
+                         "latestonly=$latestonly&amp;orderby=$orderby&amp;".
+                         "group=$groupid&amp;firstinitial=$firstinitial&amp;".
+                         "lastinitial=$letter\">$letter</a> ";
+                }
+            }
+
+        } // if
+    } // for nameedit
+    echo "</p>";
+?>
+
 <table><tr><td>
 <?php
-    print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby);
+    print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial);
 ?>
 </td>
-<td><?php print_single_button('reports_detail.php', array('a' => $programming->id, 'group' => $groupid, 'latestonly' => ($latestonly ? 0 : 1), 'page' => $page, 'orderby' => $orderby), get_string(($latestonly ? 'showall' : 'showlatestonly'), 'programming')); ?></td>
+<td><?php print_single_button('reports_detail.php', array('a' => $programming->id, 'group' => $groupid, 'latestonly' => ($latestonly ? 0 : 1), 'page' => $page, 'orderby' => $orderby, 'firstinitial' => $firstinitial, 'lastinitial' => $lastinitial), get_string(($latestonly ? 'showall' : 'showlatestonly'), 'programming')); ?></td>
 </tr></table>
 
 <?php if (is_array($usersubmits) and !empty($usersubmits)): ?>
@@ -126,7 +186,7 @@
 </tbody>
 </table>
 <?php 
-    print_paging_bar($totalcount, $page, $perpage, $CFG->wwwroot.'/mod/programming/reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;group='.$groupid.'&amp;');
+    print_paging_bar($totalcount, $page, $perpage, $CFG->wwwroot.'/mod/programming/reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;group='.$groupid.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial.'&amp;');
 
     else:
         echo '<p>'.get_string('nosubmit', 'programming').'</p>';

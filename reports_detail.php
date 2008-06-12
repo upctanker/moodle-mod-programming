@@ -10,6 +10,9 @@
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 10, PARAM_INT);
     $offset = $page * $perpage;
+    $firstinitial = optional_param('firstinitial', '', PARAM_CLEAN);
+    $lastinitial = optional_param('lastinitial', '', PARAM_CLEAN);
+
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -47,30 +50,82 @@
     list($orderbyfield, $orderbyorder) = explode(' ', $orderby);
     $orderbyorder = $orderbyorder == 'desc' ? 'DESC' : 'ASC';
     $orderbyfield = $orderbyfield == 'fullname' ? 'displayname' : $orderbyfield;
+    $firstletter = "LCASE(SUBSTR(firstnameletter, 1, 1))";
+    $lastletter = "LCASE(SUBSTR(lastnameletter, 1, 1))";
     switch ($orderbyfield) {
     case 'submittime':
         if ($groupid) {
             $inner_sql = "SELECT ipr.userid, latestsubmitid AS latest_id
                             FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm
-                           WHERE programmingid={$programming->id}
-                             AND igm.groupid={$groupid}
-                             AND ipr.userid=igm.userid 
-                        ORDER BY latest_id {$orderbyorder}";
-            $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm
-                           WHERE programmingid={$programming->id}
+                                 {$CFG->prefix}groups_members AS igm";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= ", {$CFG->prefix}user AS iu";
+            }
+            $inner_sql .= " WHERE programmingid={$programming->id}
                              AND igm.groupid={$groupid}
                              AND ipr.userid=igm.userid";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= " AND ipr.userid = iu.id";
+            }
+            if ($firstinitial) {
+                $inner_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $inner_sql .= " AND $lastletter = '$lastinitial'";
+            }
+            $inner_sql .= " ORDER BY latest_id {$orderbyorder}";
+
+            $count_sql = "SELECT COUNT(*) AS c
+                            FROM {$CFG->prefix}programming_result AS ipr,
+                                 {$CFG->prefix}groups_members AS igm";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= ", {$CFG->prefix}user u";
+            }
+            $count_sql .= " WHERE programmingid={$programming->id}
+                             AND igm.groupid={$groupid}
+                             AND ipr.userid=igm.userid";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= " AND ipr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $count_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $count_sql .= " AND $lastletter = '$lastinitial'";
+            }
         } else {
             $inner_sql = "SELECT userid, latestsubmitid AS latest_id
-                            FROM {$CFG->prefix}programming_result
-                           WHERE programmingid={$programming->id}
-                        ORDER BY latest_id {$orderbyorder}";
+                            FROM {$CFG->prefix}programming_result AS pr";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= ", {$CFG->prefix}user AS u";
+            }
+            $inner_sql .= " WHERE programmingid={$programming->id}";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= " AND pr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $inner_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $inner_sql .= " AND $lastletter = '$lastinitial'";
+            }
+            $inner_sql .= " ORDER BY latest_id {$orderbyorder}";
+
             $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result
-                           WHERE programmingid={$programming->id}";
+                            FROM {$CFG->prefix}programming_result pr";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= ", {$CFG->prefix}user u";
+            }
+            $count_sql .= " WHERE programmingid={$programming->id}";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= " AND pr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $count_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $count_sql .= " AND $lastletter = '$lastinitial'";
+            }
         }
         $sql = "SELECT ps.*, pl.name AS langname
                   FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS latest,
@@ -87,30 +142,80 @@
             $inner_sql = "SELECT ps0.id, ps0.userid, ps0.codelines
                             FROM {$CFG->prefix}programming_result AS ipr, 
                                  {$CFG->prefix}groups_members AS igm,
-                                 {$CFG->prefix}programming_submits AS ps0
-                           WHERE ipr.programmingid={$programming->id}
+                                 {$CFG->prefix}programming_submits AS ps0";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= ", {$CFG->prefix}user AS u";
+            }
+            $inner_sql .= " WHERE ipr.programmingid={$programming->id}
                              AND igm.groupid={$groupid}
                              AND ipr.userid=igm.userid
                              AND ps0.programmingid={$programming->id}
-                             AND ps0.id=latestsubmitid
-                        ORDER BY ps0.codelines {$orderbyorder}";
+                             AND ps0.id=latestsubmitid";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= " AND ipr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $inner_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $inner_sql .= " AND $lastletter = '$lastinitial'";
+            }
+            $inner_sql .= " ORDER BY ps0.codelines {$orderbyorder}";
+
             $count_sql = "SELECT COUNT(*) c
                             FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm
-                           WHERE programmingid={$programming->id}
+                                 {$CFG->prefix}groups_members AS igm";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= ", {$CFG->prefix}user u";
+            }
+            $count_sql .= " WHERE programmingid={$programming->id}
                              AND igm.groupid={$groupid}
                              AND ipr.userid=igm.userid";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= " AND ipr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $count_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $count_sql .= " AND $lastletter = '$lastinitial'";
+            }
         } else {
             $inner_sql = "SELECT ips.id, ips.userid, ips.codelines
                             FROM {$CFG->prefix}programming_result AS ipr, 
-                                 {$CFG->prefix}programming_submits AS ips
-                           WHERE ipr.programmingid={$programming->id}
+                                 {$CFG->prefix}programming_submits AS ips";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= ", {$CFG->prefix}user AS u";
+            }
+            $inner_sql .= " WHERE ipr.programmingid={$programming->id}
                              AND ips.programmingid={$programming->id}
-                             AND ips.id=ipr.latestsubmitid
-                        ORDER BY ips.codelines {$orderbyorder}";
+                             AND ips.id=ipr.latestsubmitid";
+            if ($firstinitial || $lastinitial) {
+                $inner_sql .= " AND ipr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $inner_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $inner_sql .= " AND $lastletter = '$lastinitial'";
+            }
+            $inner_sql .= " ORDER BY ips.codelines {$orderbyorder}";
+
             $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result
-                           WHERE programmingid={$programming->id}";
+                            FROM {$CFG->prefix}programming_result AS pr";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= ", {$CFG->prefix}user u";
+            }
+            $count_sql .= " WHERE programmingid={$programming->id}";
+            if ($firstinitial || $lastinitial) {
+                $count_sql .= " AND pr.userid = u.id";
+            }
+            if ($firstinitial) {
+                $count_sql .= " AND $firstletter = '$firstinitial'";
+            }
+            if ($lastinitial) {
+                $count_sql .= " AND $lastletter = '$lastinitial'";
+            }
         }
         $sql = "SELECT ps.*, pl.name AS langname
                   FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS limited,
