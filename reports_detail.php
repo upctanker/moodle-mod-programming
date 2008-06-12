@@ -50,23 +50,76 @@
     switch ($orderbyfield) {
     case 'submittime':
         if ($groupid) {
-            $inner_sql = "SELECT ips.userid, MAX(ips.id) AS latest_id FROM {$CFG->prefix}programming_submits AS ips, {$CFG->prefix}groups_members AS igm WHERE programmingid={$programming->id} AND igm.groupid={$groupid} AND ips.userid=igm.userid GROUP BY ips.userid ORDER BY latest_id {$orderbyorder}";
-            $count_sql = "SELECT COUNT(*) AS c FROM (SELECT DISTINCT ips.userid FROM {$CFG->prefix}programming_submits AS ips, {$CFG->prefix}groups_members AS igm WHERE programmingid={$programming->id} AND igm.groupid={$groupid} AND ips.userid=igm.userid) AS users";
+            $inner_sql = "SELECT ipr.userid, latestsubmitid AS latest_id
+                            FROM {$CFG->prefix}programming_result AS ipr,
+                                 {$CFG->prefix}groups_members AS igm
+                           WHERE programmingid={$programming->id}
+                             AND igm.groupid={$groupid}
+                             AND ipr.userid=igm.userid 
+                        ORDER BY latest_id {$orderbyorder}";
+            $count_sql = "SELECT COUNT(*) AS c
+                            FROM {$CFG->prefix}programming_result AS ipr,
+                                 {$CFG->prefix}groups_members AS igm
+                           WHERE programmingid={$programming->id}
+                             AND igm.groupid={$groupid}
+                             AND ipr.userid=igm.userid";
         } else {
-            $inner_sql = "SELECT userid, MAX(id) AS latest_id FROM {$CFG->prefix}programming_submits WHERE programmingid={$programming->id} GROUP BY userid ORDER BY latest_id {$orderbyorder}";
-            $count_sql = "SELECT COUNT(*) AS c FROM (SELECT DISTINCT userid AS latest_id FROM {$CFG->prefix}programming_submits WHERE programmingid={$programming->id} GROUP BY userid ORDER BY latest_id {$orderbyorder}) AS users";
+            $inner_sql = "SELECT userid, latestsubmitid AS latest_id
+                            FROM {$CFG->prefix}programming_result
+                           WHERE programmingid={$programming->id}
+                        ORDER BY latest_id {$orderbyorder}";
+            $count_sql = "SELECT COUNT(*) AS c
+                            FROM {$CFG->prefix}programming_result
+                           WHERE programmingid={$programming->id}";
         }
-        $sql = "SELECT ps.*, pl.name AS langname FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS latest, {$CFG->prefix}programming_submits AS ps, {$CFG->prefix}programming_languages AS pl WHERE ps.programmingid={$programming->id} AND latest.userid = ps.userid AND ps.language=pl.id ORDER BY latest.latest_id {$orderbyorder}, ps.timemodified DESC";
+        $sql = "SELECT ps.*, pl.name AS langname
+                  FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS latest,
+                       {$CFG->prefix}programming_submits AS ps,
+                       {$CFG->prefix}programming_languages AS pl
+                 WHERE ps.programmingid={$programming->id}
+                   AND latest.userid = ps.userid
+                   AND ps.language=pl.id
+              ORDER BY latest.latest_id {$orderbyorder},
+                       ps.timemodified DESC";
         break;
     case 'linecount':
         if ($groupid) {
-            $inner_sql = "SELECT ps0.id, ps0.userid, ps0.codelines FROM (SELECT ips.userid, MAX(ips.id) AS latest_id FROM {$CFG->prefix}programming_submits AS ips, {$CFG->prefix}groups_members AS igm WHERE programmingid={$programming->id} AND igm.groupid={$groupid} AND ips.userid=igm.userid GROUP BY ips.userid) AS latest, {$CFG->prefix}programming_submits AS ps0 WHERE ps0.programmingid={$programming->id} AND ps0.id=latest_id ORDER BY ps0.codelines {$orderbyorder}";
-            $count_sql = "SELECT COUNT(*) AS c FROM (SELECT DISTINCT ips.userid FROM {$CFG->prefix}programming_submits AS ips, {$CFG->prefix}groups_members AS igm WHERE programmingid={$programming->id} AND igm.groupid={$groupid} AND ips.userid=igm.userid) AS users";
+            $inner_sql = "SELECT ps0.id, ps0.userid, ps0.codelines
+                            FROM {$CFG->prefix}programming_result AS ipr, 
+                                 {$CFG->prefix}groups_members AS igm,
+                                 {$CFG->prefix}programming_submits AS ps0
+                           WHERE ipr.programmingid={$programming->id}
+                             AND igm.groupid={$groupid}
+                             AND ipr.userid=igm.userid
+                             AND ps0.programmingid={$programming->id}
+                             AND ps0.id=latestsubmitid
+                        ORDER BY ps0.codelines {$orderbyorder}";
+            $count_sql = "SELECT COUNT(*) c
+                            FROM {$CFG->prefix}programming_result AS ipr,
+                                 {$CFG->prefix}groups_members AS igm
+                           WHERE programmingid={$programming->id}
+                             AND igm.groupid={$groupid}
+                             AND ipr.userid=igm.userid";
         } else {
-            $inner_sql = "SELECT ps0.id, ps0.userid, ps0.codelines FROM (SELECT userid, MAX(id) AS latest_id FROM {$CFG->prefix}programming_submits WHERE programmingid={$programming->id} GROUP BY userid) AS latest, {$CFG->prefix}programming_submits AS ps0 WHERE ps0.programmingid={$programming->id} AND ps0.id=latest_id ORDER BY ps0.codelines {$orderbyorder}";
-            $count_sql = "SELECT COUNT(*) AS c FROM (SELECT DISTINCT userid FROM {$CFG->prefix}programming_submits WHERE programmingid={$programming->id}) AS users";
+            $inner_sql = "SELECT ips.id, ips.userid, ips.codelines
+                            FROM {$CFG->prefix}programming_result AS ipr, 
+                                 {$CFG->prefix}programming_submits AS ips
+                           WHERE ipr.programmingid={$programming->id}
+                             AND ips.programmingid={$programming->id}
+                             AND ips.id=ipr.latestsubmitid
+                        ORDER BY ips.codelines {$orderbyorder}";
+            $count_sql = "SELECT COUNT(*) AS c
+                            FROM {$CFG->prefix}programming_result
+                           WHERE programmingid={$programming->id}";
         }
-        $sql = "SELECT ps.*, pl.name AS langname FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS limited, {$CFG->prefix}programming_submits AS ps, {$CFG->prefix}programming_languages AS pl WHERE ps.programmingid={$programming->id} AND limited.userid=ps.userid AND ps.language=pl.id ORDER BY limited.codelines {$orderbyorder}, timemodified DESC";
+        $sql = "SELECT ps.*, pl.name AS langname
+                  FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS limited,
+                       {$CFG->prefix}programming_submits AS ps,
+                       {$CFG->prefix}programming_languages AS pl
+                 WHERE ps.programmingid={$programming->id}
+                   AND limited.userid=ps.userid 
+                   AND ps.language=pl.id
+              ORDER BY limited.codelines {$orderbyorder}, timemodified DESC";
         break;
     }
     $totalcount = count_records_sql($count_sql);
