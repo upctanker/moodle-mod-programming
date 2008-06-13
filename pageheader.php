@@ -26,7 +26,7 @@
     }
 
     print_header(
-        $course->shortname.': '.$programming->name,
+        empty($programming) ? $strprogrammings.' '.$title : $course->shortname.': '.$programming->name,
         $course->fullname,
         $navigation,
         '', // focus

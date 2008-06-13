@@ -14,7 +14,7 @@
 
     require_login($course->id);
 
-    add_to_log($course->id, 'programming', 'view all', 'index.php?id=$course->id', '');
+    add_to_log($course->id, 'programming', 'view index', "index.php?id=$course->id", '');
 
 
 /// Get all required strings
@@ -24,7 +24,11 @@
 
 
 /// Print the header
+    $title = '';
     include_once('pageheader.php');
+
+    $currenttab = 'result';
+    include_once('index_tabs.php');
 
 /// Get all the appropriate data
 
@@ -41,34 +45,34 @@
     $strtopic  = get_string('topic');
     $strlinecount = get_string('linecount', 'programming');
     $strtotal = get_string('total', 'programming');
-	$strjudgeresult = get_string('judgeresult', 'programming');
-	$strna = get_string('n/a', 'programming');
-	$strglobalid = get_string('globalid', 'programming');
-	$strsubmitcount = get_string('submitcount', 'programming');
-	$strlanguage = get_string('language', 'programming');
+    $strjudgeresult = get_string('judgeresult', 'programming');
+    $strna = get_string('n/a', 'programming');
+    $strglobalid = get_string('globalid', 'programming');
+    $strsubmitcount = get_string('submitcount', 'programming');
+    $strlanguage = get_string('language', 'programming');
 
     $submits = "SELECT p.id, submitcount,
                        ps.id AS submitid, codelines, codesize, ps.timemodified,
-					   pl.name AS lang
+                       pl.name AS lang
                   FROM {$CFG->prefix}programming AS p,
                        {$CFG->prefix}programming_result AS pr,
                        {$CFG->prefix}programming_submits AS ps,
-					   {$CFG->prefix}programming_languages AS pl
+                       {$CFG->prefix}programming_languages AS pl
                  WHERE p.course={$id}
                    AND p.id = pr.programmingid
                    AND pr.userid={$USER->id}
                    AND pr.latestsubmitid=ps.id
                    AND ps.language=pl.id";
     $submits = get_records_sql($submits);
-	
+    
     if ($submits) {
-		foreach($submits as $submit) {
-			$tr = get_records('programming_test_results', 'submitid', $submit->submitid);
-			$submit->judgeresult = programming_contest_get_judgeresult($tr);
-		}
+        foreach($submits as $submit) {
+            $tr = get_records('programming_test_results', 'submitid', $submit->submitid);
+            $submit->judgeresult = programming_contest_get_judgeresult($tr);
+        }
     } else {
-		$submits = array();
-	}
+        $submits = array();
+    }
 
     if ($course->format == 'weeks') {
         $table->head  = array ($strweek);
@@ -76,63 +80,63 @@
     } else if ($course->format == 'topics') {
         $table->head  = array ($strtopic);
         $table->align = array ('CENTER');
-	} else if ($course->format == 'proglist') {
-		$table->head = array($strglobalid);
-		$table->align = array('CENTER');
+    } else if ($course->format == 'proglist') {
+        $table->head = array($strglobalid);
+        $table->align = array('CENTER');
     } else {
         $table->head  = array ();
         $table->align = array ();
     }
-	$table->head = array_merge($table->head, array($strname, $strjudgeresult, $strlanguage, $strlinecount, $strsubmitcount));
-	$table->align = array_merge($table->align, array('LEFT', 'CENTER', 'CENTER', 'CENTER', 'CENTER'));
+    $table->head = array_merge($table->head, array($strname, $strjudgeresult, $strlanguage, $strlinecount, $strsubmitcount));
+    $table->align = array_merge($table->align, array('LEFT', 'CENTER', 'CENTER', 'CENTER', 'CENTER'));
 
     $totallines = $totalsubmit = 0;
     foreach ($programmings as $programming) {
         if (array_key_exists($programming->id, $submits)) {
-			$submit = $submits[$programming->id];
-		} else {
-			$submit = null;
-		}
-		if ($submit) {
+            $submit = $submits[$programming->id];
+        } else {
+            $submit = null;
+        }
+        if ($submit) {
             $totallines += $submit->codelines;
-			$totalsubmit += $submit->submitcount;
+            $totalsubmit += $submit->submitcount;
         }
 
         if (!$programming->visible) {
             //Show dimmed if the mod is hidden
             $link = "<A class=\"dimmed\" HREF=\"view.php?id=$programming->coursemodule\">$programming->name</A>";
-			$resultlink = '<a class="dimmed" href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
-			$countlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
-			$langlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
-			$codelink= '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
+            $resultlink = '<a class="dimmed" href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
+            $countlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
+            $langlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
+            $codelink= '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
         } else {
             //Show normal if the mod is visible
             $link = "<A HREF=\"view.php?id=$programming->coursemodule\">$programming->name</A>";
-			$resultlink = '<a href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
-			$countlink = '<a href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
-			$langlink = '<a href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
-			$codelink= '<a href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
+            $resultlink = '<a href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
+            $countlink = '<a href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
+            $langlink = '<a href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
+            $codelink= '<a href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
         }
 
         if ($course->format == 'weeks' or $course->format == 'topics') {
             $section = array($programming->section);
-		} else if ($course->format == 'proglist') {
-			$section = array($programming->globalid);
+        } else if ($course->format == 'proglist') {
+            $section = array($programming->globalid);
         } else {
-			$section = array();
-		}
-		if ($submit) {
-	        $table->data[] = array_merge($section, array($link, $resultlink, $langlink, $codelink, $countlink));
-		} else {
-			$table->data[] = array_merge($section, array($link, '', '', '', ''));
-		}
+            $section = array();
+        }
+        if ($submit) {
+            $table->data[] = array_merge($section, array($link, $resultlink, $langlink, $codelink, $countlink));
+        } else {
+            $table->data[] = array_merge($section, array($link, '', '', '', ''));
+        }
     }
 
     if (in_array($course->format, array('weeks', 'topics', 'proglist'))) {
-    	$table->data[] = array($strtotal, '', '', '', $totallines, $totalsubmit);
-	} else {
-    	$table->data[] = array($strtotal, '', '', $totallines, $totalsubmit);
-	}
+        $table->data[] = array($strtotal, '', '', '', $totallines, $totalsubmit);
+    } else {
+        $table->data[] = array($strtotal, '', '', $totallines, $totalsubmit);
+    }
 
     echo '<BR />';
 
