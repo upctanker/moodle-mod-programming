@@ -85,6 +85,27 @@
         include_once('resemble_editsuccess.tpl.php');
         break;
 
+    case 'flag1':
+        require_capability('mod/programming:editresemble', $context);
+        $select = 'id in ('.join(',', $rids).')';
+        $sql = set_field_select('programming_resemble', 'flag', PROGRAMMING_RESEMBLE_FLAG1, $select);
+        include_once('resemble_editsuccess.tpl.php');
+        break;
+
+    case 'flag2':
+        require_capability('mod/programming:editresemble', $context);
+        $select = 'id in ('.join(',', $rids).')';
+        $sql = set_field_select('programming_resemble', 'flag', PROGRAMMING_RESEMBLE_FLAG2, $select);
+        include_once('resemble_editsuccess.tpl.php');
+        break;
+
+    case 'flag3':
+        require_capability('mod/programming:editresemble', $context);
+        $select = 'id in ('.join(',', $rids).')';
+        $sql = set_field_select('programming_resemble', 'flag', PROGRAMMING_RESEMBLE_FLAG3, $select);
+        include_once('resemble_editsuccess.tpl.php');
+        break;
+
     case 'delete':
         require_capability('mod/programming:editresemble', $context);
         $select = 'id in ('.join(',', $rids).')';

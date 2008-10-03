@@ -30,11 +30,27 @@
     foreach ($resemble as $r):
         switch($r->flag) {
         case PROGRAMMING_RESEMBLE_WARNED:
-            $styleclass = 'warned cell';
+            $styleclass = $styleclass1 = $styleclass2 = 'warned cell';
             $degree = $mediumdegree;
             break;
         case PROGRAMMING_RESEMBLE_CONFIRMED:
+            $styleclass = $styleclass1 = $styleclass2 = 'confirmed cell';
+            $degree = $highdegree;
+            break;
+        case PROGRAMMING_RESEMBLE_FLAG1:
             $styleclass = 'confirmed cell';
+            $styleclass1 = 'confirmed cell';
+            $styleclass2 = 'cell';
+            $degree = $highdegree;
+            break;
+        case PROGRAMMING_RESEMBLE_FLAG2:
+            $styleclass = 'confirmed cell';
+            $styleclass1 = 'cell';
+            $styleclass2 = 'confirmed cell';
+            $degree = $highdegree;
+            break;
+        case PROGRAMMING_RESEMBLE_FLAG3:
+            $styleclass = $styleclass1 = $styleclass2 = 'flag3 cell';
             $degree = $highdegree;
             break;
         default:
@@ -43,20 +59,20 @@
 ?>
   <tr>
 	<td class="<?php echo $styleclass; ?>"><?php echo $degree; ?></td>
-	<td class="<?php echo $styleclass; ?>">
+	<td class="<?php echo $styleclass1; ?>">
         <?php print_user_picture($r->userid1, $course->id, $users[$r->userid1]->picture); ?>
     </td>
-	<td class="<?php echo $styleclass; ?>">
+	<td class="<?php echo $styleclass1; ?>">
 	    <?php echo '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$r->userid1.'&amp;course='.$course->id.'">'.fullname($users[$r->userid1]).'</a>'; ?>
 	</td>
-	<td class="<?php echo $styleclass; ?>"><?php echo $r->percent1; ?></td>
-	<td class="<?php echo $styleclass; ?>">
+	<td class="<?php echo $styleclass1; ?>"><?php echo $r->percent1; ?></td>
+	<td class="<?php echo $styleclass2; ?>">
         <?php print_user_picture($r->userid2, $course->id, $users[$r->userid2]->picture); ?>
     </td>
-	<td class="<?php echo $styleclass; ?>">
+	<td class="<?php echo $styleclass2; ?>">
         <?php echo '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$r->userid2.'&amp;course='.$course->id.'">'.fullname($users[$r->userid2]).'</a>'; ?>
     </td>
-	<td class="<?php echo $styleclass; ?>"><?php echo $r->percent2; ?></td>
+	<td class="<?php echo $styleclass2; ?>"><?php echo $r->percent2; ?></td>
 	<td class="<?php echo $styleclass; ?>"><a href="resemble_compare.php?a=<?php echo $programming->id ?>&amp;rid=<?php echo $r->id ?>"><?php echo $r->matchedcount; ?></a></td>
   </tr>
 <?php endforeach; ?>

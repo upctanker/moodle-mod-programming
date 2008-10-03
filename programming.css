@@ -87,8 +87,9 @@
 #mod-programming-resemble_compare .match7 { color: Chocolate; }
 #mod-programming-resemble_compare .match8 { color: DarkGreen; }
 
-.resemble-list .warned { background-color: #feffa6; }
-.resemble-list .confirmed { background-color: #ffdddd; }
+.resemble-list .warned { color: orange; }
+.resemble-list .confirmed { color: red; }
+.resemble-list .flag3 { color: #888888; }
 
 div.programming-io-sizelimit {
     width: 12em;
