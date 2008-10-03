@@ -88,7 +88,7 @@
     }
 
 /// Print the page header
-    setcookie($cookiename, $language, time() + 3600 * 24 * 60, '/');
+    setcookie($cookiename, $language, time() + 3600 * 24 * 60, $CFG->sessioncookiepath);
 
     if ($action && is_object($submit)) {
         $CFG->scripts[] = 'js/jquery.cookie.js';
