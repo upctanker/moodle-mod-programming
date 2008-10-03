@@ -14,6 +14,14 @@
 
 <div class="maincontent generalbox">
 
+<table><tr><td>
+<?php
+    print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial);
+?>
+</td>
+<td><?php print_single_button('reports_detail.php', array('a' => $programming->id, 'group' => $groupid, 'latestonly' => ($latestonly ? 0 : 1), 'page' => $page, 'orderby' => $orderby, 'firstinitial' => $firstinitial, 'lastinitial' => $lastinitial), get_string(($latestonly ? 'showall' : 'showlatestonly'), 'programming')); ?></td>
+</tr></table>
+
 <?php
     $strall = get_string('all');
     $alphabet = explode(',', get_string('alphabet'));
@@ -73,14 +81,6 @@
     } // for nameedit
     echo "</p>";
 ?>
-
-<table><tr><td>
-<?php
-    print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial);
-?>
-</td>
-<td><?php print_single_button('reports_detail.php', array('a' => $programming->id, 'group' => $groupid, 'latestonly' => ($latestonly ? 0 : 1), 'page' => $page, 'orderby' => $orderby, 'firstinitial' => $firstinitial, 'lastinitial' => $lastinitial), get_string(($latestonly ? 'showall' : 'showlatestonly'), 'programming')); ?></td>
-</tr></table>
 
 <?php if (is_array($usersubmits) and !empty($usersubmits)): ?>
 <table class="generaltable generalbox">
