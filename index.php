@@ -53,7 +53,7 @@
 
     $submits = "SELECT p.id, submitcount,
                        ps.id AS submitid, codelines, codesize, ps.timemodified,
-                       pl.name AS lang
+                       ps.status AS status, pl.name AS lang
                   FROM {$CFG->prefix}programming AS p,
                        {$CFG->prefix}programming_result AS pr,
                        {$CFG->prefix}programming_submits AS ps,
@@ -65,10 +65,15 @@
                    AND ps.language=pl.id";
     $submits = get_records_sql($submits);
     
-    if ($submits) {
+    if (is_array($submits)) {
         foreach($submits as $submit) {
-            $tr = get_records('programming_test_results', 'submitid', $submit->submitid);
-            $submit->judgeresult = programming_contest_get_judgeresult($tr);
+            if ($submit->status == PROGRAMMING_STATUS_COMPILEFAIL) {
+                $submit->judgeresult = get_string('CE', 'programming');
+            }
+            else if ($submit->status == PROGRAMMING_STATUS_FINISH) {
+                $tr = get_records('programming_test_results', 'submitid', $submit->submitid);
+                $submit->judgeresult = programming_contest_get_judgeresult($tr);
+            }
         }
     } else {
         $submits = array();
