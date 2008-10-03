@@ -39,10 +39,11 @@
 
 /// Print page content
     if (!$submitid) {
-        $submit = get_record_sql("SELECT * FROM {$CFG->prefix}programming_submits WHERE programmingid = {$programming->id} AND userid={$USER->id} ORDER BY id DESC", true);
-    } else {
-        $submit = get_record('programming_submits', 'id', $submitid);
+        $r = get_record('programming_result', 'programmingid', $programming->id, 'userid', $USER->id);
+        $submitid = $r->latestsubmitid;
     }
+    $submit = get_record('programming_submits', 'id', $submitid);
+
     if ($submit) {
         $results = get_records('programming_test_results', 'submitid', $submit->id, 'testid');
         $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
