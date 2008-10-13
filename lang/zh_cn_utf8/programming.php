@@ -206,5 +206,6 @@ $string['programming:viewhiddentestcase'] = '查看隐藏测试用例';
 $string['programming:viewotherprogram'] = '查看其他人的程序';
 $string['programming:viewotherresult'] = '查看其他人的结果';
 $string['programming:viewreport'] = '查看报表';
+$string['rejudgeac'] = '对已经正确通过(AC)的程序也重新测试';
 
 ?>

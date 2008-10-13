@@ -212,5 +212,6 @@ $string['programming:viewhiddentestcase'] = 'View hidden testcases';
 $string['programming:viewotherprogram'] = 'View others programs';
 $string['programming:viewotherresult'] = 'View others results';
 $string['programming:viewreport'] = 'View reports';
+$string['rejudgeac'] = 'Rejudge accepted (AC) submits too';
 
 ?>

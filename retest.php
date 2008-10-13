@@ -7,6 +7,7 @@
     $groupid = optional_param('groupid', 0, PARAM_INT);
     $confirm = optional_param('confirm');
     $href = optional_param('href');
+    $ac = optional_param('ac', 0, PARAM_INT);
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -29,7 +30,7 @@
 /// Print the main part of the page
 
     if ($confirm) {
-        programming_retest($programming, $groupid);
+        programming_retest($programming, $groupid, $ac);
         add_to_log($course->id, 'programming', 'retest', me(), $programming->id);
         echo '<p align="center">'.get_string('deleted').'</p>';
         echo '<p align="center"><a href="'.$href.'">'.get_string('continue').'</a></p>';
@@ -41,6 +42,7 @@
         echo '<input type="hidden" name="a" value="'.$a.'" />';
         echo '<input type="hidden" name="confirm" value="1" />';
         echo '<input type="hidden" name="href" value="'.$_SERVER['HTTP_REFERER'].'" />';
+        echo '<p><input type="checkbox" name="ac" value="1" />'.get_string('rejudgeac', 'programming').'</p>';
         echo '<input type="submit" value=" '.get_string('yes').' " /> ';
         echo '<input type="button" value=" '.get_string('no').' " onclick="javascript:history.go(-1);" />';
         echo '</form>';

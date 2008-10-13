@@ -629,19 +629,28 @@ function programming_delete_submit($submit) {
     update_record('programming_result', $r);
 }
 
-function programming_retest($programming, $groupid) {
+function programming_retest($programming, $groupid, $ac) {
     global $CFG;
 
     $users = False;
     if ($groupid != 0) {
         $users = get_group_users($groupid);
     }
-    $sql = "SELECT latestsubmitid FROM {$CFG->prefix}programming_result";
-    $crit = 'programmingid='.$programming->id;
-    if ($users) {
-        $crit .= " AND userid IN (".implode(',', array_keys($users));
+    $sql = "SELECT latestsubmitid
+              FROM {$CFG->prefix}programming_result AS pr,
+                   {$CFG->prefix}programming_submits AS ps
+             WHERE pr.latestsubmitid = ps.id
+               AND pr.programmingid = {$programming->id}
+               AND ps.programmingid = {$programming->id}";
+    if (!$ac) {
+        $sql .= " AND (ps.passed = 0 OR ps.passed IS NULL)";
     }
-    $lsids = get_records_sql($sql.' WHERE '.$crit);
+    if ($users) {
+        $sql .= " AND ps.userid IN (".implode(',', array_keys($users));
+        $sql .= " AND pr.userid IN (".implode(',', array_keys($users));
+    }
+    print $sql;
+    $lsids = get_records_sql($sql);
     foreach ($lsids as $submit) {
         $ids[] = $submit->latestsubmitid;
     }
