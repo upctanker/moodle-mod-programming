@@ -179,9 +179,12 @@ span.programming-io {
     color: White
 }
 .hl-table {
-    font-family: courier;
+    font-family: "Consolas","Courier New",Courier,mono,serif;
     font-size: 12px;
     border: solid 1px Lightgrey;
+}
+.dp-highlighter li {
+    font-family: "Consolas","Courier New",Courier,mono,serif;
 }
 
 .small {
