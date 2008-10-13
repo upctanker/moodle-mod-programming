@@ -649,7 +649,6 @@ function programming_retest($programming, $groupid, $ac) {
         $sql .= " AND ps.userid IN (".implode(',', array_keys($users));
         $sql .= " AND pr.userid IN (".implode(',', array_keys($users));
     }
-    print $sql;
     $lsids = get_records_sql($sql);
     foreach ($lsids as $submit) {
         $ids[] = $submit->latestsubmitid;
@@ -795,36 +794,55 @@ function programming_judge_status($courseid, $roleid, &$totalcount, $offset=0, $
     if (!isset($courseid)) return False;
     $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
-    if ($courseid == 1) {
-        $sql = "SELECT ps.id AS psid,
-                       ps.userid AS userid,
-                       p.globalid,
-                       p.name AS pname,
-                       ps.timemodified as timemodified,
-                       p.id AS pid
-                  FROM {$CFG->prefix}programming AS p,
-                       {$CFG->prefix}programming_submits AS ps
-                 WHERE p.id = ps.programmingid
-              ORDER BY ps.timemodified DESC";
-        $rows = get_records_sql($sql, $offset, $limit);
+    if ($courseid != 1) {
+        $crit = "p.course = $courseid AND";
+    }
+    $sql = "SELECT ps.id AS psid,
+                   ps.userid AS userid,
+                   p.globalid,
+                   p.name AS pname,
+                   ps.timemodified as timemodified,
+                   p.id AS pid,
+                   ps.status as status
+              FROM {$CFG->prefix}programming AS p,
+                   {$CFG->prefix}programming_submits AS ps
+             WHERE $crit p.id = ps.programmingid
+          ORDER BY ps.timemodified DESC";
+    $rows = get_records_sql($sql, $offset, $limit);
 
+    if ($courseid == 1) {
         $sql = "SELECT COUNT(*) AS total
                   FROM {$CFG->prefix}programming_submits AS ps";
-        $totalcount = count_records_sql($sql);
+    } else {
+        $sql = "SELECT COUNT(*) AS total
+                  FROM {$CFG->prefix}programming AS p,
+                       {$CFG->prefix}programming_submits AS ps
+                 WHERE p.course = $courseid
+                   AND ps.programmingid = p.id";
     }
+    $totalcount = count_records_sql($sql);
 
     if ($rows) {
         foreach ($rows as $row) {
             $row->user = get_record('user', 'id', $row->userid);
-            $tr = get_records('programming_test_results', 'submitid', $row->psid);
-            $row->judgeresult = 'CE';
-            if ($tr) {
-                $row->judgeresult = programming_contest_get_judgeresult($tr);
-				$row->timeused = 0;
-				foreach($tr as $r) {
-					$row->timeused = max($row->timeused, $r->timeused);
-				}
-				$row->memused = 'Unknown';
+            switch ($row->status) {
+            case PROGRAMMING_STATUS_COMPILEFAIL:
+                $row->judgeresult = get_string('CE', 'programming');
+                break;
+            case PROGRAMMING_STATUS_FINISH:
+                $tr = get_records('programming_test_results', 'submitid', $row->psid);
+                $row->judgeresult = '';
+                if ($tr) {
+                    $row->judgeresult = programming_contest_get_judgeresult($tr);
+                    $row->timeused = 0;
+                    foreach($tr as $r) {
+                        $row->timeused = max($row->timeused, $r->timeused);
+                    }
+                    $row->memused = 'Unknown';
+                }
+                break;
+            default:
+                $row->judgeresult = get_string('statusshortnew', 'programming');
             }
         }
     }
