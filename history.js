@@ -10,7 +10,7 @@ fetch_code = function(submitid) {
       type: 'GET',
       url: 'history_fetch_code.php?submitid=' + submitid,
       success: function(xml) {
-        $('#code').html($(xml).find('code').text());
+        $('#code').text(xml);
         $('div.dp-highlighter').remove();
         dp.sh.HighlightAll('code');
       }

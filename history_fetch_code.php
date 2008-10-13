@@ -25,11 +25,7 @@
         $submit->code = programming_format_code($programming, $submit);
     }
 
-    header('Content-Type: text/xml', true);
-    echo '<?xml version="1.0" encoding="utf-8"?>'."\n";
-    echo '<code>'."\n";
     if ($submit) {
-        echo htmlentities(str_replace(chr(0x1a), '', $submit->code));
+        echo str_replace("\r\n", "\r", $submit->code);
     }
-    echo '</code>'."\n";
 ?>
