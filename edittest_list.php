@@ -30,6 +30,7 @@
     add_to_log($course->id, 'programming', 'edittest_list', 'edittest_list.php?a'.$programming->id, $programming->id);
 
 /// Print the page header
+    $CFG->scripts[] = 'edittest_list.js';
     $pagename = get_string('edittests', 'programming');
     include_once('pageheader.php');
 
@@ -38,6 +39,8 @@
     include_once('tabs.php');
 
 /// Print page content
+    $strshowasplaintext = get_string('showasplaintext', 'programming');
+    $strdownload = get_string('download', 'programming');
 
     include_once('edittest_list.tpl.php');
 

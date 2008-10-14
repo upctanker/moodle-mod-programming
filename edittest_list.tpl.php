@@ -24,15 +24,20 @@
 
 <?php if ($programmingtest->pub >= 0 || has_capability('mod/programming:viewhiddentestcase', $context)): ?>
 <td class="cell programming-io">
-<a href="javascript:showasplaintext($('#io<?php echo $ioid ?>'))" class="small"><?php echo get_string('showasplaintext', 'programming'); ?></a>
-<?php echo '<a href="download_io.php?a='.$programming->id.'&test='.$programmingtest->id.'&amp;type=in" class="small">'.get_string('download', 'programming').'</a>'; ?>
-
-<?php echo programming_format_io($programmingtest->input, 'io'.$ioid++) ?>
+  <?php
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+    echo '&nbsp;';
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in' class='download small'>$strdownload</a>";
+    echo programming_format_io($programmingtest->input, 'io'.$ioid++);
+  ?>
 </td>
 <td class="cell programming-io">
-<a href="javascript:showasplaintext($('#io<?php echo $ioid ?>'))")" class="small"><?php echo get_string('showasplaintext', 'programming'); ?></a>
-<?php echo '<a href="download_io.php?a='.$programming->id.'&test='.$programmingtest->id.'&amp;type=out" class="small">'.get_string('download', 'programming').'</a>'; ?>
-<?php echo programming_format_io($programmingtest->output, 'io'.$ioid++) ?>
+  <?php
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+    echo '&nbsp;';
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=out' class='download small'>$strdownload</a>";
+    echo programming_format_io($programmingtest->output, 'io'.$ioid++);
+  ?>
 </td>
 <?php else: ?>
 <td class="cell"> <?php echo get_string('never', 'programming') ?> </td>
