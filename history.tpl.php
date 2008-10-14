@@ -40,7 +40,7 @@
 
 <td>
 <div id="codeview">
-<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlentities($currentsubmit->code) ?></textarea>
+<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlspecialchars($currentsubmit->code) ?></textarea>
 </div>
 </td>
 </tr>

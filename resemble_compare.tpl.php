@@ -47,7 +47,7 @@
         } else {
             echo '<span class="code">';
         }
-        $line = htmlentities($line);
+        $line = htmlspecialchars($line);
         $line = str_replace(array(' ', "\r"), array('&nbsp;', ''), $line);
         echo $line;
         echo '</span><br />'."\n";
@@ -65,7 +65,7 @@
         } else {
             echo '<span class="code">';
         }
-        $line = htmlentities($line);
+        $line = htmlspecialchars($line);
         $line = str_replace(array(' ', "\r"), array('&nbsp;', ''), $line);
         echo $line;
         echo '</span><br />'."\n";

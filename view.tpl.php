@@ -21,7 +21,7 @@
 <?php if ($programming->presetcode) : ?>
 <div id="presetcode">
 <h2><?php echo get_string('presetcode', 'programming'); ?></h2>
-<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlentities(programming_format_code($programming)); ?></textarea>
+<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlspecialchars(programming_format_code($programming)); ?></textarea>
 </div>
 <?php endif; ?>
 

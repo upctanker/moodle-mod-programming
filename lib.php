@@ -544,7 +544,7 @@ function programming_format_io($message, $id = null) {
     $lines = explode("\n", $message);
     $html = '<div><ol>';
     foreach ($lines as $line) {
-        $line = htmlentities($line);
+        $line = htmlspecialchars($line);
         $line = str_replace(' ', '&nbsp;', $line);
         $html .= '<li><span>';
         $html .= $line;
@@ -567,7 +567,7 @@ function programming_format_compile_message($message) {
         else $t = 'normal';
 
         $html .= "<li class='$t'>";
-        $html .= str_replace(' ', '&nbsp;', htmlentities($line));
+        $html .= str_replace(' ', '&nbsp;', htmlspecialchars($line));
         $html .= '</li>';
     }
     $html .= '</ol>';
