@@ -17,21 +17,12 @@ fetch_code = function(submitid) {
     });
 };
 
-change_select_display = function () {
-    var oldsel = $('#submitid').get(0);
-    var i;
-    var table = $('<table id="submits_form" class="generaltable"></table>');
-    var tbody = $('<tbody />');
-    table.append(tbody);
-    for (i = 0; i < oldsel.length; i++) {
-        tbody.append('<tr><td><a href="#" onclick="fetch_code(' + oldsel.options.item(i).value + ')">' + oldsel.options.item(i).firstChild.data + '</a></td></tr>');
-    }
-    var oldform = $('#submits_form');
-    oldform.after(table);
-    oldform.remove();
-};
-
 $(document).ready(function() {
-  change_select_display();
   dp.sh.HighlightAll('code');
+
+  $('a.submit').click(function(evt) {
+    evt.preventDefault();
+    fetch_code($(this).attr('submitid'));
+    return false;
+  });
 });

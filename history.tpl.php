@@ -13,37 +13,17 @@
 <table>
 <tr>
 <td>
-<div id="submittime">
+<div id="submitlist">
 <?php echo get_string('submittime', 'programming'); ?>
-<div id="submits_form"><form method="get" action="history.php">
-<input type="hidden" name="a" value="<?php echo $programming->id ?>" />
-
-<div id="submits_list">
-<select name="submitid" size="10" id="submitid">
-<?php
-  $currentsubmit = null;
-  foreach($submits as $submit) {
-      if (!$currentsubmit) {
-          $currentsubmit = $submit;
-          if (!$submitid) $submitid = $submit->id;
-      }
-      echo '<option value="'.$submit->id.'"';
-      echo $submitid == $submit->id ? ' selected="selected"' : '';
-      echo '>';
-      echo userdate($submit->timemodified, '%Y-%m-%d %H:%M:%S');
-      echo '</option>'."\n";
-      if ($submitid == $submit->id) {
-          $currentsubmit = $submit;
-      }
-  }
-?>
-</select></div>
-
-<div align="center" id="submit_button">
-<input type="submit" name="action" value="<?php echo get_string('show') ?>" />
-</div>
-
-</form></div>
+<ul>
+  <?php
+    foreach($submits as $submit):
+      if (!$currentsubmit || $submit->id == $submitid)
+        $currentsubmit = $submit;
+  ?>
+  <li><a href="<?php echo $CFG->wwwroot; ?>/mod/programming/history.php?a=<?php echo $a; ?>&amp;submitid=<?php echo $submit->id; ?>" class="submit" submitid="<?php echo $submit->id; ?>"><?php echo userdate($submit->timemodified, '%Y-%m-%d %H:%M:%S'); ?></a></li>
+  <?php endforeach; ?>
+</ul>
 </div>
 </td>
 
