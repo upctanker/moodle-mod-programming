@@ -231,6 +231,13 @@ function update_submit_test_results($xmlrpcmsg)
     return new xmlrpcresp(new xmlrpcval(null, 'null'));
 }
 
+$addr = getremoteaddr();
+if (!in_array($addr, explode(' ', $CFG->programming_ojip))) {
+    header('HTTP/1.0 401 Unauthorized');
+    echo '401 Unauthorized';
+    exit;
+}
+
 $s = new xmlrpc_server(
   array(
     'oj.get_judge_id' => array(

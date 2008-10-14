@@ -218,5 +218,6 @@ $string['programming:viewotherresult'] = 'View others results';
 $string['programming:viewreport'] = 'View reports';
 $string['rejudgeac'] = 'Rejudge accepted (AC) submits too';
 $string['compare'] = 'Compare';
+$string['configojip'] = 'From which ip addresses can online judge engines connect to the ojfeeder of this server. Please separate different addresses with space.'
 
 ?>

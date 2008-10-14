@@ -1,0 +1,19 @@
+<form method="post" action="module.php" id="form">
+<div>
+<input type="hidden" name="sesskey" value="<?php echo $USER->sesskey ?>" />
+
+<table cellpadding="9" cellspacing="0" >
+
+<tr valign="top">
+  <td align="right">programming_ojip:</td>
+  <td><input type="text" size="50" name="programming_ojip" value="<?php echo $CFG->programming_ojip; ?>" /></td> 
+  <td><?php print_string("configojip", 'programming'); ?></td>
+</tr>
+
+<tr>
+    <td colspan="3" align="center">
+    <input type="submit" value="<?php print_string("savechanges") ?>" /></td>
+</tr>
+</table>
+</div>
+</form>
