@@ -13,7 +13,7 @@
 <table>
 <tr>
 <td>
-<form action="history_diff.php">
+<form action="history_diff.php" id="history-diff-form">
 <input type="hidden" name="a" value="<?php echo $a; ?>" />
 <div id="submitlist">
 <?php echo get_string('submittime', 'programming'); ?>
