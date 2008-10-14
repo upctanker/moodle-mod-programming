@@ -586,18 +586,7 @@ function programming_format_io($message, $id = null) {
 }
 
 function programming_format_compile_message($message) {
-    $message = str_replace("\r", '', $message);
-    $lines = explode("\n", $message);
-    $html = '<div style="font-family: monospace;">';
-    foreach ($lines as $line) {
-        while (strlen($line) > 80) {
-            $html .= htmlentities(substr($line, 0, 80)).'<br />';
-            $line = substr($line, 80);
-        }
-        $html .= htmlentities($line).'<br />';
-    }
-    $html .= '</div>';
-    return $html;
+    return str_replace("\n", '<br />', htmlentities($message));
 }
 
 function programming_parse_compile_message($message) {

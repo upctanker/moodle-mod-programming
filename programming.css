@@ -21,7 +21,17 @@
 #mod-programming-view #time-table th { text-align: right }
 #mod-programming-view #time-table td { text-align: left }
 
-#mod-programming-result #compilemessage { text-align: left }
+#mod-programming-result #compilemessage {
+  width: 52em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Consolas","Courier New",Courier,mono,serif;
+  color: red;
+  font-weight: bold;
+  text-align: left;
+}
 
 #mod-programming-result #test-result-detail tr.passed,
 #mod-programming-result #test-result-detail tr.passed .cell {
