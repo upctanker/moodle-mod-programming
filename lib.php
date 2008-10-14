@@ -558,7 +558,20 @@ function programming_format_io($message, $id = null) {
 }
 
 function programming_format_compile_message($message) {
-    return str_replace(array(' ', "\n"), array('&nbsp;', '<br />'), htmlentities($message));
+    $lines = explode("\n", trim($message));
+    $html = '<ol>';
+    $t = '';
+    foreach ($lines as $line) {
+        if (strstr($line, 'warning:')) $t = 'warning';
+        else if (strstr($line, 'error:')) $t = 'error';
+        else $t = 'normal';
+
+        $html .= "<li class='$t'>";
+        $html .= str_replace(' ', '&nbsp;', htmlentities($line));
+        $html .= '</li>';
+    }
+    $html .= '</ol>';
+    return $html;
 }
 
 function programming_parse_compile_message($message) {
