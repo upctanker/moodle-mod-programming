@@ -8,7 +8,7 @@
 <table>
 <tr>
 <td>
-<label for="validatortype" class="name"><?php echo get_string('type', 'programming') ?></label>
+<label for="validatortype" class="name"><?php echo get_string('validatortype', 'programming') ?></label>
 </td>
 <td align="left">
 <?php choose_from_menu(array(1 => 'python'), 'validatortype', 'python', ''); ?>
@@ -16,7 +16,7 @@
 </tr>
 <tr>
 <td>
-<label for="validator" class="name"><?php echo get_string('validator', 'programming') ?></label>
+<label for="validator" class="name"><?php echo get_string('validatorcode', 'programming') ?></label>
 </td>
 <td>
 <?php echo print_textarea(false, 10, 50, 0, 0, 'validator', $programming->validator) ?>
