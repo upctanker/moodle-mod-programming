@@ -535,7 +535,6 @@ function programming_format_codesize($size) {
 
 function programming_format_io($message, $id = null) {
     $sizelimit = 1024;
-    $strcrlf = get_string('crlf', 'programming');
 
     $message = str_replace("\r", '', $message);
     if (substr($message, strlen($message)-1) == "\n") {
@@ -546,10 +545,7 @@ function programming_format_io($message, $id = null) {
     foreach ($lines as $line) {
         $line = htmlspecialchars($line);
         $line = str_replace(' ', '&nbsp;', $line);
-        $html .= '<li><span>';
-        $html .= $line;
-        $html .= "<img src='pix/return.png' alt='$strcrlf' class='crlf'/>";
-        $html .= '</span></li>';
+        $html .= '<li><span>'.$line.'&crarr;</span></li>';
         $sizelimit -= strlen($line) + 1;
         if ($sizelimit <= 0) break;
     }

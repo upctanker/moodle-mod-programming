@@ -85,7 +85,6 @@ $string['keeplatestonly'] = 'Keep latest program only';
 $string['clickshowdetail'] = 'Click to show details';
 $string['currentstatus'] = 'Current Status';
 $string['testresult'] = 'Test Result';
-$string['crlf'] = 'RETURN';
 $string['discount'] = 'Discount';
 $string['timediscount'] = 'Time Discount';
 $string['statrange'] = 'Range';

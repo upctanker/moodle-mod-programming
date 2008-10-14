@@ -80,7 +80,6 @@ $string['keeplatestonly'] = '只保留新程序';
 $string['clickshowdetail'] = '点击此处以查看详情';
 $string['currentstatus'] = '当前状态';
 $string['testresult'] = '测试结果';
-$string['crlf'] = '回车';
 $string['discount'] = '折扣';
 $string['timediscount'] = '折扣时间';
 $string['statrange'] = '范围';
