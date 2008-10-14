@@ -46,7 +46,7 @@
         } else {
             require_capability('mod/programming:viewhiddentestcase', $context);
         }
-	$submit = get_record('programming_submits', 'id', $submitid);
+        $submit = get_record('programming_submits', 'id', $submitid);
         if ($submit->userid != $USER->id) {
             require_capability('mod/programming:viewotherresult', $context);
         }
