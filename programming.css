@@ -28,18 +28,18 @@
   margin-left: auto;
   margin-right: auto;
   font-family: "Consolas","Courier New",Courier,mono,serif;
-  color: red;
+  color: Maroon;
   font-weight: bold;
   text-align: left;
 }
 
 #mod-programming-result #test-result-detail tr.passed,
 #mod-programming-result #test-result-detail tr.passed .cell {
-    background-color: #f2fff2; /* light green */
+    background-color: #A0EEA0; /* light green */
 }
 #mod-programming-result #test-result-detail tr.notpassed,
 #mod-programming-result #test-result-detail tr.notpassed .cell {
-    background-color: #fff2f2; /* light red */
+    background-color: #F0A0A0; /* light red */
 }
 
 #programming-standing-full-standing, #standing-result {
