@@ -558,7 +558,7 @@ function programming_format_io($message, $id = null) {
 }
 
 function programming_format_compile_message($message) {
-    return str_replace("\n", '<br />', htmlentities($message));
+    return str_replace(array(' ', "\n"), array('&nbsp;', '<br />'), htmlentities($message));
 }
 
 function programming_parse_compile_message($message) {
