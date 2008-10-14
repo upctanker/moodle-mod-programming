@@ -70,10 +70,14 @@
 }
 
 #mod-programming-history td { vertical-align: top; }
-#mod-programming-history #submittime {
+#mod-programming-history #submitlist {
     display: block;
-    width: 12em;
+    width: 14em;
 }
+#mod-programming-history #submitlist table {
+    margin: 0.5em 0;
+}
+
 #mod-programming-submit #codeview {
     display: block;
     width: 46em;
@@ -88,6 +92,59 @@
     height: 29em;
     text-align: left;
     overflow: scroll;
+}
+
+.diff {
+    margin: 0 auto;
+    width: 52em;
+}
+
+.diff th {
+    color: #666666;
+    font-weight: normal;
+    padding: 0 0.6em;
+    text-align: right;
+    width: 2em;
+}
+
+.diff td {
+    font-family: "Consolas","Courier New",Courier,mono,serif;
+}
+
+.diff .added {
+    background-color: #99FF99;
+    border-color: #33AA33;
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+.diff .deleted {
+    background-color: #FF8888;
+    border-color: #AA3333;
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+.diff .first {
+    border-top-width: 1px;
+}
+
+.diff .last {
+    border-bottom-width: 1px;
+}
+
+.diff .added-changed {
+    background-color: #DDF8CC;
+    border-color: #33AA33;
+    border-style: solid;
+    border-width: 0 1px;
+}
+
+.diff .deleted-changed {
+    background-color: #FFD8D8;
+    border-color: #AA3333;
+    border-style: solid;
+    border-width: 0 1px;
 }
 
 #mod-programming-resemble_compare #info { padding-bottom: 1em; }

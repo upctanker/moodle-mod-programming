@@ -20,6 +20,11 @@ fetch_code = function(submitid) {
 $(document).ready(function() {
   dp.sh.HighlightAll('code');
 
+  var r = $('.diff1');
+  $(r.get(0)).hide();
+  r = $('.diff2');
+  $(r.get(r.length-1)).hide();
+
   $('a.submit').click(function(evt) {
     evt.preventDefault();
     fetch_code($(this).attr('submitid'));
