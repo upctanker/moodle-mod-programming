@@ -9,7 +9,6 @@
 }
 .mod-programming .maincontent table { margin: auto; }
 .mod-programming .maincontent td { padding: 3px; }
-.mod-programming td.programming-io { vertical-align: top; }
 .mod-programming .cell { vertical-align: middle; } 
 
 #mod-programming-view #description { text-align: left; padding: 0em 1em 0em 1em; }
@@ -101,41 +100,37 @@
 .resemble-list .confirmed { color: red; }
 .resemble-list .flag3 { color: #888888; }
 
-div.programming-io-sizelimit {
-    width: 12em;
+td.programming-io div {
+    vertical-align: top;
+    padding: 0px 5px 0px 0px;
+    width: 10em;
     height: 10em;
-    overflow: scroll;
+    overflow: auto;
 }
 
-table.programming-io-block {
-    display: table;
-    overflow: scroll;
+td.programming-io ol {
     text-align: left;
-    max-width: 100px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    padding: 0 0 0 auto;
+    overflow: visible;
 }
-tr.programming-io-line {
-    display: table-row;
-    vertical-align: baseline;
+
+td.programming-io li {
+    font-family: "Consolas","Courier New",Courier,mono,serif;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
 }
-td.programming-io-linenumber {
-    display: table-cell;
-    border-right: 1px dotted gray;
-    font-size: 9pt;
-    padding: 0px;
-}
-span.programming-io-linenumber {
-    color: Gray;
-}
-td.programming-io {
-    display: table-cell;
-    padding: 0px 5px 0px 0px;
-}
-span.programming-io {
-    background: #CCCCCC;
-    font-family: monospace;
-    font-size: 12pt;
+
+td.programming-io span {
+    background-color: #D3D3D3;
+    margin: 0;
+    padding: 0;
     white-space: nowrap;
 }
+
 .hl-default {
     color: Black;
 }

@@ -7,6 +7,7 @@
     $testid = required_param('test', PARAM_INT);
     $submitid = optional_param('submit', -1, PARAM_INT);
     $type = required_param('type', PARAM_CLEAN);
+    $download = optional_param('download', 1, PARAM_INT);
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -56,10 +57,10 @@
         $content = $type == 'out' ? $result->output : $result->stderr;
     }
 
-    if ($filename) {
-        header('Content-Type: text/plain');
+    header('Content-Type: text/plain');
+    if ($filename && $download) {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
-        echo $content;
     }
+    echo $content;
 
 ?>

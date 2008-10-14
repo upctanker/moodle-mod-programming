@@ -43,11 +43,11 @@
   <tr>
     <th><?php echo get_string('testcasen', 'programming', $i++); ?></th>
     <td class="programming-io cell">
-	  <a href="javascript:showasplaintext($('#io<?php echo $ioid ?>'))" class="small"><?php echo get_string('showasplaintext', 'programming'); ?></a>
+    <?php echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
 	  <?php echo programming_format_io($programmingtest->input, 'io'.$ioid++); ?>
 	</td>
 	<td class="programming-io cell">
-	  <a href="javascript:showasplaintext($('#io<?php echo $ioid ?>'))" class="small"><?php echo get_string('showasplaintext', 'programming'); ?></a>
+    <?php echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
 	  <?php echo programming_format_io($programmingtest->output, 'io'.$ioid++); ?>
 	</td>
     <td class="cell">

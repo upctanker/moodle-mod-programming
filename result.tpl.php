@@ -66,44 +66,53 @@
       ($tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT &&
        $programming->timediscount <= time())) {
     echo '<td class="programming-io cell">';
-	echo '<a href="javascript:showasplaintext($(\'#io'.$id.'\'))" class="small">';
-	echo get_string('showasplaintext', 'programming');
-	echo '</a>';
+
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+
     echo '&nbsp;';
-    echo '<a href="download_io.php?a='.$programming->id.'&test='.$result->testid.'&amp;type=in" class="small">'.get_string('download', 'programming').'</a>';
+
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=in' class='download small'>$strdownload</a>";
+
     echo programming_format_io($tests[$result->testid]->input, 'io'.$id++);
+    echo '</td>';
+
   } else {
     echo '<td>';
     echo get_string('securetestcase', 'programming');
+    echo '</td>';
   }
-  echo '</td>';
 ?>
 
 <?php
   if ($tests[$result->testid]->pub >= 0 || $viewhiddentestcase) {
     echo '<td class="programming-io cell">';
-	echo '<a href="javascript:showasplaintext($(\'#io'.$id.'\'))" class="small">';
-    echo get_string('showasplaintext', 'programming');
-    echo '</a>';
+
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+
     echo '&nbsp;';
-    echo '<a href="download_io.php?a='.$programming->id.'&test='.$result->testid.'&amp;type=out" class="small">'.get_string('download', 'programming').'</a>';
+
+    echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=out' class='download small'>$strdownload</a>";
+
     echo programming_format_io($tests[$result->testid]->output, 'io'.$id++);
+    echo '</td>';
   } else {
     echo '<td class="cell">';
     echo get_string('securetestcase', 'programming');
+    echo '</td>';
   }
-  echo '</td>';
 ?>
 
 <?php
   if ($tests[$result->testid]->pub >= 0 || $viewhiddentestcase) {
     if ($result->output != '') {
-	  echo '<td class="programming-io cell">';
-	  echo '<a href="javascript:showasplaintext($(\'#io'.$id.'\'))" class="small">';
-	  echo get_string('showasplaintext', 'programming');
-      echo '</a>';
+      echo '<td class="programming-io cell">';
+
+      echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+
       echo '&nbsp;';
-      echo '<a href="download_io.php?a='.$programming->id.'&test='.$result->testid.'&amp;submit='.$result->submitid.'&amp;type=out" class=small>'.get_string('download', 'programming').'</a>';
+
+      echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=out' class='download small'>$strdownload</a>";
+
       echo programming_format_io($result->output, 'io'.$id++);
     } else {
 	  echo '<td class="cell">';
@@ -120,11 +129,13 @@
   if ($tests[$result->testid]->pub >= 0 || $viewhiddentestcase) {
     if ($result->stderr) {
       echo '<td class="programming-io cell">';
-      echo '<a href="javascript:showasplaintext($(\'#io'.$id.'\'))" class="small">';
-      echo get_string('showasplaintext', 'programming');
-      echo '</a>';
+
+      echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=err&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>";
+
       echo '&nbsp;';
-      echo '<a href="download_io.php?a='.$programming->id.'&test='.$result->testid.'&amp;submit='.$result->submitid.'&amp;type=err" class="small">'.get_string('download', 'programming').'</a>';
+
+      echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=err' class='download small'>$strdownload</a>";
+
       echo programming_format_io($result->stderr, 'io'.$id++);
     } else {
       echo '<td class="cell">';
@@ -180,3 +191,4 @@
 <p align="center"><?php echo get_string('cannotfindyoursubmit', 'programming'); ?></p>
 <?php endif; ?>
 </div>
+

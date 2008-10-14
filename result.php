@@ -30,6 +30,7 @@
     add_to_log($course->id, 'programming', 'result', 'result.php?a'.$programming->id, $programming->name);
 
 /// Print the page header
+    $CFG->scripts[] = 'result.js';
     $pagename = get_string('result', 'programming');
     include_once('pageheader.php');
 
@@ -38,6 +39,9 @@
     include_once('tabs.php');
 
 /// Print page content
+    $strshowasplaintext = get_string('showasplaintext', 'programming');
+    $strdownload = get_string('download', 'programming');
+
     if (!$submitid) {
         $r = get_record('programming_result', 'programmingid', $programming->id, 'userid', $USER->id);
         $submitid = $r->latestsubmitid;

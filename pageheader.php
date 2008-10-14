@@ -1,7 +1,6 @@
 <?php
     if (!isset($CFG->scripts) || !is_array($CFG->scripts)) {
         $CFG->scripts = array();
-		$CFG->scripts[] = 'programming.js';
     }
     $CFG->stylesheets[] = 'programming.css';
     array_unshift($CFG->scripts, $CFG->wwwroot.'/mod/programming/js/jquery-latest.pack.js');

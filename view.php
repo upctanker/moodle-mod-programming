@@ -49,7 +49,6 @@
     $pagename = get_string('view', 'programming');
     $CFG->scripts[] = 'js/dp/shCore.js';
     $CFG->scripts[] = 'js/dp/shBrushCSharp.js';
-    $CFG->scripts[] = 'programming.js';
     $CFG->scripts[] = 'view.js';
     $CFG->stylesheets[] = 'js/dp/SyntaxHighlighter.css';
     include_once('pageheader.php');
@@ -59,6 +58,7 @@
     include_once('tabs.php');
 
 /// Print the main part of the page
+    $strshowasplaintext = get_string('showasplaintext', 'programming');
     $time = time();
 
     $pubtests = get_records_sql("SELECT * FROM {$CFG->prefix}programming_tests WHERE programmingid=$programming->id AND pub=1 ORDER BY id");

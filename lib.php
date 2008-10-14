@@ -534,54 +534,26 @@ function programming_format_codesize($size) {
 }
 
 function programming_format_io($message, $id = null) {
-    $stripped = false;
-    if (strlen($message) > 1024) {
-        $message = substr($message, 0, 1024);
-        $stripped = true;
-    }
-    if (substr($message, strlen($message)-1) != "\n") $message .= "\n";
+    $sizelimit = 1024;
+    $strcrlf = get_string('crlf', 'programming');
+
     $message = str_replace("\r", '', $message);
+    if (substr($message, strlen($message)-1) == "\n") {
+        $message = substr($message, 0, strlen($message)-1);
+    }
     $lines = explode("\n", $message);
-    $maxlen = 0;
-    foreach($lines as $line) $maxlen = max($maxlen, strlen($line));
-    if ($maxlen > 20 || count($lines) > 6) {
-        $html = '<div class="programming-io-sizelimit">';
-    } else {
-        $html = '';
+    $html = '<div><ol>';
+    foreach ($lines as $line) {
+        $line = htmlentities($line);
+        $line = str_replace(' ', '&nbsp;', $line);
+        $html .= '<li><span>';
+        $html .= $line;
+        $html .= "<img src='pix/return.png' alt='$strcrlf' class='crlf'/>";
+        $html .= '</span></li>';
+        $sizelimit -= strlen($line) + 1;
+        if ($sizelimit <= 0) break;
     }
-    $html .= '<table class="programming-io-block"';
-    if ($id) $html .= ' id="'.$id.'"';
-    $html .= '>';
-    $c = 1;
-    foreach ($lines as $l) {
-        if ($c == count($lines)) continue;
-        $html .= '<tr class="programming-io-line">';
-        $html .= '<td class="programming-io-linenumber">';
-        $html .= $c++;
-        $html .= '</td>';
-        $nl = '';
-        for ($i = 0; $i < strlen($l); $i++) {
-            $ch = substr($l, $i, 1);
-            $och = ord($ch);
-            if ($och < 32 or $och > 127) {
-                $nl .= '\\'.ord($ch);
-            } else {
-                $nl .= $ch;
-            }
-        }
-        $l = htmlentities($nl);
-        $l = str_replace(' ', '&nbsp;', $l);
-        $html .= '<td class="programming-io">';
-        $html .= '<span class="programming-io">'.$l;
-        $html .= '<img title="'.get_string('crlf', 'programming').'" src="pix/return.png" alt="'.get_string('crlf', 'programming').'" class="crlf"/>';
-        $html .= '</span>';
-        $html .= '</td>';
-        $html .= '</tr>';
-    }
-    $html .= '</table>';
-    if ($maxlen > 20 || count($lines) > 6) {
-        $html .= '</div>';
-    }
+    $html .= '</ol></div>';
     return $html;
 }
 
