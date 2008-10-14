@@ -57,7 +57,7 @@
         $content = $type == 'out' ? $result->output : $result->stderr;
     }
 
-    header('Content-Type: text/plain');
+    header('Content-Type: application/octet-stream');
     if ($filename && $download) {
         header('Content-Disposition: attachment; filename="'.$filename.'"');
     }
