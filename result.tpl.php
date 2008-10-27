@@ -73,7 +73,7 @@
 
     echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=in' class='download small'>$strdownload</a>";
 
-    echo programming_format_io($tests[$result->testid]->input, 'io'.$id++);
+    echo programming_format_io($tests[$result->testid]->input, true);
     echo '</td>';
 
   } else {
@@ -93,7 +93,7 @@
 
     echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;type=out' class='download small'>$strdownload</a>";
 
-    echo programming_format_io($tests[$result->testid]->output, 'io'.$id++);
+    echo programming_format_io($tests[$result->testid]->output, true);
     echo '</td>';
   } else {
     echo '<td class="cell">';
@@ -113,7 +113,7 @@
 
       echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=out' class='download small'>$strdownload</a>";
 
-      echo programming_format_io($result->output, 'io'.$id++);
+      echo programming_format_io($result->output, false);
     } else {
 	  echo '<td class="cell">';
       echo get_string('noresult', 'programming');
@@ -136,7 +136,7 @@
 
       echo "<a href='download_io.php?a={$programming->id}&amp;test={$result->testid}&amp;submit={$result->submitid}&amp;type=err' class='download small'>$strdownload</a>";
 
-      echo programming_format_io($result->stderr, 'io'.$id++);
+      echo programming_format_io($result->stderr, false);
     } else {
       echo '<td class="cell">';
       echo get_string('n/a', 'programming');

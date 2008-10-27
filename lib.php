@@ -533,24 +533,23 @@ function programming_format_codesize($size) {
         return round($size/1000, 2).'K';
 }
 
-function programming_format_io($message, $id = null) {
+function programming_format_io($message, $autolastreturn = false) {
     $sizelimit = 1024;
 
-    $message = str_replace("\r", '', $message);
-    if (substr($message, strlen($message)-1) == "\n") {
+    $haslastreturn = false;
+    if (substr($message, strlen($message)-1, 1) == "\n") {
+        $haslastreturn = true;
         $message = substr($message, 0, strlen($message)-1);
     }
-    $lines = explode("\n", $message);
-    $html = '<div><ol>';
-    foreach ($lines as $line) {
-        $line = htmlspecialchars($line);
-        $line = str_replace(' ', '&nbsp;', $line);
-        $html .= '<li><span>'.$line.'&crarr;</span></li>';
-        $sizelimit -= strlen($line) + 1;
-        if ($sizelimit <= 0) break;
-    }
-    $html .= '</ol></div>';
-    return $html;
+       
+    $message = str_replace(
+        array(' ', "\r", "\n"),
+        array('&nbsp;', '', '&crarr;</span></li><li><span>'),
+        htmlspecialchars(substr($message, 0, $sizelimit)));
+
+    if ($haslastreturn || $autolastreturn) $message .= '&crarr;';
+
+    return '<div><ol><li></span>'.$message.'</span></li></ol></di>';
 }
 
 function programming_format_compile_message($message) {
