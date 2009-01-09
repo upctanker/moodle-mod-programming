@@ -533,7 +533,19 @@ function programming_format_codesize($size) {
         return round($size/1000, 2).'K';
 }
 
+function check_crarr() {
+    global $_SERVER;
+
+    $uagent = $_SERVER['HTTP_USER_AGENT'];
+    if (!strpos($uagent, 'MSIE')) {
+        return '&crarr;';
+    } else {
+        return '<span style="font-family: Wingdings 3">&crarr;</span>';
+    }
+}
+
 function programming_format_io($message, $autolastreturn = false) {
+    $crarr = check_crarr();
     $sizelimit = 1024;
 
     $haslastreturn = false;
@@ -544,10 +556,10 @@ function programming_format_io($message, $autolastreturn = false) {
        
     $message = str_replace(
         array(' ', "\r", "\n"),
-        array('&nbsp;', '', '&crarr;</span></li><li><span>'),
+        array('&nbsp;', '', $crarr.'</span></li><li><span>'),
         htmlspecialchars(substr($message, 0, $sizelimit)));
 
-    if ($haslastreturn || $autolastreturn) $message .= '&crarr;';
+    if ($haslastreturn || $autolastreturn) $message .= $crarr;
 
     return '<div><ol><li></span>'.$message.'</span></li></ol></di>';
 }
