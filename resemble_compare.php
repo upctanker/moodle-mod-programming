@@ -45,14 +45,16 @@
 
         list($start, $end) = explode('-', $range1);
         while ($start <= $end) {
-            if (!is_array($lines1[$start])) {
+            if (array_key_exists($start, $lines1) &&
+                !is_array($lines1[$start])) {
                 $lines1[$start] = array($mid, $lines1[$start]);
             }
             $start++;
         }
         list($start, $end) = explode('-', $range2);
         while ($start <= $end) {
-            if (!is_array($lines2[$start])) {
+            if (array_key_exists($start, $lines2) &&
+                !is_array($lines2[$start])) {
                 $lines2[$start] = array($mid, $lines2[$start]);
             }
             $start++;
