@@ -206,5 +206,9 @@ $string['programming:viewotherprogram'] = '查看其他人的程序';
 $string['programming:viewotherresult'] = '查看其他人的结果';
 $string['programming:viewreport'] = '查看报表';
 $string['rejudgeac'] = '对已经正确通过(AC)的程序也重新测试';
+$string['resemble_analyze'] = '相似度分析';
+$string['flag1'] = '标记左侧';
+$string['flag2'] = '标记右侧';
+$string['flag3'] = '均不标记';
 
 ?>

@@ -5,10 +5,10 @@ fetch result:
 <form id="resemble_analyze_form" action="resemble_analyze.php">
   <input type="hidden" name="a" value="<?php echo $programming->id ?>" />
   <input type="hidden" name="action" value="fetchresult" />
-  <div>
+<!--  <div>
     <label for="url">url</label>
 	<input type="text" name="url" size="50" />
-  </div>
+  </div>-->
   <div>
     <label for="max">max</label>
 	<input type="text" name="max" size="10" value="250"/>

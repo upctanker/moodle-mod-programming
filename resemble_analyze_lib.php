@@ -38,14 +38,14 @@ function parse_index($programmingid, $index_file, $max, $lowest) {
         case 3:
             if (preg_match('/<TD ALIGN=right>(\d+)/', $line, $m)) {
                 $resemble->matchedcount = $m[1];
-				if ($resemble->percent1 > $lowest or $resemble->percent2 > $lowest) {
+                if ($resemble->percent1 > $lowest or $resemble->percent2 > $lowest) {
                     $resemble->matchedlines = parse_lines($index_file.'/match'.$c.'-top.html');
                     if (!insert_record('programming_resemble', $resemble)) {
                         printf("Failed to insert record.\n");
                     }
-				}
+                }
                 $c ++;
-				echo ".";
+                echo ".";
                 $s = 1;
             }
             break;
@@ -82,9 +82,9 @@ function parse_lines($topfile) {
 
 function parse_result($programmingid, $url, $max = 0, $lowest = 0) {
     global $CFG, $moss_url;
-	
-	// delete old moss result
-	execute_sql("DELETE FROM {$CFG->prefix}programming_resemble WHERE programmingid=$programmingid");
+    
+    // delete old moss result
+    execute_sql("DELETE FROM {$CFG->prefix}programming_resemble WHERE programmingid=$programmingid");
 
     parse_index($programmingid, $url, $max, $lowest);
 }

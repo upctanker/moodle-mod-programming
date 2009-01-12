@@ -218,5 +218,9 @@ $string['programming:viewreport'] = 'View reports';
 $string['rejudgeac'] = 'Rejudge accepted (AC) submits too';
 $string['compare'] = 'Compare';
 $string['configojip'] = 'From which ip addresses can online judge engines connect to the ojfeeder of this server. Please separate different addresses with space.'
+$string['resemble_analyze'] = 'Resemble Analyze';
+$string['flag1'] = 'Mark left';
+$string['flag2'] = 'Mark right';
+$string['flag3'] = 'Mark neither';
 
 ?>
