@@ -97,6 +97,7 @@
       // write files
       $exts = array('.txt', '.c', '.cxx', '.java', '.java', '.pas', '.py', '.cs');
       foreach ($latestsubmits as $submit) {
+          if (!$users[$submit->userid]->idnumber) continue;
           $ext = $exts[$submit->language];
           $filename = $dirname.'/'.$users[$submit->userid]->idnumber.'-'.$submit->id.$ext;
           $files[] = $filename;
@@ -105,11 +106,12 @@
           fwrite($f, "\r\n");
           fclose($f);
       }
+      //echo "dir is $dirname <br />";
 
       $cwd = getcwd();
       chdir($dirname);
       $url = exec("perl $cwd/moss.pl *");
-      echo "See result $url";
+      echo "See result $url <br />";
 
       // remove temp
       fulldelete($dirname);
