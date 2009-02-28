@@ -70,9 +70,11 @@
           ORDER BY p.id";
     $rows = get_records_sql($sql);
     $uids = array();
-    foreach ($rows as $row) {
-        if (!in_array($row->userid1, $uids)) $uids[] = $row->userid1;
-        if (!in_array($row->userid2, $uids)) $uids[] = $row->userid2;
+    if (is_array($rows)) {
+        foreach ($rows as $row) {
+            if (!in_array($row->userid1, $uids)) $uids[] = $row->userid1;
+            if (!in_array($row->userid2, $uids)) $uids[] = $row->userid2;
+        }
     }
     if (count($uids) > 0) {
         $uids = implode(',', $uids);
@@ -85,47 +87,49 @@
     $table->head = array($strname, $strsimilitudedegree, $strprogram1, $strpercent1, $strprogram2, $strpercent2, $strmatchedlines);
     $table->align = array('LEFT', 'CENTER', 'CENTER', 'CENTER', 'CENTER', 'CENTER', 'CENTER');
     foreach ($programmings as $programming) {
-        foreach ($rows as $row) {
-            if ($row->programmingid != $programming->id) continue;
+        if (is_array($rows)) {
+            foreach ($rows as $row) {
+                if ($row->programmingid != $programming->id) continue;
 
-            switch($row->flag) {
-            case PROGRAMMING_RESEMBLE_WARNED:
-                $styleclass1 = $styleclass2 = 'warned';
-                $degree = $strmediumdegree;
-                break;
-            case PROGRAMMING_RESEMBLE_CONFIRMED:
-                $styleclass1 = $styleclass2 = 'confirmed';
-                $degree = $strhighdegree;
-                break;
-            case PROGRAMMING_RESEMBLE_FLAG1:
-                $styleclass1 = 'confirmed';
-                $styleclass2 = '';
-                $degree = $strhighdegree;
-                break;
-            case PROGRAMMING_RESEMBLE_FLAG2:
-                $styleclass1 = '';
-                $styleclass2 = 'confirmed';
-                $degree = $strhighdegree;
-                break;
-            case PROGRAMMING_RESEMBLE_FLAG3:
-                $styleclass1 = $styleclass2 = 'flag3';
-                $degree = $strhighdegree;
-                break;
-            default:
-                $styleclass1 = $styleclass2 = '';
+                switch($row->flag) {
+                case PROGRAMMING_RESEMBLE_WARNED:
+                    $styleclass1 = $styleclass2 = 'warned';
+                    $degree = $strmediumdegree;
+                    break;
+                case PROGRAMMING_RESEMBLE_CONFIRMED:
+                    $styleclass1 = $styleclass2 = 'confirmed';
+                    $degree = $strhighdegree;
+                    break;
+                case PROGRAMMING_RESEMBLE_FLAG1:
+                    $styleclass1 = 'confirmed';
+                    $styleclass2 = '';
+                    $degree = $strhighdegree;
+                    break;
+                case PROGRAMMING_RESEMBLE_FLAG2:
+                    $styleclass1 = '';
+                    $styleclass2 = 'confirmed';
+                    $degree = $strhighdegree;
+                    break;
+                case PROGRAMMING_RESEMBLE_FLAG3:
+                    $styleclass1 = $styleclass2 = 'flag3';
+                    $degree = $strhighdegree;
+                    break;
+                default:
+                    $styleclass1 = $styleclass2 = '';
+                }
+
+                $user1 = print_user_picture($row->userid1, $course->id, $users[$row->userid1]->picture, 0, true).fullname($users[$row->userid1]);
+                $user2 = print_user_picture($row->userid2, $course->id, $users[$row->userid2]->picture, 0, true).fullname($users[$row->userid2]);
+
+                $table->data[] = array(
+                    "<a href='view.php?a=$row->programmingid'>$row->name</a>",
+                    $degree,
+                    "<span class='$styleclass1'>$user1</span>",
+                    "<span class='$styleclass1'>$row->percent1</span>",
+                    "<span class='$styleclass2'>$user2</span>",
+                    "<span class='$styleclass2'>$row->percent2</span>",
+                    "<a href='resemble_compare.php?a=$row->programmingid&amp;rid=$row->id'>$row->matchedcount</a>");
             }
-
-            $user1 = print_user_picture($row->userid1, $course->id, $users[$row->userid1]->picture, 0, true).fullname($users[$row->userid1]);
-            $user2 = print_user_picture($row->userid2, $course->id, $users[$row->userid2]->picture, 0, true).fullname($users[$row->userid2]);
-
-            $table->data[] = array(
-                "<a href='view.php?a=$row->programmingid'>$row->name</a>",
-                $degree,
-                "<span class='$styleclass1'>$user1</span>",
-                "<span class='$styleclass1'>$row->percent1</span>",
-                "<span class='$styleclass2'>$user2</span>",
-                "<span class='$styleclass2'>$row->percent2</span>",
-                "<a href='resemble_compare.php?a=$row->programmingid&amp;rid=$row->id'>$row->matchedcount</a>");
         }
     }
     print_table($table);

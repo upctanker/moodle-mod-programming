@@ -230,31 +230,41 @@
     $totalcount = count_records_sql($count_sql);
     $submits = get_records_sql($sql);
 
-    // Generate usersubmits for output
-    $uids = array();
-    $usersubmits = array();
-    foreach ($submits as $submit) {
-        if (!array_key_exists($submit->userid, $usersubmits)) {
-            $usersubmits[$submit->userid] = array();
-        }
-        array_push($usersubmits[$submit->userid], $submit);
-        if (!in_array($submit->userid, $uids)) {
-            array_push($uids, $submit->userid);
+    if (is_array($submits)) {
+        // Generate usersubmits for output
+        $uids = array();
+        $usersubmits = array();
+        foreach ($submits as $submit) {
+            if (!array_key_exists($submit->userid, $usersubmits)) {
+                $usersubmits[$submit->userid] = array();
+            }
+            array_push($usersubmits[$submit->userid], $submit);
+            if (!in_array($submit->userid, $uids)) {
+                array_push($uids, $submit->userid);
+            }
         }
     }
+
     // Get users object
-    $users = get_records_select('user', 'id in ('.implode(',', $uids).')');
-    unset($uids);
+    if (!empty($uids)) {
+        $users = get_records_select('user', 'id in ('.implode(',', $uids).')');
+        unset($uids);
+    }
     // Get results object
-    $sids = array_keys($submits);
-    $sresults = get_records_select('programming_test_results', 'submitid in ('.implode(',', $sids).')');
-    unset($sids);
+    if (!empty($submits)) {
+        $sids = array_keys($submits);
+        $sresults = get_records_select('programming_test_results', 'submitid in ('.implode(',', $sids).')');
+        unset($sids);
+    }
+
     $results = array();
-    foreach ($sresults as $sresult) {
-        if (!array_key_exists($sresult->submitid, $results)) {
-            $results[$sresult->submitid] = array();
+    if (!empty($sresults)) {
+        foreach ($sresults as $sresult) {
+            if (!array_key_exists($sresult->submitid, $results)) {
+                $results[$sresult->submitid] = array();
+            }
+            array_push($results[$sresult->submitid], $sresult);
         }
-        array_push($results[$sresult->submitid], $sresult);
     }
 
     $groupmode = groupmode($course, $cm);

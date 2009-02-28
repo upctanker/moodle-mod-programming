@@ -44,7 +44,7 @@
 
     if (!$submitid) {
         $r = get_record('programming_result', 'programmingid', $programming->id, 'userid', $USER->id);
-        $submitid = $r->latestsubmitid;
+        if (!empty($r)) $submitid = $r->latestsubmitid;
     }
     $submit = get_record('programming_submits', 'id', $submitid);
 

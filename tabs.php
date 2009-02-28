@@ -45,7 +45,7 @@
 		$row = array();
 		$inactive[] = 'reports';
 		$row[] = new tabobject('reports-summary', $CFG->wwwroot.'/mod/programming/reports.php?a='.$programming->id, get_string('summary','programming'));
-		$row[] = new tabobject('reports-detail', $CFG->wwwroot.'/mod/programming/reports_detail.php?a='.$programming->id.'&latestonly=1', get_string('detail','programming'));
+		$row[] = new tabobject('reports-detail', $CFG->wwwroot.'/mod/programming/reports_detail.php?a='.$programming->id.'&amp;latestonly=1', get_string('detail','programming'));
 		$tabs[] = $row;
 	}
 

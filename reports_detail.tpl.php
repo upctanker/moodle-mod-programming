@@ -16,7 +16,9 @@
 
 <table><tr><td>
 <?php
-    print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial);
+    if (!empty($groups)) {
+        print_group_menu($groups, $groupmode, $groupid, 'reports_detail.php?a='.$programming->id.'&amp;latestonly='.$latestonly.'&amp;orderby='.$orderby.'&amp;firstinitial='.$firstinitial.'&amp;lastinitial='.$lastinitial);
+    }
 ?>
 </td>
 <td><?php print_single_button('reports_detail.php', array('a' => $programming->id, 'group' => $groupid, 'latestonly' => ($latestonly ? 0 : 1), 'page' => $page, 'orderby' => $orderby, 'firstinitial' => $firstinitial, 'lastinitial' => $lastinitial), get_string(($latestonly ? 'showall' : 'showlatestonly'), 'programming')); ?></td>
@@ -29,7 +31,6 @@
     echo "<p style=\"text-align:center\">";
     $ne = get_string('nameedit', 'langconfig');
     for ($i = 0; $i < strlen($ne); $i++) {
-        if ($i > 0) echo '<br />';
         if (substr($ne, $i, 1) == 'F') {
             /// Bar of first initials
 
@@ -52,6 +53,7 @@
                          "firstinitial=$letter\">$letter</a> ";
                 }
             }
+            if ($i > 0) echo '<br />';
 
         } else if (substr($ne, $i, 1) == 'L') {
 
@@ -76,13 +78,14 @@
                          "lastinitial=$letter\">$letter</a> ";
                 }
             }
+            if ($i > 0) echo '<br />';
 
         } // if
     } // for nameedit
     echo "</p>";
 ?>
 
-<?php if (is_array($usersubmits) and !empty($usersubmits)): ?>
+<?php if (!empty($usersubmits)): ?>
 <table class="generaltable generalbox">
 <tbody>
 <tr>

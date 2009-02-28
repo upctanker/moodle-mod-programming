@@ -18,20 +18,19 @@
         $meta .= "\n";
     }
 
-    if (isset($programming)) {
-        $navigation .= ' <a href="index.php?id='.$course->id.'">'.$strprogrammings.'</a> -> <a href="view.php?a='.$programming->id.'">'.$programming->name.'</a> -> '.$pagename;
+    if (isset($cm)) {
+        $navigation = build_navigation($pagename, $cm);
     } else {
-        $navigation .= $strprogrammings;
+        $navigation = build_navigation($strprogrammings);
     }
 
-    print_header(
+    print_header_simple(
         empty($programming) ? $strprogrammings.' '.$title : $course->shortname.': '.$programming->name,
         $course->fullname,
         $navigation,
         '', // focus
         $meta,
         true,
-        update_module_button($cm->id, $course->id, $strprogramming), 
-        navmenu($course, $cm),
-        false);
+        !empty($cm) ? update_module_button($cm->id, $course->id, $strprogramming) : '', 
+        !empty($cm) ? navmenu($course, $cm) : navmenu($course));
 ?>

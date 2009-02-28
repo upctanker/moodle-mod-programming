@@ -30,6 +30,7 @@
     } else {
         // Add
         $testcase = new object;
+        $testcase->id = 0;
         $testcase->programmingid = $a;
     }
 
