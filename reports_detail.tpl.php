@@ -33,6 +33,7 @@
     for ($i = 0; $i < strlen($ne); $i++) {
         if (substr($ne, $i, 1) == 'F') {
             /// Bar of first initials
+            if ($i > 0) echo '<br />';
 
             echo get_string("firstname")." : ";
             if ($firstinitial) {
@@ -56,8 +57,8 @@
             if ($i > 0) echo '<br />';
 
         } else if (substr($ne, $i, 1) == 'L') {
-
             /// Bar of last initials
+            if ($i > 0) echo '<br />';
 
             echo get_string("lastname")." : ";
             if ($lastinitial) {
