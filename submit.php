@@ -91,7 +91,6 @@
     setcookie($cookiename, $language, time() + 3600 * 24 * 60, $CFG->sessioncookiepath);
 
     if ($action && is_object($submit)) {
-        $CFG->scripts[] = 'js/jquery.cookie.js';
         $CFG->scripts[] = 'js/dp/shCore.js';
         $CFG->scripts[] = 'js/dp/shBrushCSharp.js';
         if ($action && is_object($submit)) {
