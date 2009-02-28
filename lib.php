@@ -561,7 +561,7 @@ function programming_format_io($message, $autolastreturn = false) {
 
     if ($haslastreturn || $autolastreturn) $message .= $crarr;
 
-    return '<div><ol><li></span>'.$message.'</span></li></ol></di>';
+    return '<div><ol><li><span>'.$message.'</span></li></ol></div>';
 }
 
 function programming_format_compile_message($message) {
