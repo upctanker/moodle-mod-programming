@@ -349,6 +349,9 @@ function programming_get_weight_options() {
 function programming_get_memlimit_options() {
     $memlimitoptions = array();
     $memlimitoptions[0] = get_string('memlimitunlimited', 'programming');
+    for ($i = 64; $i <= 512; $i += $i) {
+        $memlimitoptions[$i] = $i.'KB';
+    }
     for ($i = 1; $i < 10; $i++) {
         $memlimitoptions[$i*1024] = $i.'MB';
     }
@@ -1055,6 +1058,18 @@ function programming_format_code($programming, $submit = null)
         $ret []= $submit->code;
     }
     return implode("\n\n", $ret);
+}
+
+function get_visible_programmings($courseid)
+{
+    $sql = "SELECT p.*, cm.visible
+              FROM {$CFG->prefix}course_modules cm,
+                   {$CFG->prefix}programming p
+             WHERE cm.course=$courseid
+               AND p.course=$courseid
+               AND cm.instance = p.id
+          ORDER BY p.name";
+    return get_records_sql($sql);
 }
 
 ?>
