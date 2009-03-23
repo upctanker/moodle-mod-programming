@@ -684,7 +684,8 @@ function programming_contest_get_judgeresult($results) {
     $c = 0;
     $errstr = 'AC';
     foreach ($results as $result) {
-        if ($err[$result->judgeresult] > $c) {
+        if (isset($err[$result->judgeresult])
+            && $err[$result->judgeresult] > $c) {
             $c = $err[$result->judgeresult];
             $errstr = $result->judgeresult;
         }
@@ -773,15 +774,12 @@ function programming_format_memlimit($memlimit) {
     }
 }
 
-function programming_judge_status($courseid, $roleid, &$totalcount, $offset=0, $limit=15) {
+function programming_judge_status($courseid, &$totalcount, $offset=0, $limit=15) {
     global $CFG, $USER;
 
     if (!isset($courseid)) return False;
-    $context = get_context_instance(CONTEXT_COURSE, $courseid);
 
-    if ($courseid != 1) {
-        $crit = "p.course = $courseid AND";
-    }
+    $crit = $courseid != 1 ? "p.course = $courseid AND" : '';
     $sql = "SELECT ps.id AS psid,
                    ps.userid AS userid,
                    p.globalid,
