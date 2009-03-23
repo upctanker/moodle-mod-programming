@@ -96,8 +96,8 @@ function update_submit_status($xmlrpcmsg) {
 
     switch ($status) {
     case 'waiting':
-	$s = PROGRAMMING_STATUS_WAITING;
-	break;
+    $s = PROGRAMMING_STATUS_WAITING;
+    break;
     case 'compiling':
         $s = PROGRAMMING_STATUS_COMPILING;
         break;
