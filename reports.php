@@ -22,7 +22,7 @@
 
     // results is stored in a array
     $stat_results = array();
-    $groupnum = count_records('groups', 'courseid', $course->id);
+    $groupnum = count_records('groups_courses_groups', 'courseid', $course->id);
     $mygroupid = 0;
     if ($groupnum) {
         $sql = "SELECT g.id, g.name
