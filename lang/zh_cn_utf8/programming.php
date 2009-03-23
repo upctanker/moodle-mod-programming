@@ -210,5 +210,7 @@ $string['resemble_analyze'] = '相似度分析';
 $string['flag1'] = '标记左侧';
 $string['flag2'] = '标记右侧';
 $string['flag3'] = '均不标记';
+$string['youhavepassed'] = '您已完成此练习';
+$string['submitagain'] = '再次提交';
 
 ?>

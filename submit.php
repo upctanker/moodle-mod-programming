@@ -37,12 +37,20 @@
     $submitatanytime = has_capability('mod/programming:submitatanytime', $context);
     $submitforothers = has_capability('mod/programming:submitforothers', $context);
 
-    $submitcount = count_records_sql("SELECT COUNT(*) FROM {$CFG->prefix}programming_submits WHERE programmingid={$programming->id} AND userid={$USER->id}");
+    $result = get_record('programming_result', 'programmingid', $programming->id, 'userid', $USER->id);
+    $submitcount = is_object($result) ? $result->submitcount : 0;
     $time = time();
     $isearly = $time < $programming->timeopen;
     $islate = !$programming->allowlate && $time > $programming->timeclose;
     $istoomore = $programming->attempts != 0 && $submitcount > $programming->attempts;
     $allowpost = $submitatanytime || (!$isearly && !$islate && !$istoomore);
+
+    // Check if user has passed the practice
+    $haspassed = false;
+    if ($submitcount > 0) {
+        $latestsubmit = get_record('programming_submits', 'id', $result->latestsubmitid);
+        $haspassed = is_object($latestsubmit) && $latestsubmit->passed;
+    }
 
     if ($allowpost && $action) {
         $submit = new Object();
@@ -97,7 +105,7 @@
             $CFG->scripts[] = 'submit_success.js';
         }
         $CFG->stylesheets[] = 'js/dp/SyntaxHighlighter.css';
-	}
+    }
     $pagename = get_string('submit', 'programming');
     include_once('pageheader.php');
 

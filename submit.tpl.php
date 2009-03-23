@@ -2,7 +2,21 @@
 <h1><?php echo get_string('submit', 'programming'); helpbutton('submit', 'submit', 'programming'); ?></h1>
 
 <?php if ($allowpost): ?>
-<div id="submit">
+<?php if ($haspassed): ?>
+<div id="submitagainconfirm">
+<p><?php echo get_string('youhavepassed', 'programming'); ?></p>
+<input type="button" id="submitagain" name="submitagain" value="<?php echo get_string('submitagain', 'programming'); ?>" />
+</div>
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function() { 
+  $('#submitagain').click(function() {
+    $('#submit').show();
+    $('#submitagainconfirm').hide();
+  });
+});
+</script>
+<?php endif; ?>
+<div id="submit" <?php echo $haspassed ? 'style="display: none"' : ''; ?>>
 <form method="post" enctype="multipart/form-data" action="submit.php">
 <input type="hidden" name="a" value="<?php echo $programming->id ?>" />
 <?php if ($submitfor): ?>
@@ -46,7 +60,7 @@
 </table>
 </form>
 </div>
-<?php endif; ?>
+<?php endif; // allowpost ?>
 <?php if ($isearly): ?>
 <p><?php echo get_string('programmingnotopen', 'programming'); ?></p>
 <?php endif; ?>

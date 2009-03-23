@@ -222,5 +222,7 @@ $string['resemble_analyze'] = 'Resemble Analyze';
 $string['flag1'] = 'Mark left';
 $string['flag2'] = 'Mark right';
 $string['flag3'] = 'Mark neither';
+$string['youhavepassed'] = 'You have passed this practise.';
+$string['submitagain'] = 'Submit Again';
 
 ?>
