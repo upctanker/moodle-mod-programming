@@ -40,7 +40,7 @@
     $strprogramming  = get_string('modulename', 'programming');
 
     $CFG->stylesheets[] = $CFG->wwwroot.'/mod/programming/highlight.css';
-    print_header('$course->shortname: $programming->name', '$course->fullname',
+    print_header("$course->shortname: $programming->name", $course->fullname,
                  $navigation.'<a href="index.php?id='.$course->id.'">'.$strprogrammings.'</a> -> <a href="view.php?a='.$a.'">'.$programming->name.'</a> -> '.get_string('delete'),
                   '', '', true, update_module_button($cm->id, $course->id, $strprogramming), 
                   navmenu($course, $cm));
