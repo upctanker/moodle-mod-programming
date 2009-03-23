@@ -349,7 +349,7 @@ function programming_get_weight_options() {
 function programming_get_memlimit_options() {
     $memlimitoptions = array();
     $memlimitoptions[0] = get_string('memlimitunlimited', 'programming');
-    for ($i = 64; $i <= 512; $i += $i) {
+    for ($i = 256; $i <= 512; $i += 32) {
         $memlimitoptions[$i] = $i.'KB';
     }
     for ($i = 1; $i < 10; $i++) {
