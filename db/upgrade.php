@@ -195,11 +195,51 @@ function xmldb_programming_upgrade($oldversion=0) {
 
     if ($result && $oldversion < 2009032303) {
 
-    /// Add index to table programming
+    /// Add field priority to table programming_testers
         $table = new XMLDBTable('programming_testers');
         $field = new XMLDBField('priority');
         $field->setAttributes(XMLDB_TYPE_INTEGER, 1, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0);
         $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009032401) {
+
+    /// Add field compressed input to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('gzinput');
+        $field->setAttributes(XMLDB_TYPE_BINARY, 'medium', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='input');
+        $result = add_field($table, $field);
+
+    /// Add field compressed output to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('gzoutput');
+        $field->setAttributes(XMLDB_TYPE_BINARY, 'medium', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='output');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009032406) {
+
+    /// put compressed input into gzinput and compressed output into gzoutput
+        $tests = get_records('programming_tests');
+        $olddebug = $db->debug;
+        $db->debug = false;
+        foreach ($tests as $t) {
+            if (strlen($t->input) > 1024) {
+                echo "UPDATE gzinput of record $t->id <br />";
+                $sql = "UPDATE {$CFG->prefix}programming_tests
+                           SET gzinput='".addslashes(bzcompress($t->input))."'
+                         WHERE id={$t->id}";
+                execute_sql($sql, false);
+            }
+            if (strlen($t->output) > 1024) {
+                echo "UPDATE gzoutput of record $t->id <br />";
+                $sql = "UPDATE {$CFG->prefix}programming_tests
+                           SET gzoutput='".addslashes(bzcompress($t->output))."'
+                         WHERE id={$t->id}";
+                execute_sql($sql, false);
+            }
+        }
+        $db->debug = $olddebug;
     }
 
     return $result;

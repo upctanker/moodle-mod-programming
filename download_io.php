@@ -33,7 +33,11 @@
             require_capability('mod/programming:viewhiddentestcase', $context);
         }
         $filename = sprintf('test-%d.%s', $testid, $type);
-        $content = $type == 'in' ? $test->input : $test->output;
+        if ($type == 'in') {
+            $content = !empty($test->gzinput) ? bzdecompress($test->gzinput) : $test->input;
+        } else {
+            $content = !empty($test->gzoutput) ? bzdecompress($test->gzoutput) : $test->output;
+        }
     }
     else if ($type == 'out' or $type == 'err') {
         require_capability('mod/programming:viewdetailresult', $context);
@@ -54,7 +58,11 @@
             $result->output = $test->output;
         }
         $filename = sprintf('test-%d-%d.%s', $testid, $submitid, $type);
-        $content = $type == 'out' ? $result->output : $result->stderr;
+        if ($type == 'out') {
+            $content = !empty($test->gzoutput) ? bzdecompress($test->gzoutput) : $test->output;
+        } else {
+            $content = $result->stderr;
+        }
     }
 
     if ($filename && $download) {

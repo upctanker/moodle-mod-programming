@@ -161,6 +161,10 @@ function get_tests($xmlrpcmsg)
     $rs = get_records('programming_tests', 'programmingid', $id);
     if (is_array($rs)) {
         foreach ($rs as $rid => $r) {
+            if ($full) {
+                if (!empty($r->gzinput)) $r->input = bzdecompress($r->gzinput);
+                if (!empty($r->gzoutput)) $r->output = bzdecompress($r->gzoutput);
+            }
             $r = new xmlrpcval(array(
                 'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
                 'problem_id' => new xmlrpcval(
@@ -182,6 +186,8 @@ function get_test($xmlrpcmsg)
     $id = $xmlrpcmsg->getParam(0)->scalarVal();
 
     $r = get_record('programming_tests', 'id', $id);
+    if (!empty($r->gzinput)) $r->input = bzdecompress($r->gzinput);
+    if (!empty($r->gzoutput)) $r->output = bzdecompress($r->gzoutput);
     $ret = new xmlrpcval(array(
             'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
             'problem_id' => new xmlrpcval(

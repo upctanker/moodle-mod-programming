@@ -379,10 +379,30 @@ function programming_get_language_options($programming = False) {
 }
 
 function programming_test_add_instance($testcase) {
+    if (strlen($testcase->input) > 1024) {
+        $testcase->gzinput = addslashes(bzcompress($testcase->input));
+        $testcase->input = substr($testcase->input, 0, 1024);
+    }
+    if (strlen($testcase->output) > 1024) {
+        $testcase->gzoutput = addslashes(bzcompress($testcase->output));
+        $testcase->output = substr($testcase->output, 0, 1024);
+    }
+    $testcase->input = addslashes($testcase->input);
+    $testcase->output = addslashes($testcase->output);
     return insert_record("programming_tests", $testcase);
 }
 
 function programming_test_update_instance($testcase) {
+    if (strlen($testcase->input) > 1024) {
+        $testcase->gzinput = addslashes(bzcompress($testcase->input));
+        $testcase->input = substr($testcase->input, 0, 1024);
+    }
+    if (strlen($testcase->output) > 1024) {
+        $testcase->gzoutput = addslashes(bzcompress($testcase->output));
+        $testcase->output = substr($testcase->output, 0, 1024);
+    }
+    $testcase->input = addslashes($testcase->input);
+    $testcase->output = addslashes($testcase->output);
     return update_record("programming_tests", $testcase);
 }
 

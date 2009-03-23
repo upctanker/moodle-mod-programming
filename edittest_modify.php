@@ -27,6 +27,10 @@
     if ($id) {
         // Edit
         $testcase = get_record('programming_tests', 'id', $id);
+        if (!empty($testcase->gzinput))
+            $testcase->input = bzdecompress($testcase->gzinput);
+        if (!empty($testcase->gzoutput))
+            $testcase->input = bzdecompress($testcase->gzoutput);
     } else {
         // Add
         $testcase = new object;
@@ -38,11 +42,11 @@
         $testcase->timemodified = mktime();
         $input = optional_param('input', '', PARAM_RAW);
         if ($input) {
-            $testcase->input = $input;
+            $testcase->input = stripcslashes($input);
         }
         $output = optional_param('output', '', PARAM_RAW);
         if ($output) {
-            $testcase->output = $output;
+            $testcase->output = stripcslashes($output);
         }
         $testcase->timelimit = optional_param('timelimit', 0, PARAM_INT);
         $testcase->memlimit = optional_param('memlimit', 0, PARAM_INT);
@@ -50,11 +54,11 @@
         $testcase->pub = optional_param('pub', 0, PARAM_INT);
 
         if ($_FILES['inputfile']['size'] > 0 && is_uploaded_file($_FILES['inputfile']['tmp_name'])) {
-            $testcase->input = addslashes(file_get_contents($_FILES['inputfile']['tmp_name']));
+            $testcase->input = file_get_contents($_FILES['inputfile']['tmp_name']);
 
         }
         if ($_FILES['outputfile']['size'] > 0 && is_uploaded_file($_FILES['outputfile']['tmp_name'])) {
-            $testcase->output = addslashes(file_get_contents($_FILES['outputfile']['tmp_name']));
+            $testcase->output = file_get_contents($_FILES['outputfile']['tmp_name']);
         }
 
         if ($id) {
