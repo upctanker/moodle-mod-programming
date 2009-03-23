@@ -193,6 +193,15 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_index($table, $idx);
     }
 
+    if ($result && $oldversion < 2009032303) {
+
+    /// Add index to table programming
+        $table = new XMLDBTable('programming_testers');
+        $field = new XMLDBField('priority');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 1, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0);
+        $result = add_field($table, $field);
+    }
+
     return $result;
 }
 

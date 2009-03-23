@@ -414,7 +414,7 @@ function programming_submit_add_instance($programming, $submit) {
 
     # update tester
     if ($result) {
-        $sql = "INSERT INTO {$CFG->prefix}programming_testers VALUES($result, 0)";
+        $sql = "INSERT INTO {$CFG->prefix}programming_testers VALUES ($result, 0, 0)";
         execute_sql($sql, false);
     }
 
@@ -641,7 +641,8 @@ function programming_retest($programming, $groupid, $ac) {
     delete_records_select('programming_test_results', $sql);
 
     $sql = "INSERT INTO {$CFG->prefix}programming_testers
-            SELECT id, 0 FROM {$CFG->prefix}programming_submits WHERE id IN (".
+            SELECT id, 0, 1
+              FROM {$CFG->prefix}programming_submits WHERE id IN (".
             implode(',', $ids).')'; 
     execute_sql($sql, False);
 

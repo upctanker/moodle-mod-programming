@@ -43,7 +43,7 @@ function get_submits($xmlrpcmsg) {
              WHERE ps.id = pt.submitid
                AND ps.programmingid = p.id
                AND pt.testerid = 0
-          ORDER BY pt.submitid";
+          ORDER BY pt.priority, pt.submitid";
     $rs = get_records_sql($sql, '', $limit);
     $retval = array(); 
     if (is_array($rs)) {
