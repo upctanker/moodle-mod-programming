@@ -84,6 +84,9 @@ function update_submit_compilemessage($xmlrpcmsg) {
     $sql = "UPDATE {$CFG->prefix}programming_submits
                SET compilemessage='{$message}' WHERE id = {$id}";
     execute_sql($sql, false);
+    if ($CFG->rcache === true) {
+        rcache_unset('programming_submits', (int) $id);
+    }
 
     return new xmlrpcresp(new xmlrpcval(null, 'null'));
 }
@@ -124,6 +127,9 @@ function update_submit_status($xmlrpcmsg) {
         $sql = "UPDATE {$CFG->prefix}programming_submits SET `status`={$s}
                  WHERE id={$id}";
         execute_sql($sql, false);
+        if ($CFG->rcache === true) {
+            rcache_unset('programming_submits', (int) $id);
+        }
     }
 
     return new xmlrpcresp(new xmlrpcval(null, 'null'));
@@ -253,6 +259,9 @@ function update_submit_test_results($xmlrpcmsg)
     $sql = "UPDATE {$CFG->prefix}programming_submits SET passed={$passed}
             WHERE id = {$sid}";
     execute_sql($sql, false);
+    if ($CFG->rcache === true) {
+        rcache_unset('programming_submits', (int) $id);
+    }
 
     return new xmlrpcresp(new xmlrpcval(null, 'null'));
 }
