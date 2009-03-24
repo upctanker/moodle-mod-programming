@@ -201,6 +201,26 @@ function get_test($xmlrpcmsg)
     return new xmlrpcresp($ret);
 }
 
+function get_gztest($xmlrpcmsg)
+{
+    $id = $xmlrpcmsg->getParam(0)->scalarVal();
+
+    $r = get_record('programming_tests', 'id', $id);
+    if (empty($r->gzinput)) $r->gzinput = bzcompress($r->input);
+    if (empty($r->gzoutput)) $r->gzoutput = bzcompress($r->output);
+    $ret = new xmlrpcval(array(
+            'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
+            'problem_id' => new xmlrpcval(
+                sprintf('%010d', $r->programmingid), 'string'),
+            'timemodified' => new xmlrpcval(0, 'int'),
+            'input' => new xmlrpcval($r->gzinput, 'base64'),
+            'output' => new xmlrpcval($r->gzoutput, 'base64'),
+            'timelimit' => new xmlrpcval($r->timelimit, 'int'),
+            'memlimit' => new xmlrpcval($r->memlimit, 'int'),
+        ), 'struct');
+    return new xmlrpcresp($ret);
+}
+
 function update_submit_test_results($xmlrpcmsg)
 {
     global $CFG;
@@ -263,6 +283,10 @@ $s = new xmlrpc_server(
     ),
     'oj.get_test' => array(
         'function' => 'get_test',
+        'signature' => array(array($xmlrpcStruct, $xmlrpcString)),
+    ),
+    'oj.get_gztest' => array(
+        'function' => 'get_gztest',
         'signature' => array(array($xmlrpcStruct, $xmlrpcString)),
     ),
     'oj.get_problem' => array(
