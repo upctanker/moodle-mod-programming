@@ -220,10 +220,10 @@ function xmldb_programming_upgrade($oldversion=0) {
     if ($result && $oldversion < 2009032406) {
 
     /// put compressed input into gzinput and compressed output into gzoutput
-        $tests = get_records('programming_tests');
+        $tests = get_recordset('programming_tests', null, null, 'id, input, output');
         $olddebug = $db->debug;
         $db->debug = false;
-        foreach ($tests as $t) {
+        while ($t = $tests->FetchNextObject(false)) {
             if (strlen($t->input) > 1024) {
                 echo "UPDATE gzinput of record $t->id <br />";
                 $sql = "UPDATE {$CFG->prefix}programming_tests
