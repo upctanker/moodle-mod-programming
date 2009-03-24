@@ -242,6 +242,15 @@ function xmldb_programming_upgrade($oldversion=0) {
         $db->debug = $olddebug;
     }
 
+    if ($result && $oldversion < 2009032407) {
+
+    /// Add index to table programming
+        $table = new XMLDBTable('programming_submits');
+        $idx = new XMLDBIndex('passed');
+        $idx->setFields(array('passed'));
+        $result = add_index($table, $idx);
+    }
+
     return $result;
 }
 
