@@ -30,7 +30,7 @@
         if (!empty($testcase->gzinput))
             $testcase->input = bzdecompress($testcase->gzinput);
         if (!empty($testcase->gzoutput))
-            $testcase->input = bzdecompress($testcase->gzoutput);
+            $testcase->output = bzdecompress($testcase->gzoutput);
     } else {
         // Add
         $testcase = new object;
