@@ -6,13 +6,13 @@
 
 <tr valign="top">
   <td align="right">programming_ojip:</td>
-  <td><input type="text" size="30" name="programming_ojip" value="<?php echo $CFG->programming_ojip; ?>" /></td> 
+  <td><input type="text" size="30" name="programming_ojip" value="<?php echo empty($CFG->programming_ojip) ? '' : $CFG->programming_ojip; ?>" /></td> 
   <td><?php print_string("configojip", 'programming'); ?></td>
 </tr>
 
 <tr valign="top">
   <td align="right">programming_moss_userid:</td>
-  <td><input type="text" size="30" name="programming_moss_userid" value="<?php echo $CFG->programming_moss_userid; ?>" /></td> 
+  <td><input type="text" size="30" name="programming_moss_userid" value="<?php echo empty($CFG->programming_moss_userid) ? '' : $CFG->programming_moss_userid; ?>" /></td> 
   <td><?php print_string("configmossuserid", 'programming'); ?></td>
 </tr>
 
