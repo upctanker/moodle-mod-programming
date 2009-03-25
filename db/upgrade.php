@@ -239,6 +239,7 @@ function xmldb_programming_upgrade($oldversion=0) {
                 execute_sql($sql, false);
             }
         }
+        $tests->Close();
         $db->debug = $olddebug;
     }
 
@@ -249,6 +250,54 @@ function xmldb_programming_upgrade($oldversion=0) {
         $idx = new XMLDBIndex('passed');
         $idx->setFields(array('passed'));
         $result = add_index($table, $idx);
+    }
+
+    /// Add timeused, memused and judgeresult to table programming_submits
+    if ($result && $oldversion < 2009032601) {
+        $table = new XMLDBTable('programming_submits');
+        $field = new XMLDBField('timeused');
+        $field->setAttributes(XMLDB_TYPE_FLOAT, null, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='compilemessage');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009032601) {
+        $table = new XMLDBTable('programming_submits');
+        $field = new XMLDBField('memused');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='timeused');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009032601) {
+        $table = new XMLDBTable('programming_submits');
+        $field = new XMLDBField('judgeresult');
+        $field->setAttributes(XMLDB_TYPE_CHAR, 3, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='memused');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009032609) {
+
+    /// Calculate timeused, memused and judgeresult for existing submits
+        $submits = get_recordset('programming_submits', null, null, 'id');
+        $recordcount = $submits->RecordCount();
+        while ($s = $submits->FetchNextObject(false)) {
+            $results = get_records('programming_test_results', 'submitid', $s->id, 'id', 'id, passed, timeused, memused, judgeresult');
+            if (!empty($results)) {
+                $timeused = programming_submit_timeused($results);
+                $memused = programming_submit_memused($results);
+                $judgeresult = programming_submit_judgeresult($results);
+            } else {
+                $timeused = $memused = 0;
+                $judgeresult = 'CE';
+            }
+
+            $sql = "UPDATE {$CFG->prefix}programming_submits
+                       SET timeused = $timeused,
+                           memused = $memused,
+                           judgeresult = '$judgeresult'
+                     WHERE id = {$s->id}";
+            execute_sql($sql, false);
+        }
+        $submits->Close();
     }
 
     return $result;

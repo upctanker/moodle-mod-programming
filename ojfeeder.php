@@ -240,8 +240,8 @@ function update_submit_test_results($xmlrpcmsg)
     $s = get_record('programming_submits', 'id', $sid);
 
     $passed = 1;
+    $oo = array();
     for ($i = 0; $i < $results->arraySize(); $i++) {
-
         $result = $results->arrayMem($i);
 
         $o = new stdClass;
@@ -256,13 +256,22 @@ function update_submit_test_results($xmlrpcmsg)
         $o->timeused = $result->structMem('timeused')->scalarVal();
         $o->memused = $result->structMem('memused')->scalarVal();
         insert_record('programming_test_results', $o);
+        $oo[] = $o;
         if (!$o->passed) $passed = 0;
     }
-    $sql = "UPDATE {$CFG->prefix}programming_submits SET passed={$passed}
-            WHERE id = {$sid}";
+    $timeused = programming_submit_timeused($oo);
+    $memused = programming_submit_memused($oo);
+    $judgeresult = programming_submit_judgeresult($oo);
+    $sql = "UPDATE {$CFG->prefix}programming_submits
+               SET timeused = {$timeused},
+                    memused = {$memused},
+                judgeresult = '{$judgeresult}',
+                     passed = {$passed}
+             WHERE id = {$sid}";
+    system("echo \"$sql\" >> /tmp/log");
     execute_sql($sql, false);
     if ($CFG->rcache === true) {
-        rcache_unset('programming_submits', (int) $id);
+        rcache_unset('programming_submits', (int) $sid);
     }
 
     return new xmlrpcresp(new xmlrpcval(null, 'null'));

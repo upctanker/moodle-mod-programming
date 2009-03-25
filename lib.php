@@ -696,7 +696,23 @@ function programming_check_privilege($courseid, $groupid) {
     return False;
 }
 
-function programming_contest_get_judgeresult($results) {
+function programming_submit_timeused(&$results) {
+    $time = 0;
+    foreach ($results as $r) {
+        $time = max($time, $r->timeused);
+    }
+    return $time;
+}
+
+function programming_submit_memused(&$results) {
+    $mem = 0;
+    foreach ($results as $r) {
+        $mem = max($mem, $r->memused);
+    }
+    return $mem;
+}
+
+function programming_submit_judgeresult(&$results) {
     $err = array('JSE' => 20, 'JGE' => 19, 'RFC' => 18,
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,
                  'KS' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
@@ -708,8 +724,16 @@ function programming_contest_get_judgeresult($results) {
             && $err[$result->judgeresult] > $c) {
             $c = $err[$result->judgeresult];
             $errstr = $result->judgeresult;
+        } else if (!$result->passed) {
+            $c = 11;
+            $errstr = 'WA';
         }
     }
+    return $errstr;
+}
+
+function programming_contest_get_judgeresult(&$results) {
+    $errstr = programming_submit_judgeresult($results);
     return get_string($errstr, 'programming');
 }
 
