@@ -9,7 +9,9 @@ require_once('lib.php');
 @session_destroy();
 
 function get_judge_id($xmlrpcmsg) {
-    return new xmlrpcresp(new xmlrpcval(1, 'int'));
+    $ip = explode('.', getremoteaddr()); 
+    $id = ($ip[0] << 24) | ($ip[1] << 16) | ($ip[2] << 8) | $ip[3];
+    return new xmlrpcresp(new xmlrpcval($id, 'int'));
 }
 
 function reset_submits($xmlrpcmsg) {
