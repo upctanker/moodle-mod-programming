@@ -110,7 +110,7 @@
 
       $cwd = getcwd();
       chdir($dirname);
-      $url = exec("perl $cwd/moss.pl *");
+      $url = exec("perl $cwd/moss.pl -u {$CFG->programming_moss_userid} *");
       echo "See result $url <br />";
 
       // remove temp
