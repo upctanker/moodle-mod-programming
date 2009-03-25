@@ -23,6 +23,7 @@
 
     require_login($course->id);
 
+    // Download input and output of testcase
     if ($type == 'in' or ($type == 'out' and $submitid == -1)) {
         if (! $test = get_record('programming_tests', 'id', $testid)) {
             error('Test ID was incorrect');
@@ -39,6 +40,7 @@
             $content = !empty($test->gzoutput) ? bzdecompress($test->gzoutput) : $test->output;
         }
     }
+    // Download output and error message of user program
     else if ($type == 'out' or $type == 'err') {
         require_capability('mod/programming:viewdetailresult', $context);
         if (! $result = get_record('programming_test_results', 'submitid', $submitid, 'testid', $testid)) {
@@ -58,11 +60,7 @@
             $result->output = $test->output;
         }
         $filename = sprintf('test-%d-%d.%s', $testid, $submitid, $type);
-        if ($type == 'out') {
-            $content = !empty($test->gzoutput) ? bzdecompress($test->gzoutput) : $test->output;
-        } else {
-            $content = $result->stderr;
-        }
+        $content = $type == 'out' ? $result->output : $result->stderr;
     }
 
     if ($filename && $download) {
