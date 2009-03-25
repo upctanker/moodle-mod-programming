@@ -244,6 +244,13 @@ while (@ARGV && ($_ = $ARGV[0]) =~ /^-(.)(.*)/) {
 	$port = shift(@ARGV);
 	next;
     }
+    #
+    # Override the userid.
+    #
+    if ($first eq "u") {
+	$userid = shift(@ARGV);
+	next;
+    }
     die "Unrecognized option -$first.  $usage\n"; 
 }
 
