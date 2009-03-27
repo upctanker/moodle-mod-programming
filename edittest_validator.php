@@ -25,11 +25,15 @@
     require_capability('mod/programming:edittestcase', $context);
 
     if ($action) {
-        $sql = "UPDATE mdl_programming SET validator='{$validator}', validatortype='{$validatortype}' WHERE id={$programming->id}";
-        execute_sql($sql, false);
+        $obj = new Object();
+        $obj->id = $programming->id;
+        $obj->validator = $validator;
+        $obj->validatortype = $validatortype;
+        update_record('programming', $obj);
         $programming = get_record('programming', 'id', $programming->id);
         add_to_log($course->id, 'programming', 'edittest_validator', 'edittest_validator.php?a='.$programming->id, 'set validator');
     } else {
+        $programming = get_record('programming', 'id', $programming->id);
         add_to_log($course->id, 'programming', 'edittest_validator', 'edittest_validator.php?a='.$programming->id, 'view validator');
     }
 
