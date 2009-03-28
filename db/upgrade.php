@@ -252,6 +252,15 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_index($table, $idx);
     }
 
+    if ($result && $oldversion < 2009032901) {
+
+    /// Add index to table programming
+        $table = new XMLDBTable('programming_test_results');
+        $idx = new XMLDBIndex('testid');
+        $idx->setFields(array('testid'));
+        $result = add_index($table, $idx);
+    }
+
     /// Add timeused, memused and judgeresult to table programming_submits
     if ($result && $oldversion < 2009032601) {
         $table = new XMLDBTable('programming_submits');
@@ -272,15 +281,6 @@ function xmldb_programming_upgrade($oldversion=0) {
         $field = new XMLDBField('judgeresult');
         $field->setAttributes(XMLDB_TYPE_CHAR, 3, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='memused');
         $result = add_field($table, $field);
-    }
-
-    if ($result && $oldversion < 2009032901) {
-
-    /// Add index to table programming
-        $table = new XMLDBTable('programming_test_results');
-        $idx = new XMLDBIndex('testid');
-        $idx->setFields(array('testid'));
-        $result = add_index($table, $idx);
     }
 
     if ($result && $oldversion < 2009032609) {
