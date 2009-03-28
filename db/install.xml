@@ -99,8 +99,9 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for programming_test_results"/>
       </KEYS>
       <INDEXES>
-        <INDEX NAME="submitid" UNIQUE="false" FIELDS="submitid, testid, passed" NEXT="timeused"/>
-        <INDEX NAME="timeused" UNIQUE="false" FIELDS="timeused" PREVIOUS="submitid"/>
+        <INDEX NAME="submitid" UNIQUE="false" FIELDS="submitid, testid, passed" NEXT="testid"/>
+        <INDEX NAME="testid" UNIQUE="false" FIELDS="testid" PREVIOUS="submitid" NEXT="timeused"/>
+        <INDEX NAME="timeused" UNIQUE="false" FIELDS="timeused" PREVIOUS="testid"/>
       </INDEXES>
     </TABLE>
     <TABLE NAME="programming_result" COMMENT="Record submit count and latestsubmit for each user of each programming exercise." PREVIOUS="programming_test_results" NEXT="programming_languages">

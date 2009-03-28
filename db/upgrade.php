@@ -274,6 +274,15 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2009032901) {
+
+    /// Add index to table programming
+        $table = new XMLDBTable('programming_test_results');
+        $idx = new XMLDBIndex('testid');
+        $idx->setFields(array('testid'));
+        $result = add_index($table, $idx);
+    }
+
     if ($result && $oldversion < 2009032609) {
 
     /// Calculate timeused, memused and judgeresult for existing submits
