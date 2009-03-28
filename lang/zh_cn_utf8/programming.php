@@ -212,5 +212,6 @@ $string['flag2'] = '标记右侧';
 $string['flag3'] = '均不标记';
 $string['youhavepassed'] = '您已完成此练习';
 $string['submitagain'] = '再次提交';
+$string['testcasedeleted'] = '测试用例已删除';
 
 ?>

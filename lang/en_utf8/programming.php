@@ -224,5 +224,6 @@ $string['flag2'] = 'Mark right';
 $string['flag3'] = 'Mark neither';
 $string['youhavepassed'] = 'You have passed this practise.';
 $string['submitagain'] = 'Submit Again';
+$string['testcasedeleted'] = 'The test case have been deleted.';
 
 ?>
