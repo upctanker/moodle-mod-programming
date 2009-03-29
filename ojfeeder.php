@@ -159,7 +159,7 @@ function get_problem($xmlrpcmsg)
         $vtype = 'python';
         break;
     default:
-        $vtype = '';
+        $vtype = 'internal';
     }
     $ret = new xmlrpcval(array(
             'id' => new xmlrpcval(sprintf('%010d', $p->id), 'string'),
