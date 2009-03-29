@@ -21,7 +21,7 @@
         $row[] = new tabobject('edittest', $CFG->wwwroot.'/mod/programming/edittest_list.php?a='.$programming->id, get_string('testcase','programming'));
     }
     if (has_capability('mod/programming:viewreport', $context)) {
-        $row[] = new tabobject('reports', $CFG->wwwroot.'/mod/programming/reports.php?a='.$programming->id, get_string('reports','programming'), '', true);
+        $row[] = new tabobject('reports', $CFG->wwwroot.'/mod/programming/reports/summary.php?a='.$programming->id, get_string('reports','programming'), '', true);
     }
     if (has_capability('mod/programming:viewresemble', $context)) {
         $row[] = new tabobject('resemble', $CFG->wwwroot.'/mod/programming/resemble_view.php?a='.$programming->id, get_string('resemble','programming'), '', true);
@@ -44,8 +44,8 @@
 	if ($currenttab == 'reports') {
 		$row = array();
 		$inactive[] = 'reports';
-		$row[] = new tabobject('reports-summary', $CFG->wwwroot.'/mod/programming/reports.php?a='.$programming->id, get_string('summary','programming'));
-		$row[] = new tabobject('reports-detail', $CFG->wwwroot.'/mod/programming/reports_detail.php?a='.$programming->id.'&amp;latestonly=1', get_string('detail','programming'));
+		$row[] = new tabobject('reports-summary', $CFG->wwwroot.'/mod/programming/reports/summary.php?a='.$programming->id, get_string('summary','programming'));
+		$row[] = new tabobject('reports-detail', $CFG->wwwroot.'/mod/programming/reports/detail.php?a='.$programming->id.'&amp;latestonly=1', get_string('detail','programming'));
 		$tabs[] = $row;
 	}
 

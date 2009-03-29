@@ -172,6 +172,11 @@
 .resemble-list .confirmed { color: red; }
 .resemble-list .flag3 { color: #888888; }
 
+.reports, .reports table {
+    margin: 0 auto;
+    text-align: center;
+}
+
 .programming-io a {
     font-size: 9pt;
 }

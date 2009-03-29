@@ -1,7 +1,7 @@
 <?PHP
 
-    require_once('../../config.php');
-    require_once('lib.php');
+    require_once('../../../config.php');
+    require_once('../lib.php');
     require_once('reports.lib.php');
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
@@ -49,6 +49,5 @@
 
     add_to_log($course->id, 'programming', 'viewstat', 'viewresult.php?a='.$a, $programming->id);
 
-
-    include_once('reports.tpl.php');
+    include_once('summary.tpl.php');
 ?>

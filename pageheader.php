@@ -2,11 +2,11 @@
     if (!isset($CFG->scripts) || !is_array($CFG->scripts)) {
         $CFG->scripts = array();
     }
-    $CFG->stylesheets[] = 'programming.css';
+    $CFG->stylesheets[] = $CFG->wwwroot.'/mod/programming/programming.css';
     array_unshift($CFG->scripts, $CFG->wwwroot.'/mod/programming/js/jquery-latest.pack.js');
 
     if ($course->category) {
-        $navigation = '<a href="../../course/view.php?id='.$course->id.'">'.$course->shortname.'</a> ->';
+        $navigation = "<a href='$CFG->wwwroot/course/view.php?id=$course->id'>$course->shortname</a> ->";
     }
 
     $strprogrammings = get_string('modulenameplural', 'programming');

@@ -1,7 +1,7 @@
 <?php
 
-    require_once('../../config.php');
-    require_once('lib.php');
+    require_once('../../../config.php');
+    require_once('../lib.php');
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
     $groupid = optional_param('group', 0, PARAM_INT);
@@ -272,5 +272,5 @@
 
     add_to_log($course->id, 'programming', 'reports_detail');
 
-    include_once('reports_detail.tpl.php');
+    include_once('detail.tpl.php');
 ?>

@@ -1,16 +1,16 @@
 <?php
 /// Print the page header
     $pagename = get_string('reports', 'programming');
-    include_once('pageheader.php');
+    include_once('../pageheader.php');
 
 /// Print tabs
     $currenttab = 'reports';
     $currenttab2 = 'summary';
-    include_once('tabs.php');
+    include_once('../tabs.php');
 
 /// Print the main part of the page
 ?>
-<div class="maincontent generalbox">
+<div class="maincontent generalbox reports">
 <h1><?php echo get_string('summary', 'programming'); ?></h1>
 <table class="generaltable">
 <tr>
@@ -43,7 +43,7 @@
 <?php if (has_capability('mod/programming:viewotherprogram', $context)): ?>
 <tr>
 <td>
-<?php print_single_button('package.php', array('a' => $programming->id), get_string('package', 'programming')); ?>
+<?php print_single_button($CFG->wwwroot.'/mod/programming/package.php', array('a' => $programming->id), get_string('package', 'programming')); ?>
 </td>
 <td>
 <?php echo get_string('packagedesc', 'programming'); ?>
@@ -53,7 +53,7 @@
 <?php endif; ?>
 <?php if (has_capability('mod/programming:edittestcase', $context)): ?>
 <td>
-<?php print_single_button('retest.php', array('a' => $programming->id), get_string('retest', 'programming')); ?>
+<?php print_single_button($CFG->wwwroot.'/mod/programming/retest.php', array('a' => $programming->id), get_string('retest', 'programming')); ?>
 </td>
 <td>
 <?php echo get_string('retestdesc', 'programming'); ?>
