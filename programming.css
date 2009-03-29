@@ -18,7 +18,7 @@
 #mod-programming-view #time-table th { text-align: right }
 #mod-programming-view #time-table td { text-align: left }
 
-#compilemessage {
+.compilemessage {
   width: 52em;
   padding-left: 0.5em;
   padding-right: 0.5em;
@@ -28,38 +28,31 @@
   font-weight: bold;
   text-align: left;
 }
-
-#compilemessage ol {
+.compilemessage ol {
   list-style-type: none;
 }
-
-#compilemessage li,
-#compilemessage li.warning,
-#compilemessage li.normal,
-#compilemessage li.error {
+.compilemessage li, .compilemessage li.warning,
+.compilemessage li.normal, .compilemessage li.error {
   font-family: "Consolas","Courier New",Courier,mono,serif;
   font-style: normal;
   font-weight: bold;
 }
-
-#compilemessage li.warning {
+.compilemessage li.warning {
   color: black;
 }
-
-#compilemessage li.normal {
+.compilemessage li.normal {
   color: blue;
 }
-
-#compilemessage li.error {
+.compilemessage li.error {
   color: #800000;
 }
 
-#mod-programming-result #test-result-detail tr.passed,
-#mod-programming-result #test-result-detail tr.passed .cell {
+#test-result-detail .passed,
+#test-result-detail .passed .cell {
     background-color: #A0EEA0; /* light green */
 }
-#mod-programming-result #test-result-detail tr.notpassed,
-#mod-programming-result #test-result-detail tr.notpassed .cell {
+#test-result-detail .notpassed,
+#test-result-detail .notpassed .cell {
     background-color: #F0A0A0; /* light red */
 }
 
@@ -179,7 +172,11 @@
 .resemble-list .confirmed { color: red; }
 .resemble-list .flag3 { color: #888888; }
 
-td.programming-io div {
+.programming-io a {
+    font-size: 9pt;
+}
+
+.programming-io div {
     vertical-align: top;
     padding: 0px 5px 0px 0px;
     width: 10em;
@@ -187,7 +184,7 @@ td.programming-io div {
     overflow: auto;
 }
 
-td.programming-io ol {
+.programming-io ol {
     text-align: left;
     margin-top: 0;
     margin-right: 0;
@@ -196,14 +193,14 @@ td.programming-io ol {
     overflow: visible;
 }
 
-td.programming-io li {
+.programming-io li {
     font-family: "Consolas","Courier New",Courier,mono,serif;
     margin: 0;
     padding: 0;
     overflow: visible;
 }
 
-td.programming-io span {
+.programming-io span {
     background-color: #D3D3D3;
     margin: 0;
     padding: 0;
@@ -269,8 +266,4 @@ td.programming-io span {
 }
 .dp-highlighter li {
     font-family: "Consolas","Courier New",Courier,mono,serif;
-}
-
-.small {
-    font-size: 9pt;
 }
