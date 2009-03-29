@@ -38,15 +38,25 @@ function get_submits($xmlrpcmsg) {
         $languages[$r->id] = $r->name;
     }
 
+    // Update the testers table and mark some record for this tester
+    $sql = "UPDATE {$CFG->prefix}programming_testers
+               SET testerid = {$judgeid}
+             WHERE state = 0 AND testerid = 0
+          ORDER BY priority, submitid
+             LIMIT $limit";
+    execute_sql($sql, false);
+
+    // Find marked records
     $sql = "SELECT ps.*, pt.*, p.presetcode
               FROM {$CFG->prefix}programming_submits AS ps,
                    {$CFG->prefix}programming_testers AS pt,
                    {$CFG->prefix}programming AS p
              WHERE ps.id = pt.submitid
                AND ps.programmingid = p.id
-               AND pt.testerid = 0
+               AND pt.testerid = {$judgeid}
+               AND pt.state = 0
           ORDER BY pt.priority, pt.submitid";
-    $rs = get_records_sql($sql, '', $limit);
+    $rs = get_records_sql($sql);
     $retval = array(); 
     if (is_array($rs)) {
         $ids = array();
@@ -68,9 +78,12 @@ function get_submits($xmlrpcmsg) {
             $ids[] = $submit->id;
         }
 
+        // Update state of the records and prevent them
+        // from judged multiple times on one judge daemon
+        $ids = implode(',', $ids);
         $sql = "UPDATE {$CFG->prefix}programming_testers
-                   SET testerid={$judgeid}
-                 WHERE submitid in (".implode(',', $ids).")";
+                   SET state = 1
+                 WHERE submitid in ($ids)";
         execute_sql($sql, false);
     }
     

@@ -261,6 +261,14 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_index($table, $idx);
     }
 
+    if ($result && $oldversion < 2009032902) {
+    /// Add index to table programming
+        $table = new XMLDBTable('programming_testers');
+        $field = new XMLDBField('state');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, '2', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0, $previous='priority');
+        $result = add_field($table, $field);
+    }
+
     /// Add timeused, memused and judgeresult to table programming_submits
     if ($result && $oldversion < 2009032601) {
         $table = new XMLDBTable('programming_submits');
