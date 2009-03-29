@@ -30,6 +30,9 @@
             $programming->attempts = backup_todb($info['MOD']['#']['ATTEMPTS']['0']['#']);
             $programming->keeplatestonly = backup_todb($info['MOD']['#']['KEEPLATESTONLY']['0']['#']);
             $programming->showmode = backup_todb($info['MOD']['#']['SHOWMODE']['0']['#']);
+            $programming->presetcode = backup_todb($info['MOD']['#']['PRESETCODE']['0']['#']);
+            $programming->validator = backup_todb($info['MOD']['#']['VALIDATOR']['0']['#']);
+            $programming->validatortype = backup_todb($info['MOD']['#']['VALIDATORTYPE']['0']['#']);
 
             $newid = insert_record('programming', $programming);
             

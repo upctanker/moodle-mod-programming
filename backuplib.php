@@ -70,6 +70,9 @@
         fwrite($bf, full_tag('ATTEMPTS', 4, false, $programming->attempts));
         fwrite($bf, full_tag('KEEPLATESTONLY', 4, false, $programming->keeplatestonly));
         fwrite($bf, full_tag('SHOWMODE', 4, false, $programming->showmode));
+        fwrite($bf, full_tag('PRESETCODE', 4, false, $programming->presetcode));
+        fwrite($bf, full_tag('VALIDATOR', 4, false, $programming->validator));
+        fwrite($bf, full_tag('VALIDATORTYPE', 4, false, $programming->validatortype));
 
         programming_backup_langlimit($bf, $preferences, $programming);
         programming_backup_testcase($bf, $preferences, $programming);
