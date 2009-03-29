@@ -5,3 +5,6 @@
 </div>
 <p><a href="result.php?a=<?php echo $programming->id; ?>"><?php echo get_string('viewresults', 'programming'); ?></a></p>
 </div>
+<script language="JavaScript" type="text/javascript">
+  $(document).ready(function() { dp.sh.HighlightAll('code'); });
+</script>
