@@ -108,5 +108,16 @@
     $count = count($files);
     $referer = $_SERVER['HTTP_REFERER'];
 
-    include_once('package.tpl.php');
+/// Print the page header
+    $pagename = get_string('package', 'programming'); 
+    include_once('pageheader.php');
+
+    echo '<div class="maincontent generalbox">';
+    echo '<p>'.get_string('packagesuccess', 'programming').'</p>';
+    echo "<p><a href='$filelink'>".get_string('download', 'programming').'</a></p>';
+    echo "<p><a href='$referer'>".get_string('return', 'programming').'</a></p>';
+    echo '</div>';
+
+/// Finish the page
+    print_footer($course);
 ?>
