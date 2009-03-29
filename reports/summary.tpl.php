@@ -53,7 +53,7 @@
 <?php endif; ?>
 <?php if (has_capability('mod/programming:edittestcase', $context)): ?>
 <td>
-<?php print_single_button($CFG->wwwroot.'/mod/programming/retest.php', array('a' => $programming->id), get_string('retest', 'programming')); ?>
+<?php print_single_button($CFG->wwwroot.'/mod/programming/rejudge.php', array('a' => $programming->id), get_string('rejudge', 'programming')); ?>
 </td>
 <td>
 <?php echo get_string('retestdesc', 'programming'); ?>

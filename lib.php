@@ -634,7 +634,7 @@ function programming_delete_submit($submit) {
     update_record('programming_result', $r);
 }
 
-function programming_retest($programming, $groupid, $ac) {
+function programming_rejudge($programming, $groupid, $ac) {
     global $CFG;
 
     $users = False;
