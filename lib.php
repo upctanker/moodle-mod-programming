@@ -718,16 +718,13 @@ function programming_submit_judgeresult(&$results) {
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,
                  'KS' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
 
-    $c = 0;
-    $errstr = 'AC';
+    $c = -1;
+    $errstr = null;
     foreach ($results as $result) {
         if (isset($err[$result->judgeresult])
             && $err[$result->judgeresult] > $c) {
             $c = $err[$result->judgeresult];
             $errstr = $result->judgeresult;
-        } else if (!$result->passed) {
-            $c = 11;
-            $errstr = 'WA';
         }
     }
     return $errstr;
