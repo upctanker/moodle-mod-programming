@@ -177,6 +177,13 @@
     text-align: center;
 }
 
+.noticebox {
+    margin: 0 auto;
+    text-align: center;
+    background-color: #FFAAAA;
+    width: 60%;
+}
+
 .programming-io a {
     font-size: 9pt;
 }

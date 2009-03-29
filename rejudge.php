@@ -32,11 +32,11 @@
     if ($confirm) {
         programming_rejudge($programming, $groupid, $ac);
         add_to_log($course->id, 'programming', 'rejudge', me(), $programming->id);
-        echo '<p align="center">'.get_string('deleted').'</p>';
-        echo '<p align="center"><a href="'.$href.'">'.get_string('continue').'</a></p>';
+        echo '<p>'.get_string('deleted').'</p>';
+        echo '<p><a href="'.$href.'">'.get_string('continue').'</a></p>';
     } else {
-        echo '<table align="center" width="60%" class="noticebox" border="0" cellpadding="20" cellspacing="0">';
-        echo '<tr><td bgcolor="#FFAAAA" class="noticeboxcontent">';
+        echo '<table class="noticebox" border="0" cellpadding="20" cellspacing="0">';
+        echo '<tr><td class="noticeboxcontent">';
         echo '<h2 class="main">'.get_string('rejudgeprograms', 'programming', $programming).'</h2>';
         echo '<form name="form" method="get" action="rejudge.php">';
         echo '<input type="hidden" name="a" value="'.$a.'" />';
