@@ -67,7 +67,7 @@ $string['expectedoutput'] = 'Expected Output';
 $string['timeused'] = 'Time used(seconds)';
 $string['memused'] = 'Memory used';
 $string['nwarningerror'] = '{$a->warnings} warning(s), {$a->errors} error(s)';
-$string['deletesubmitconfirm'] = 'Are your sure you want to delete the submit of \'$a\'?';
+$string['deletesubmitconfirm'] = 'Are your sure you want to delete following submits?';
 $string['passed'] = 'Passed';
 $string['rejudge'] = 'Re-judge';
 $string['showall'] = 'Show all';
@@ -238,5 +238,6 @@ $string['ID'] = 'ID';
 $string['allprograms'] = 'All Programs';
 $string['range'] = 'Range';
 $string['showperpage'] = 'Show Perpage';
+$string['deletesubmits'] = 'Delete submits';
 
 ?>

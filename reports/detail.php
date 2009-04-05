@@ -164,7 +164,7 @@ function print_submit_table($submits, $total) {
         } else {
             $data[] = ''; $data[] = ''; $data[] = '';
         }
-        $data[] = "<input class='selectsubmit' type='checkbox' name='submitid' value='$submit->id'></input>";
+        $data[] = "<input class='selectsubmit' type='checkbox' name='submitid[]' value='$submit->id'></input>";
         $table->add_data($data);
     }
 

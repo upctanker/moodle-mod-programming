@@ -6,19 +6,14 @@
     require_once('../../config.php');
     require_once('lib.php');
 
-    $submitid = optional_param('submitid', 0, PARAM_INT);
+    $submitid = optional_param('submitid');
+    $a = optional_param('a');
     $confirm = optional_param('confirm');
     $href = optional_param('href');
 
-    if (! $submit = get_record('programming_submits', 'id', $submitid)) {
-        error('Submit can\'t be find');
-    }
-
-    if (! $programming = get_record('programming', 'id', $submit->programmingid)) {
+    if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
     }
-    $a = $programming->id;
-
     if (! $course = get_record('course', 'id', $programming->course)) {
         error('Course is misconfigured');
     }
@@ -31,44 +26,43 @@
     require_capability('mod/programming:deleteothersubmit', $context);
 
 /// Print the page header
-
-    if ($course->category) {
-        $navigation = '<a href="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'">'.$course->shortname.'</A> ->';
-    }
-
-    $strprogrammings = get_string('modulenameplural', 'programming');
-    $strprogramming  = get_string('modulename', 'programming');
-
-    $CFG->stylesheets[] = $CFG->wwwroot.'/mod/programming/highlight.css';
-    print_header("$course->shortname: $programming->name", $course->fullname,
-                 $navigation.'<a href="index.php?id='.$course->id.'">'.$strprogrammings.'</a> -> <a href="view.php?a='.$a.'">'.$programming->name.'</a> -> '.get_string('delete'),
-                  '', '', true, update_module_button($cm->id, $course->id, $strprogramming), 
-                  navmenu($course, $cm));
+    $pagename = get_string('deletesubmits', 'programming');
+    include_once('pageheader.php');
 
 /// Print the main part of the page
-
-    if (is_object($submit)) {
-        if ($confirm) {
+    if ($confirm) {
+        foreach ($submitid as $id) {
+            $submit = get_record('programming_submits', 'id', $id);
             programming_delete_submit($submit);
-            add_to_log($course->id, 'programming', 'delete submit', '', $submitid);
-
-            echo '<p align="center">'.get_string('deleted').'</p>';
-            echo '<p align="center"><a href="'.$href.'">'.get_string('continue').'</a></p>';
-        } else {
-            $owner = get_record('user', 'id', $submit->userid);
-            echo '<table align="center" width="60%" class="noticebox" border="0" cellpadding="20" cellspacing="0">';
-            echo '<tr><td bgcolor="#FFAAAA" class="noticeboxcontent">';
-            echo '<h2 class="main">'.get_string('deletesubmitconfirm', 'programming', fullname($owner)).'</h2>';
-            echo '<form name="form" method="get" action="deletesubmit.php">';
-            echo '<input type="hidden" name="submitid" value="'.$submit->id.'" />';
-            echo '<input type="hidden" name="confirm" value="1" />';
-            echo '<input type="hidden" name="href" value="'.$_SERVER['HTTP_REFERER'].'" />';
-            echo '<input type="submit" value=" '.get_string('yes').' " /> ';
-            echo '<input type="button" value=" '.get_string('no').' " onclick="javascript:history.go(-1);" />';
-
-            echo '</form>';
-            echo '</td></tr></table>';
         }
+        add_to_log($course->id, 'programming', 'delete submit', '', implode($submitid, ','));
+
+        echo '<p align="center">'.get_string('deleted').'</p>';
+        echo '<p align="center"><a href="'.$href.'">'.get_string('continue').'</a></p>';
+    } else {
+        echo '<table align="center" width="60%" class="noticebox" border="0" cellpadding="20" cellspacing="0">';
+        echo '<tr><td bgcolor="#FFAAAA" class="noticeboxcontent">';
+        echo '<h2 class="main">'.get_string('deletesubmitconfirm', 'programming').'</h2>';
+        echo '<ul>';
+        foreach ($submitid as $id) {
+            $submit = get_record('programming_submits', 'id', $id);
+            $tm = userdate($submit->timemodified);
+            $user = fullname(get_record('user', 'id', $submit->userid));
+            echo "<li>$id $user $tm</li>";
+        }
+        echo '</ul>';
+        echo '<form name="form" method="post">';
+        foreach ($submitid as $id) {
+            echo "<input type='hidden' name='submitid[]' value='$id' />";
+        }
+        echo "<input type='hidden' name='a' value='$a' />";
+        echo '<input type="hidden" name="confirm" value="1" />';
+        echo '<input type="hidden" name="href" value="'.$_SERVER['HTTP_REFERER'].'" />';
+        echo '<input type="submit" value=" '.get_string('yes').' " /> ';
+        echo '<input type="button" value=" '.get_string('no').' " onclick="javascript:history.go(-1);" />';
+
+        echo '</form>';
+        echo '</td></tr></table>';
     }
 
 /// Finish the page

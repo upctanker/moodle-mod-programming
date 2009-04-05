@@ -65,7 +65,7 @@ $string['timeused'] = '用时(秒)';
 $string['memused'] = '内存';
 $string['memusednk'] = '{$a}K';
 $string['nwarningerror'] = '{$a->warnings}个警告、{$a->errors}个错误';
-$string['deletesubmitconfirm'] = '您确定要删除“{$a}”提交的程序么？';
+$string['deletesubmitconfirm'] = '您确定要删除以下程序么？';
 $string['passed'] = '通过';
 $string['rejudge'] = '重新测试';
 $string['showall'] = '显示全部';
@@ -227,5 +227,6 @@ $string['ID'] = 'ID';
 $string['allprograms'] = '全部程序';
 $string['range'] = '范围';
 $string['showperpage'] = '每页显示';
+$string['deletesubmits'] = '删除程序';
 
 ?>
