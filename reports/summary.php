@@ -22,30 +22,13 @@
 
     // results is stored in a array
     $stat_results = array();
-    $groupnum = count_records('groups_courses_groups', 'courseid', $course->id);
-    $mygroupid = 0;
-    if ($groupnum) {
-        $sql = "SELECT g.id, g.name
-                  FROM {$CFG->prefix}groups_courses_groups AS cg,
-                       {$CFG->prefix}groups AS g
-                 WHERE cg.courseid = {$course->id}
-                   AND cg.groupid = g.id
-              ORDER BY name ASC";
-        $groups = get_records_sql($sql);
-        $mygroupid = mygroupid($course->id);
-        //if ($isteacher) {
-            foreach($groups as $group) {
-                stat_group($group, $stat_results);
-            }
-        /* } else {
-            if ($mygroupid) {
-                foreach($mygroupid as $group) {
-                    stat_group($groups[$group], $stat_results);
-               }
-            }
-        } */
+    $groupnum = count_records('groups', 'courseid', $course->id);
+    $groups = get_records('groups', 'courseid', $course->id);
+    foreach($groups as $group) {
+        stat_group($group, $stat_results);
     }
     stat_all($stat_results);
+    $mygroupid = mygroupid($course->id);
 
     add_to_log($course->id, 'programming', 'viewstat', 'viewresult.php?a='.$a, $programming->id);
 

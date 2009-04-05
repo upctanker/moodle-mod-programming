@@ -4,71 +4,69 @@ function stat_all(&$stat_results) {
     global $USER, $CFG, $course, $programming;
 
     $context = get_record('context', 'contextlevel', CONTEXT_COURSE, 'instanceid', $course->id);
+    $roleid = 5;
     $name = get_string('allstudents', 'programming', $course->students);
+
     $studentcount = count_records_sql("
         SELECT COUNT(*)
           FROM {$CFG->prefix}role_assignments AS ra
-         WHERE ra.roleid = 5
+         WHERE ra.roleid = $roleid
            AND ra.contextid = $context->id");
     $submitcount = count_records_sql("
-        SELECT COUNT(*) FROM (
-        SELECT DISTINCT ps.userid
+        SELECT COUNT(*)
           FROM {$CFG->prefix}role_assignments AS ra,
-               {$CFG->prefix}programming_submits AS ps
-         WHERE ra.roleid = 5
+               {$CFG->prefix}programming_result AS pr
+         WHERE ra.roleid = $roleid
            AND ra.contextid = $context->id
-           AND ps.programmingid = $programming->id
-           AND ra.userid = ps.userid
-        ) AS duserid");
+           AND pr.programmingid = $programming->id
+           AND ra.userid = pr.userid");
     $compiledcount = count_records_sql("
         SELECT COUNT(*)
-          FROM {$CFG->prefix}programming_submits AS ps, (
-              SELECT ps1.userid, MAX(timemodified) AS timemodified
-                FROM {$CFG->prefix}programming_submits AS ps1
-               WHERE ps1.programmingid = $programming->id
-            GROUP BY userid
-              ) AS latest
+          FROM {$CFG->prefix}role_assignments AS ra,
+               {$CFG->prefix}programming_result AS pr,
+               {$CFG->prefix}programming_submits AS ps
          WHERE ps.programmingid = $programming->id
-           AND ps.userid = latest.userid
-           AND ps.timemodified = latest.timemodified
-           AND `status` = ".PROGRAMMING_STATUS_FINISH."
-           AND ps.userid IN (
-               SELECT userid FROM {$CFG->prefix}role_assignments AS ra
-               WHERE ra.roleid = 5
-                 AND ra.contextid = $context->id)");
+           AND pr.programmingid = $programming->id
+           AND ra.roleid = $roleid
+           AND ra.contextid = $context->id
+           AND ps.id = pr.latestsubmitid
+           AND pr.userid = ra.userid");
     $passedcount = count_records_sql("
         SELECT COUNT(*)
-          FROM {$CFG->prefix}programming_submits AS ps,
+          FROM {$CFG->prefix}role_assignments AS ra,
+               {$CFG->prefix}programming_submits AS ps,
                {$CFG->prefix}programming_result AS pr
          WHERE ps.programmingid = {$programming->id}
            AND pr.programmingid = {$programming->id}
+           AND ra.roleid = $roleid
+           AND ra.contextid = $context->id
+           AND pr.userid = ra.userid
            AND pr.latestsubmitid = ps.id
            AND ps.passed = 1");
     $intimepassedcount = count_records_sql("
         SELECT COUNT(*)
-          FROM {$CFG->prefix}programming_submits AS ps,
+          FROM {$CFG->prefix}role_assignments AS ra,
+               {$CFG->prefix}programming_submits AS ps,
+               {$CFG->prefix}programming_result AS pr
+         WHERE ps.programmingid = {$programming->id}
+           AND pr.programmingid = {$programming->id}
+           AND ra.roleid = $roleid
+           AND ra.contextid = $context->id
+           AND pr.userid = ra.userid
+           AND pr.latestsubmitid = ps.id
+           AND ps.timemodified <= {$programming->timediscount}
+           AND ps.passed = 1");
+    $codeavg = count_records_sql("
+        SELECT AVG(codelines)
+          FROM {$CFG->prefix}role_assignments AS ra,
+               {$CFG->prefix}programming_submits AS ps,
                {$CFG->prefix}programming_result AS pr
          WHERE ps.programmingid = {$programming->id}
            AND pr.programmingid = {$programming->id}
            AND pr.latestsubmitid = ps.id
-           AND ps.timemodified <= {$programming->timediscount}
-           AND ps.passed = 1");
-    $codes = get_records_sql("
-        SELECT id, userid, code FROM {$CFG->prefix}programming_submits
-         WHERE programmingid = $programming->id
-           AND userid IN (
-               SELECT userid FROM {$CFG->prefix}role_assignments AS ra
-               WHERE ra.roleid = 5
-                 AND ra.contextid = $context->id)
-      ORDER BY timemodified DESC");
-    $codelines = array();
-    $sum = 0;
-    if (is_array($codes)) {
-        foreach ($codes as $row) {
-            if (array_key_exists($row->userid, $codelines)) continue;
-            $sum += ($codelines[$row->userid] = count(explode("\n", $row->code)));
-        }
-    }
+           AND ra.roleid = $roleid
+           AND ra.contextid = $context->id
+           AND pr.userid = ra.userid");
     array_push($stat_results,
         array('name' => $name,
               'studentcount' => $studentcount,
@@ -76,15 +74,15 @@ function stat_all(&$stat_results) {
               'compiledcount' => $compiledcount,
               'passedcount' => $passedcount,
               'intimepassedcount' => $intimepassedcount,
-              'totallines' => $sum));
+              'averagelines' => $codeavg));
     return;
-
 }
 
 function stat_group($group, &$stat_results) {
     global $USER, $CFG, $course, $programming;
 
     $context = get_record('context', 'contextlevel', CONTEXT_COURSE, 'instanceid', $course->id);
+    $roleid = 5;
     $name = $group->name;
     $studentcount = count_records_sql("
         SELECT COUNT(*)

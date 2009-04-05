@@ -34,7 +34,7 @@
   <td class="cell"><?php echo $row['studentcount'] > 0 ? round($row['passedcount'] / $row['studentcount'] * 100, 0) : 0; ?>%</td>
   <td class="cell"><?php echo $row['intimepassedcount']; ?></td>
   <td class="cell"><?php echo $row['studentcount'] > 0 ? round($row['intimepassedcount'] / $row['studentcount'] * 100, 0) : 0; ?>%</td>
-  <td class="cell"><?php echo $row['submitcount'] > 0 ? round($row['totallines'] / $row['submitcount'], 2) : 0; ?></td>
+  <td class="cell"><?php echo $row['submitcount'] > 0 ? round($row['averagelines']) : 0; ?></td>
 </tr>
 <?php endforeach; ?>
 </table>
