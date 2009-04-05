@@ -2,14 +2,17 @@
 
     require_once('../../../config.php');
     require_once('../lib.php');
+    require_once($CFG->dirroot.'/lib/tablelib.php');
+    require_once('detail_search_form.php');
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
     $groupid = optional_param('group', 0, PARAM_INT);
-    $latestonly = optional_param('latestonly', 1, PARAM_INT);
-    $orderby = optional_param('orderby', 'submittime desc', PARAM_CLEAN);
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 10, PARAM_INT);
     $offset = $page * $perpage;
+    $latestonly = optional_param('latestonly', 1, PARAM_INT);
+    $judgeresult = optional_param('judgeresult', '', PARAM_CLEAN);
+
     $firstinitial = optional_param('firstinitial', '', PARAM_CLEAN);
     $lastinitial = optional_param('lastinitial', '', PARAM_CLEAN);
 
@@ -34,243 +37,257 @@
     $viewotherresult = has_capability('mod/programming:viewotherresult', $context);
     $viewotherprogram = has_capability('mod/programming:viewotherprogram', $context);
 
-
-    $isteacher = isteacher($course->id);
-    $isteacheredit = isteacheredit($course->id);
-
-    $mygroupid = mygroupid($course->id);
-    if (!$isteacher && !empty($mygroupid) && $groupid == 0) {
-        $groupid = $mygroupid[0];
-    }
-
-    // For students only show latest
-    if (!$isteacher) $latestonly = 1;
-
-    // Get submits from database
-    list($orderbyfield, $orderbyorder) = explode(' ', $orderby);
-    $orderbyorder = $orderbyorder == 'desc' ? 'DESC' : 'ASC';
-    $orderbyfield = $orderbyfield == 'fullname' ? 'displayname' : $orderbyfield;
-    $firstletter = "LCASE(SUBSTR(firstnameletter, 1, 1))";
-    $lastletter = "LCASE(SUBSTR(lastnameletter, 1, 1))";
-    switch ($orderbyfield) {
-    case 'submittime':
-        if ($groupid) {
-            $inner_sql = "SELECT ipr.userid, latestsubmitid AS latest_id
-                            FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= ", {$CFG->prefix}user AS iu";
-            }
-            $inner_sql .= " WHERE programmingid={$programming->id}
-                             AND igm.groupid={$groupid}
-                             AND ipr.userid=igm.userid";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= " AND ipr.userid = iu.id";
-            }
-            if ($firstinitial) {
-                $inner_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $inner_sql .= " AND $lastletter = '$lastinitial'";
-            }
-            $inner_sql .= " ORDER BY latest_id {$orderbyorder}";
-
-            $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= ", {$CFG->prefix}user u";
-            }
-            $count_sql .= " WHERE programmingid={$programming->id}
-                             AND igm.groupid={$groupid}
-                             AND ipr.userid=igm.userid";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= " AND ipr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $count_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $count_sql .= " AND $lastletter = '$lastinitial'";
-            }
-        } else {
-            $inner_sql = "SELECT userid, latestsubmitid AS latest_id
-                            FROM {$CFG->prefix}programming_result AS pr";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= ", {$CFG->prefix}user AS u";
-            }
-            $inner_sql .= " WHERE programmingid={$programming->id}";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= " AND pr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $inner_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $inner_sql .= " AND $lastletter = '$lastinitial'";
-            }
-            $inner_sql .= " ORDER BY latest_id {$orderbyorder}";
-
-            $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result pr";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= ", {$CFG->prefix}user u";
-            }
-            $count_sql .= " WHERE programmingid={$programming->id}";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= " AND pr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $count_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $count_sql .= " AND $lastletter = '$lastinitial'";
-            }
-        }
-        $sql = "SELECT ps.*, pl.name AS langname
-                  FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS latest,
-                       {$CFG->prefix}programming_submits AS ps,
-                       {$CFG->prefix}programming_languages AS pl
-                 WHERE ps.programmingid={$programming->id}
-                   AND latest.userid = ps.userid
-                   AND ps.language=pl.id
-              ORDER BY latest.latest_id {$orderbyorder},
-                       ps.timemodified DESC";
-        break;
-    case 'linecount':
-        if ($groupid) {
-            $inner_sql = "SELECT ps0.id, ps0.userid, ps0.codelines
-                            FROM {$CFG->prefix}programming_result AS ipr, 
-                                 {$CFG->prefix}groups_members AS igm,
-                                 {$CFG->prefix}programming_submits AS ps0";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= ", {$CFG->prefix}user AS u";
-            }
-            $inner_sql .= " WHERE ipr.programmingid={$programming->id}
-                             AND igm.groupid={$groupid}
-                             AND ipr.userid=igm.userid
-                             AND ps0.programmingid={$programming->id}
-                             AND ps0.id=latestsubmitid";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= " AND ipr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $inner_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $inner_sql .= " AND $lastletter = '$lastinitial'";
-            }
-            $inner_sql .= " ORDER BY ps0.codelines {$orderbyorder}";
-
-            $count_sql = "SELECT COUNT(*) c
-                            FROM {$CFG->prefix}programming_result AS ipr,
-                                 {$CFG->prefix}groups_members AS igm";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= ", {$CFG->prefix}user u";
-            }
-            $count_sql .= " WHERE programmingid={$programming->id}
-                             AND igm.groupid={$groupid}
-                             AND ipr.userid=igm.userid";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= " AND ipr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $count_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $count_sql .= " AND $lastletter = '$lastinitial'";
-            }
-        } else {
-            $inner_sql = "SELECT ips.id, ips.userid, ips.codelines
-                            FROM {$CFG->prefix}programming_result AS ipr, 
-                                 {$CFG->prefix}programming_submits AS ips";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= ", {$CFG->prefix}user AS u";
-            }
-            $inner_sql .= " WHERE ipr.programmingid={$programming->id}
-                             AND ips.programmingid={$programming->id}
-                             AND ips.id=ipr.latestsubmitid";
-            if ($firstinitial || $lastinitial) {
-                $inner_sql .= " AND ipr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $inner_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $inner_sql .= " AND $lastletter = '$lastinitial'";
-            }
-            $inner_sql .= " ORDER BY ips.codelines {$orderbyorder}";
-
-            $count_sql = "SELECT COUNT(*) AS c
-                            FROM {$CFG->prefix}programming_result AS pr";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= ", {$CFG->prefix}user u";
-            }
-            $count_sql .= " WHERE programmingid={$programming->id}";
-            if ($firstinitial || $lastinitial) {
-                $count_sql .= " AND pr.userid = u.id";
-            }
-            if ($firstinitial) {
-                $count_sql .= " AND $firstletter = '$firstinitial'";
-            }
-            if ($lastinitial) {
-                $count_sql .= " AND $lastletter = '$lastinitial'";
-            }
-        }
-        $sql = "SELECT ps.*, pl.name AS langname
-                  FROM ({$inner_sql} LIMIT {$offset}, {$perpage}) AS limited,
-                       {$CFG->prefix}programming_submits AS ps,
-                       {$CFG->prefix}programming_languages AS pl
-                 WHERE ps.programmingid={$programming->id}
-                   AND limited.userid=ps.userid 
-                   AND ps.language=pl.id
-              ORDER BY limited.codelines {$orderbyorder}, timemodified DESC";
-        break;
-    }
-    $totalcount = count_records_sql($count_sql);
-    $submits = get_records_sql($sql);
-
-    if (is_array($submits)) {
-        // Generate usersubmits for output
-        $uids = array();
-        $usersubmits = array();
-        foreach ($submits as $submit) {
-            if (!array_key_exists($submit->userid, $usersubmits)) {
-                $usersubmits[$submit->userid] = array();
-            }
-            array_push($usersubmits[$submit->userid], $submit);
-            if (!in_array($submit->userid, $uids)) {
-                array_push($uids, $submit->userid);
-            }
-        }
-    }
-
-    // Get users object
-    if (!empty($uids)) {
-        $users = get_records_select('user', 'id in ('.implode(',', $uids).')');
-        unset($uids);
-    }
-    // Get results object
-    if (!empty($submits)) {
-        $sids = array_keys($submits);
-        $sresults = get_records_select('programming_test_results', 'submitid in ('.implode(',', $sids).')');
-        unset($sids);
-    }
-
-    $results = array();
-    if (!empty($sresults)) {
-        foreach ($sresults as $sresult) {
-            if (!array_key_exists($sresult->submitid, $results)) {
-                $results[$sresult->submitid] = array();
-            }
-            array_push($results[$sresult->submitid], $sresult);
-        }
-    }
-
-    $groupmode = groupmode($course, $cm);
-    $groups = get_groups($course->id);
-
     add_to_log($course->id, 'programming', 'reports_detail');
 
-    include_once('detail.tpl.php');
+    list($submits, $totalcount) = get_submits();
+
+/// Print the page header
+    $pagename = get_string('detailreport', 'programming'); 
+    include_once('../pageheader.php');
+
+/// Print tabs
+    $currenttab = 'reports';
+    $currenttab2 = 'detail';
+    include_once('../tabs.php');
+
+/// Print the main part of the page
+    echo '<div class="maincontent">';
+    echo '<h1>'.get_string('allprograms', 'programming').'</h1>';
+    print_search_form();
+    print_initial($lastinitial, $firstinitial);
+    if (is_array($submits)) {
+        print_submit_table($submits, $totalcount);
+    }
+    print_paging_bar($totalcount, $page, $perpage, "{$CFG->wwwroot}/mod/programming/reports/detail.php?a={$programming->id}&amp;latestonly={$latestonly}&amp;group={$groupid}&amp;firstinitial={$firstinitial}&amp;lastinitial={$lastinitial}&amp;");
+    echo '</div>';
+
+/// Finish the page
+    print_footer($course);
+
+function get_submits() {
+    global $CFG, $page, $perpage, $programming, $course;
+    global $firstinitial, $lastinitial, $latestonly, $groupid, $language;
+    global $judgeresult;
+
+    $submits = 0;
+    $total = 0;
+    if ($latestonly) {
+        $rfrom = ", {$CFG->prefix}programming_result AS pr";
+        $rwhere = " AND pr.programmingid = {$programming->id}
+                    AND pr.latestsubmitid = ps.id";
+    } else {
+        $rfrom = $rwhere = '';
+    }
+    if ($firstinitial || $lastinitial) {
+        $ufrom = ", {$CFG->prefix}user AS u";
+        $uwhere = " AND u.firstnameletter LIKE '{$firstinitial}%'
+                    AND u.lastnameletter LIKE '{$lastinitial}%'
+                    AND u.id = ps.userid";
+    } else {
+        $ufrom = $uwhere = '';
+    }
+    if ($groupid) {
+        $gfrom = ", {$CFG->prefix}groups_members AS gm";
+        $gwhere = " AND gm.groupid = $groupid AND gm.userid = ps.userid";
+    } else {
+        $gfrom = $gwhere = '';
+    }
+    if ($judgeresult) {
+        $jrwhere = " AND ps.judgeresult = '$judgeresult'";
+    } else {
+        $jrwhere = '';
+    }
+
+    $crit = " FROM {$CFG->prefix}programming_submits AS ps
+                   $ufrom $rfrom $gfrom
+             WHERE ps.programmingid = {$programming->id}
+                   $uwhere $rwhere $gwhere $jrwhere
+          ORDER BY ps.timemodified DESC";
+    $sql = "SELECT ps.* $crit";
+    $submits = get_records_sql($sql, $page * $perpage, $perpage);  
+    $sql = "SELECT COUNT(*) $crit";
+    $total = count_records_sql($sql);
+
+    return array($submits, $total);
+}
+
+function print_submit_table($submits, $total) {
+    global $CFG, $page, $perpage, $programming, $course;
+    global $viewotherresult, $viewotherprogram;
+
+    $table = new flexible_table('detail-table');
+    $def = array('id', 'timemodified', 'user', 'language', 'code', 'judgeresult', 'timeused', 'memused', 'select');
+    $table->define_columns($def);
+    $headers = array(
+        get_string('ID', 'programming'),
+        get_string('submittime', 'programming'),
+        get_string('fullname'),
+        get_string('language', 'programming'),
+        get_string('programcode', 'programming'),
+        get_string('result', 'programming'),
+        get_string('timeused', 'programming'),
+        get_string('memused', 'programming'),
+        get_string('select')
+        );
+    $table->define_headers($headers);
+
+    #$table->pagesize($perpage, $total);
+    $table->set_attribute('cellspacing', '0');
+    $table->set_attribute('id', 'detail-table');
+    $table->set_attribute('class', 'generaltable generalbox');
+    $table->set_attribute('align', 'center');
+    $table->set_attribute('cellpadding', '3');
+    $table->set_attribute('cellspacing', '1');
+    $table->setup();
+
+    $lang = get_records('programming_languages');
+    foreach ($submits as $submit) {
+        $data = array();
+        $data[] = $submit->id;
+        $data[] = userdate($submit->timemodified, '%Y-%m-%d %H:%M:%S');
+        $data[] = "<a href='{$CFG->wwwroot}/user/view.php?id={$submit->userid}&amp;course={$course->id}'>".fullname(get_record('user', 'id', $submit->userid)).'</a>';
+        $data[] = $lang[$submit->language]->name;
+        if ($viewotherprogram) {
+            $data[] = "<a href='{$CFG->wwwroot}/mod/programming/history.php?a={$programming->id}&amp;userid={$submit->userid}&amp;submitid={$submit->id}'>".get_string('sizelines', 'programming', $submit).'</a>';
+        } else {
+            $data[] = get_string('sizelines', 'programming', $submit);
+        }
+        if ($submit->judgeresult) {
+            $strresult = get_string($submit->judgeresult, 'programming');
+            if ($viewotherresult) {
+                $data[] = "<a href='{$CFG->wwwroot}/mod/programming/result.php?a={$programming->id}&amp;submitid={$submit->id}'>$strresult</a>";
+            } else {
+                $data[] = $strresult;
+            }
+            $data[] = round($submit->timeused, 3);
+            $data[] = get_string('memusednk', 'programming', $submit->memused);
+        } else {
+            $data[] = ''; $data[] = ''; $data[] = '';
+        }
+        $data[] = "<input class='selectsubmit' type='checkbox' name='submitid' value='$submit->id'></input>";
+        $table->add_data($data);
+    }
+
+    echo "<form id='submitaction' method='post'>";
+    echo "<input type='hidden' name='a' value='$programming->id' />";
+    $table->print_html();
+    echo '<div id="submitbuttons" style="display: none">';
+    echo '<input id="rejudge" type="button" name="action" value="Rejudge" />';
+    echo '<input id="delete" type="button" name="action" value="Delete" />';
+    echo '</div>';
+    echo '</form>';
+    echo "
+<script type='text/javascript' language='JavaScript'>
+$(document).ready(function() {
+    $('.selectsubmit').change(function() {
+        var show = false;
+        $('.selectsubmit').each(function() {
+            if ($(this).attr('checked')) show = true;
+        });
+        if (show) {
+            $('#submitbuttons').show();
+            $('.paging').hide();
+        } else {
+            $('#submitbuttons').hide();
+            $('.paging').show();
+        }
+    });
+    $('#rejudge').click(function() {
+        $('#submitaction').get(0).action = '{$CFG->wwwroot}/mod/programming/rejudge.php';
+        $('#submitaction').submit();
+    });
+    $('#delete').click(function() {
+        $('#submitaction').get(0).action = '{$CFG->wwwroot}/mod/programming/deletesubmit.php';
+        $('#submitaction').submit();
+    });
+});
+</script>";
+}
+
+function print_initial() {
+    global $a, $latestonly, $lastinitial, $firstinitial, $groupid;
+
+    $strall = get_string('all');
+    $alphabet = explode(',', get_string('alphabet'));
+
+    echo "<p style=\"text-align:center\">";
+    $ne = get_string('nameedit', 'langconfig');
+    for ($i = 0; $i < strlen($ne); $i++) {
+        if (substr($ne, $i, 1) == 'F') {
+            /// Bar of first initials
+            if ($i > 0) echo '<br />';
+
+            echo get_string("firstname")." : ";
+            if ($firstinitial) {
+                echo " <a href=\"detail.php?a=$a&amp;".
+                     "latestonly=$latestonly&amp;".
+                     "group=$groupid&amp;lastinitial=$lastinitial".
+                     "\">$strall</a> ";
+            } else {
+                echo " <b>$strall</b> ";
+            }
+            foreach ($alphabet as $letter) {
+                if ($letter == $firstinitial) {
+                    echo " <b>$letter</b> ";
+                } else {
+                    echo " <a href=\"detail.php?a=$a&amp;".
+                         "latestonly=$latestonly&amp;".
+                         "group=$groupid&amp;lastinitial=$lastinitial&amp;".
+                         "firstinitial=$letter\">$letter</a> ";
+                }
+            }
+            if ($i > 0) echo '<br />';
+
+        } else if (substr($ne, $i, 1) == 'L') {
+            /// Bar of last initials
+            if ($i > 0) echo '<br />';
+
+            echo get_string("lastname")." : ";
+            if ($lastinitial) {
+                echo " <a href=\"detail.php?a=$a&amp;".
+                     "latestonly=$latestonly&amp;".
+                     "group=$groupid&amp;firstinitial=$firstinitial".
+                     "\">$strall</a> ";
+            } else {
+                echo " <b>$strall</b> ";
+            }
+            foreach ($alphabet as $letter) {
+                if ($letter == $lastinitial) {
+                    echo " <b>$letter</b> ";
+                } else {
+                    echo " <a href=\"detail.php?a=$a&amp;".
+                         "latestonly=$latestonly&amp;".
+                         "group=$groupid&amp;firstinitial=$firstinitial&amp;".
+                         "lastinitial=$letter\">$letter</a> ";
+                }
+            }
+            if ($i > 0) echo '<br />';
+
+        } // if
+    } // for nameedit
+    echo "</p>";
+}
+
+function print_search_form() {
+    global $perpage, $page, $programming;
+    global $latestonly, $lastinitial, $firstinitial, $groupid, $judgeresult;
+
+    $values = array('a' => $programming->id,
+                    'latestonly' => $latestonly,
+                    'lastinitial' => $lastinitial,
+                    'firstinitial' => $firstinitial,
+                    'group' => $groupid,
+                    'judgeresult' => $judgeresult,
+                    'page' => $perpage);
+    $mform = new detail_search_form(null, null, 'get');
+    $mform->set_data($values);
+    $mform->display();
+    echo '
+<script type="text/javascript" language="JavaScript">
+$(document).ready(function() {
+    $("#mform1 select").change(function() { $("#mform1").submit(); });
+});
+</script>';
+}
+
 ?>

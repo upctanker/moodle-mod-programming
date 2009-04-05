@@ -713,6 +713,16 @@ function programming_submit_memused(&$results) {
     return $mem;
 }
 
+function programming_judgeresult_options($addempty = false) {
+    $rst = array('AC', 'PE', 'WA', 'RE', 'KS', 'OLE', 'MLE', 'TLE', 'RFC', 'JGE', 'JSE');
+    $ret = array();
+    if ($addempty) $ret[''] = get_string('all');
+    foreach ($rst as $k) {
+        $ret[$k] = get_string($k, 'programming');
+    }
+    return $ret;
+}
+
 function programming_submit_judgeresult(&$results) {
     $err = array('JSE' => 20, 'JGE' => 19, 'RFC' => 18,
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,

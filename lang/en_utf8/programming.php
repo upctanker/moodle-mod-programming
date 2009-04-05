@@ -227,5 +227,16 @@ $string['flag3'] = 'Mark neither';
 $string['youhavepassed'] = 'You have passed this practise.';
 $string['submitagain'] = 'Submit Again';
 $string['testcasedeleted'] = 'The test case have been deleted.';
+$string['resultcountchart'] = 'Result Count Chart';
+$string['resultgroupcountchart'] = 'Result Count Chart by Group';
+$string['resultchartacintime'] = 'Passed in time';
+$string['resultchartacdiscount'] = 'Passed with discount';
+$string['resultchartsomethingwrong'] = 'Something wrong';
+$string['resultchartcompileerror'] = 'Compile error';
+$string['resultchartnosubmition'] = 'No submition';
+$string['ID'] = 'ID';
+$string['allprograms'] = 'All Programs';
+$string['range'] = 'Range';
+$string['showperpage'] = 'Show Perpage';
 
 ?>

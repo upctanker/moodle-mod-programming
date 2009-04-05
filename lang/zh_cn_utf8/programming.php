@@ -63,6 +63,7 @@ $string['noresult'] = '无结果！';
 $string['expectedoutput'] = '期待的输出';
 $string['timeused'] = '用时(秒)';
 $string['memused'] = '内存';
+$string['memusednk'] = '{$a}K';
 $string['nwarningerror'] = '{$a->warnings}个警告、{$a->errors}个错误';
 $string['deletesubmitconfirm'] = '您确定要删除“{$a}”提交的程序么？';
 $string['passed'] = '通过';
@@ -215,5 +216,16 @@ $string['flag3'] = '均不标记';
 $string['youhavepassed'] = '您已完成此练习';
 $string['submitagain'] = '再次提交';
 $string['testcasedeleted'] = '测试用例已删除';
+$string['resultcountchart'] = '全体情况统计图';
+$string['resultgroupcountchart'] = '分组情况统计图';
+$string['resultchartacintime'] = '按时通过';
+$string['resultchartacdiscount'] = '折扣通过';
+$string['resultchartsomethingwrong'] = '执行出错';
+$string['resultchartcompileerror'] = '编译出错';
+$string['resultchartnosubmition'] = '未提交';
+$string['ID'] = 'ID';
+$string['allprograms'] = '全部程序';
+$string['range'] = '范围';
+$string['showperpage'] = '每页显示';
 
 ?>

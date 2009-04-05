@@ -3,6 +3,7 @@
 }
 
 .mod-programming .maincontent,
+.mod-programming-reports .maincontent,
 .blocks-programming_standing .maincontent {
 	text-align: center;
     padding: 4px;
@@ -175,6 +176,17 @@
 .reports, .reports table {
     margin: 0 auto;
     text-align: center;
+}
+
+#mod-programming-reports-detail .maincontent .mform div,
+#mod-programming-reports-detail .maincontent .mform select {
+    display: inline;
+}
+
+#mod-programming-reports-detail .maincontent .mform .fitemtitle,
+#mod-programming-reports-detail .maincontent .mform div.felement,
+#mod-programming-reports-detail .maincontent .mform fieldset.felement {
+    float: none;
 }
 
 .noticebox {
