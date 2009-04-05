@@ -9,7 +9,6 @@
     $groupid = optional_param('group', 0, PARAM_INT);
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 10, PARAM_INT);
-    $offset = $page * $perpage;
     $latestonly = optional_param('latestonly', 1, PARAM_INT);
     $judgeresult = optional_param('judgeresult', '', PARAM_CLEAN);
 
@@ -32,7 +31,6 @@
     require_login($course->id);
 
     require_capability('mod/programming:viewreport', $context);
-    $submitforothers = has_capability('mod/programming:submitforothers', $context);
     $deleteothersubmit = has_capability('mod/programming:deleteothersubmit', $context);
     $viewotherresult = has_capability('mod/programming:viewotherresult', $context);
     $viewotherprogram = has_capability('mod/programming:viewotherprogram', $context);
@@ -58,7 +56,7 @@
     if (is_array($submits)) {
         print_submit_table($submits, $totalcount);
     }
-    print_paging_bar($totalcount, $page, $perpage, "{$CFG->wwwroot}/mod/programming/reports/detail.php?a={$programming->id}&amp;latestonly={$latestonly}&amp;group={$groupid}&amp;firstinitial={$firstinitial}&amp;lastinitial={$lastinitial}&amp;");
+    print_paging_bar($totalcount, $page, $perpage, "{$CFG->wwwroot}/mod/programming/reports/detail.php?a={$programming->id}&amp;latestonly={$latestonly}&amp;group={$groupid}&amp;firstinitial={$firstinitial}&amp;lastinitial={$lastinitial}&amp;judgeresult={$judgeresult}&amp;");
     echo '</div>';
 
 /// Finish the page
@@ -104,7 +102,7 @@ function get_submits() {
                    $uwhere $rwhere $gwhere $jrwhere
           ORDER BY ps.timemodified DESC";
     $sql = "SELECT ps.* $crit";
-    $submits = get_records_sql($sql, $page * $perpage, $perpage);  
+    $submits = get_records_sql($sql, $page * $perpage, $perpage);
     $sql = "SELECT COUNT(*) $crit";
     $total = count_records_sql($sql);
 
@@ -206,6 +204,7 @@ $(document).ready(function() {
 
 function print_initial() {
     global $a, $latestonly, $lastinitial, $firstinitial, $groupid;
+    global $judgeresult;
 
     $strall = get_string('all');
     $alphabet = explode(',', get_string('alphabet'));
@@ -221,6 +220,7 @@ function print_initial() {
             if ($firstinitial) {
                 echo " <a href=\"detail.php?a=$a&amp;".
                      "latestonly=$latestonly&amp;".
+                     "judgeresult={$judgeresult}&amp;".
                      "group=$groupid&amp;lastinitial=$lastinitial".
                      "\">$strall</a> ";
             } else {
@@ -232,6 +232,7 @@ function print_initial() {
                 } else {
                     echo " <a href=\"detail.php?a=$a&amp;".
                          "latestonly=$latestonly&amp;".
+                         "judgeresult={$judgeresult}&amp;".
                          "group=$groupid&amp;lastinitial=$lastinitial&amp;".
                          "firstinitial=$letter\">$letter</a> ";
                 }
@@ -246,6 +247,7 @@ function print_initial() {
             if ($lastinitial) {
                 echo " <a href=\"detail.php?a=$a&amp;".
                      "latestonly=$latestonly&amp;".
+                     "judgeresult={$judgeresult}&amp;".
                      "group=$groupid&amp;firstinitial=$firstinitial".
                      "\">$strall</a> ";
             } else {
@@ -257,6 +259,7 @@ function print_initial() {
                 } else {
                     echo " <a href=\"detail.php?a=$a&amp;".
                          "latestonly=$latestonly&amp;".
+                         "judgeresult={$judgeresult}&amp;".
                          "group=$groupid&amp;firstinitial=$firstinitial&amp;".
                          "lastinitial=$letter\">$letter</a> ";
                 }
@@ -278,7 +281,8 @@ function print_search_form() {
                     'firstinitial' => $firstinitial,
                     'group' => $groupid,
                     'judgeresult' => $judgeresult,
-                    'page' => $perpage);
+                    'page' => $page,
+                    'perpage' => $perpage);
     $mform = new detail_search_form(null, null, 'get');
     $mform->set_data($values);
     $mform->display();

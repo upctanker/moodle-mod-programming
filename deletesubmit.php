@@ -9,7 +9,7 @@
     $submitid = optional_param('submitid');
     $a = optional_param('a');
     $confirm = optional_param('confirm');
-    $href = optional_param('href');
+    $href = optional_param('href', $_SERVER['HTTP_REFERER'], PARAM_URL);
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -33,12 +33,14 @@
     if ($confirm) {
         foreach ($submitid as $id) {
             $submit = get_record('programming_submits', 'id', $id);
-            programming_delete_submit($submit);
+            if ($submit) programming_delete_submit($submit);
         }
         add_to_log($course->id, 'programming', 'delete submit', '', implode($submitid, ','));
 
+        echo '<div class="maincontent generalbox">';
         echo '<p align="center">'.get_string('deleted').'</p>';
         echo '<p align="center"><a href="'.$href.'">'.get_string('continue').'</a></p>';
+        echo '</div>';
     } else {
         echo '<table align="center" width="60%" class="noticebox" border="0" cellpadding="20" cellspacing="0">';
         echo '<tr><td bgcolor="#FFAAAA" class="noticeboxcontent">';
@@ -57,7 +59,7 @@
         }
         echo "<input type='hidden' name='a' value='$a' />";
         echo '<input type="hidden" name="confirm" value="1" />';
-        echo '<input type="hidden" name="href" value="'.$_SERVER['HTTP_REFERER'].'" />';
+        echo "<input type='hidden' name='href' value='$href' />";
         echo '<input type="submit" value=" '.get_string('yes').' " /> ';
         echo '<input type="button" value=" '.get_string('no').' " onclick="javascript:history.go(-1);" />';
 
