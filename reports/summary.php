@@ -25,9 +25,9 @@
     $groupnum = count_records('groups', 'courseid', $course->id);
     $groups = get_records('groups', 'courseid', $course->id);
     foreach($groups as $group) {
-        stat_group($group, $stat_results);
+        summary_stat($stat_results, $group->id);
     }
-    stat_all($stat_results);
+    summary_stat($stat_results);
     $mygroupid = mygroupid($course->id);
 
     add_to_log($course->id, 'programming', 'viewstat', 'viewresult.php?a='.$a, $programming->id);
