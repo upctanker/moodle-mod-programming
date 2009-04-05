@@ -228,5 +228,6 @@ $string['allprograms'] = '全部程序';
 $string['range'] = '范围';
 $string['showperpage'] = '每页显示';
 $string['deletesubmits'] = '删除程序';
+$string['rejudgestarted'] = '已经开始重判';
 
 ?>

@@ -239,5 +239,6 @@ $string['allprograms'] = 'All Programs';
 $string['range'] = 'Range';
 $string['showperpage'] = 'Show Perpage';
 $string['deletesubmits'] = 'Delete submits';
+$string['rejudgestarted'] = 'Rejudge started';
 
 ?>

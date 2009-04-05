@@ -5,8 +5,9 @@
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
     $groupid = optional_param('groupid', 0, PARAM_INT);
+    $submitid = optional_param('submitid');
     $confirm = optional_param('confirm');
-    $href = optional_param('href');
+    $href = optional_param('href', $_SERVER['HTTP_REFERER'], PARAM_URL);
     $ac = optional_param('ac', 0, PARAM_INT);
 
     if (! $programming = get_record('programming', 'id', $a)) {
@@ -29,11 +30,13 @@
 
 /// Print the main part of the page
 
-    if ($confirm) {
-        programming_rejudge($programming, $groupid, $ac);
+    if (!empty($submitid) || $confirm) {
+        programming_rejudge($programming, $submitid, $groupid, $ac);
         add_to_log($course->id, 'programming', 'rejudge', me(), $programming->id);
-        echo '<p>'.get_string('deleted').'</p>';
+        echo '<div class="maincontent generalbox">';
+        echo '<p>'.get_string('rejudgestarted', 'programming').'</p>';
         echo '<p><a href="'.$href.'">'.get_string('continue').'</a></p>';
+        echo '</div>';
     } else {
         echo '<table class="noticebox" border="0" cellpadding="20" cellspacing="0">';
         echo '<tr><td class="noticeboxcontent">';

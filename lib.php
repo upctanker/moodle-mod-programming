@@ -634,40 +634,49 @@ function programming_delete_submit($submit) {
     update_record('programming_result', $r);
 }
 
-function programming_rejudge($programming, $groupid, $ac) {
+function programming_rejudge($programming, $submitid, $groupid, $ac) {
     global $CFG;
 
-    $users = False;
-    if ($groupid != 0) {
-        $users = get_group_users($groupid);
+    if (empty($submitid)) {
+        $users = False;
+        if ($groupid != 0) {
+            $users = get_group_users($groupid);
+        }
+        $sql = "SELECT latestsubmitid
+                  FROM {$CFG->prefix}programming_result AS pr,
+                       {$CFG->prefix}programming_submits AS ps
+                 WHERE pr.latestsubmitid = ps.id
+                   AND pr.programmingid = {$programming->id}
+                   AND ps.programmingid = {$programming->id}";
+        if (!$ac) {
+            $sql .= " AND (ps.passed = 0 OR ps.passed IS NULL)";
+        }
+        if ($users) {
+            $sql .= " AND ps.userid IN (".implode(',', array_keys($users));
+            $sql .= " AND pr.userid IN (".implode(',', array_keys($users));
+        }
+        $lsids = get_records_sql($sql);
+        foreach ($lsids as $submit) {
+            $ids[] = $submit->latestsubmitid;
+        }
+    } else {
+        $ids = $submitid;
     }
-    $sql = "SELECT latestsubmitid
-              FROM {$CFG->prefix}programming_result AS pr,
-                   {$CFG->prefix}programming_submits AS ps
-             WHERE pr.latestsubmitid = ps.id
-               AND pr.programmingid = {$programming->id}
-               AND ps.programmingid = {$programming->id}";
-    if (!$ac) {
-        $sql .= " AND (ps.passed = 0 OR ps.passed IS NULL)";
-    }
-    if ($users) {
-        $sql .= " AND ps.userid IN (".implode(',', array_keys($users));
-        $sql .= " AND pr.userid IN (".implode(',', array_keys($users));
-    }
-    $lsids = get_records_sql($sql);
-    foreach ($lsids as $submit) {
-        $ids[] = $submit->latestsubmitid;
-    }
-    $sql = "submitid IN (".implode(',', $ids).")";
+    $ids = implode(',', $ids);
+
+    $sql = "submitid IN ($ids)";
     delete_records_select('programming_test_results', $sql);
+
+    $sql = "UPDATE {$CFG->prefix}programming_submits
+               SET judgeresult=null, timeused=null, memused=null,
+                   passed=null, status=0
+             WHERE id IN ($ids)";
+    execute_sql($sql, False);
 
     $sql = "INSERT INTO {$CFG->prefix}programming_testers
             SELECT id, 0, 3, 0
-              FROM {$CFG->prefix}programming_submits WHERE id IN (".
-            implode(',', $ids).')'; 
-    execute_sql($sql, False);
-
-    $sql = "UPDATE {$CFG->prefix}programming_submits SET status=0 WHERE id IN (".implode(',', $ids).")";
+              FROM {$CFG->prefix}programming_submits
+             WHERE id IN ($ids)";
     execute_sql($sql, False);
 }
 
