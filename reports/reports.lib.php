@@ -6,19 +6,21 @@
  * 目前此函数只处理 roleid 为 5 即学生的情况。
  *
  * @param $state_results 存储统计结果
- * @param $groupid 要统计的小组的ID，如果为0则统计全部人员的情况
+ * @param $group 要统计的小组，如果为 null 则统计全部人员的情况
  */
-function summary_stat(&$stat_results, $groupid = 0) {
+function summary_stat(&$stat_results, $group = null) {
     global $USER, $CFG, $course, $programming;
 
     $context = get_record('context', 'contextlevel', CONTEXT_COURSE, 'instanceid', $course->id);
     $roleid = 5;
-    $name = get_string('allstudents', 'programming', $course->students);
 
-    $gfrom = $gwhere = '';
-    if ($groupid) {
+    if ($group) {
         $gfrom = ", {$CFG->prefix}groups_members AS gm";
-        $gwhere = " AND gm.groupid = $groupid AND ra.userid = gm.userid ";
+        $gwhere = " AND gm.groupid = $group->id AND ra.userid = gm.userid ";
+        $name = $group->name;
+    } else {
+        $gfrom = $gwhere = '';
+        $name = get_string('allstudents', 'programming', $course->students);
     }
 
     $studentcount = count_records_sql("
@@ -50,6 +52,7 @@ function summary_stat(&$stat_results, $groupid = 0) {
            AND ra.contextid = $context->id
            AND ps.id = pr.latestsubmitid
            AND pr.userid = ra.userid
+           AND ps.judgeresult != 'CE' AND ps.judgeresult != ''
                $gwhere");
     $passedcount = count_records_sql("
         SELECT COUNT(*)
