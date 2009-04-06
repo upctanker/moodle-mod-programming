@@ -139,7 +139,11 @@ function update_submit_status($xmlrpcmsg) {
         $sql = "DELETE FROM {$CFG->prefix}programming_testers
                  WHERE submitid={$id}";
         execute_sql($sql, false);
-        $sql = "UPDATE {$CFG->prefix}programming_submits SET `status`={$s}
+        $setce = '';
+        if ($status == 'compile_failed')
+            $setce = ", judgeresult = 'CE'";
+        $sql = "UPDATE {$CFG->prefix}programming_submits
+                   SET `status`={$s} $setce
                  WHERE id={$id}";
         execute_sql($sql, false);
         if ($CFG->rcache === true) {

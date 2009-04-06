@@ -157,10 +157,18 @@ function print_submit_table($submits, $total) {
             } else {
                 $data[] = $strresult;
             }
+        } else {
+            $data[] = '';
+        }
+        if ($submit->timeused != null) {
             $data[] = round($submit->timeused, 3);
+        } else {
+            $data[] = '';
+        }
+        if ($submit->memused != null) {
             $data[] = get_string('memusednk', 'programming', $submit->memused);
         } else {
-            $data[] = ''; $data[] = ''; $data[] = '';
+            $data[] = '';
         }
         $data[] = "<input class='selectsubmit' type='checkbox' name='submitid[]' value='$submit->id'></input>";
         $table->add_data($data);
