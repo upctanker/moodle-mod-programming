@@ -101,26 +101,31 @@
         if (array_key_exists($programming->id, $submits)) {
             $submit = $submits[$programming->id];
         }
+
         if ($submit) {
             $totallines += $submit->codelines;
             $totalsubmit += $submit->submitcount;
-            if (!$programming->visible) {
-                //Show dimmed if the mod is hidden
-                $link = "<A class=\"dimmed\" HREF=\"view.php?id=$programming->coursemodule\">$programming->name</A>";
+        }
+
+        $link = $resultlink = $countlink = $langlink = $codelink = '';
+        if (!$programming->visible) {
+            //Show dimmed if the mod is hidden
+            $link = "<a class=\"dimmed\" href=\"view.php?id=$programming->coursemodule\">$programming->name</a>";
+            if ($submit) {
                 $resultlink = '<a class="dimmed" href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
                 $countlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
                 $langlink = '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
                 $codelink= '<a class="dimmed" href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
-            } else {
-                //Show normal if the mod is visible
-                $link = "<A HREF=\"view.php?id=$programming->coursemodule\">$programming->name</A>";
+            }
+        } else {
+            //Show normal if the mod is visible
+            $link = "<a href=\"view.php?id=$programming->coursemodule\">$programming->name</a>";
+            if ($submit) {
                 $resultlink = '<a href="result.php?a='.$submit->id.'">'.$submit->judgeresult.'</a>';
                 $countlink = '<a href="history.php?a='.$submit->id.'">'.$submit->submitcount.'</a>';
                 $langlink = '<a href="history.php?a='.$submit->id.'">'.$submit->lang.'</a>';
                 $codelink= '<a href="history.php?a='.$submit->id.'">'.$submit->codelines.'</a>';
             }
-        } else {
-            $link = $resultlink = $countlink = $langlink = $codelink = '';
         }
 
         if ($course->format == 'weeks' or $course->format == 'topics') {
@@ -143,7 +148,7 @@
         $table->data[] = array($strtotal, '', '', $totallines, $totalsubmit);
     }
 
-    echo '<BR />';
+    echo '<br />';
 
     print_table($table);
 
