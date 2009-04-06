@@ -24,8 +24,10 @@
     $stat_results = array();
     $groupnum = count_records('groups', 'courseid', $course->id);
     $groups = get_records('groups', 'courseid', $course->id);
-    foreach($groups as $group) {
-        summary_stat($stat_results, $group);
+    if (is_array($groups)) {
+        foreach($groups as $group) {
+            summary_stat($stat_results, $group);
+        }
     }
     summary_stat($stat_results);
     $mygroupid = mygroupid($course->id);
