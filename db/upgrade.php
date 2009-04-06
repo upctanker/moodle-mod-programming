@@ -295,7 +295,6 @@ function xmldb_programming_upgrade($oldversion=0) {
 
     /// Calculate timeused, memused and judgeresult for existing submits
         $submits = get_recordset('programming_submits', null, null, 'id');
-        $recordcount = $submits->RecordCount();
         while ($s = $submits->FetchNextObject(false)) {
             $results = get_records('programming_test_results', 'submitid', $s->id, 'id', 'id, passed, timeused, memused, judgeresult');
             if (!empty($results)) {
