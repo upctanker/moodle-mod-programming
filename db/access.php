@@ -248,6 +248,19 @@ $mod_programming_capabilities = array(
        )
    ),
 
+   'mod/programming:rejudge' => array(
+       'captype' => 'write',
+       'contextlevel' => CONTEXT_MODULE,
+       'legacy' => array(
+           'guest' => CAP_PREVENT,
+           'student' => CAP_PREVENT,
+           'teacher' => CAP_PREVENT,
+           'editingteacher' => CAP_ALLOW,
+           'coursecreator' => CAP_PREVENT,
+           'admin' => CAP_ALLOW
+       )
+   ),
+
 );
 
 ?>

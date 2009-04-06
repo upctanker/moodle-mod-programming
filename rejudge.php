@@ -22,7 +22,7 @@
     $context = get_context_instance(CONTEXT_MODULE, $cm->id);
 
     require_login($course->id);
-    require_capability('mod/programming:edittestcase', $context);
+    require_capability('mod/programming:rejudge', $context);
 
 /// Print the page header
     $pagename = get_string('rejudge', 'programming');
