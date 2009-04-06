@@ -130,6 +130,7 @@ function print_test_result_table()
     $table->set_attribute('cellspacing', '1');
     $table->setup();
 
+    if (!is_array($results)) $results = array();
     $i = 0; $id = 0;
     $rowclazz = array('');
     foreach ($results as $result) {
