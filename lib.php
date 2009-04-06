@@ -542,9 +542,11 @@ function programming_get_test_results_short($submit) {
 function programming_get_test_results_desc($submit, $results) {
     $c = new Object();
     $c->success = 0; $c->fail = 0;
-    foreach ($results as $result) {
-        if ($result->passed == 0) $c->fail++;
-        else $c->success++;
+    if (is_array($results)) {
+        foreach ($results as $result) {
+            if ($result->passed == 0) $c->fail++;
+            else $c->success++;
+        }
     }
     $c->total = $c->success + $c->fail;
     return get_string('successfailcount', 'programming', $c);
