@@ -189,6 +189,11 @@
     float: none;
 }
 
+#mod-programming-reports-judgeresultchart .maincontent .mform {
+    width: 200px;
+    float: right;
+}
+
 .noticebox {
     margin: 0 auto;
     text-align: center;

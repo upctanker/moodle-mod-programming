@@ -3,8 +3,11 @@
     require_once('../../../config.php');
     require_once('../lib.php');
     require_once($CFG->dirroot.'/lib/tablelib.php');
+    require_once('judgeresultchart_search_form.php');
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
+    $range = optional_param('range', 0, PARAM_INT);     // 0 for show all
+    $groupid = optional_param('group', 0, PARAM_INT);   // 0 for show all
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -34,6 +37,7 @@
 
 /// Print the main part of the page
     echo '<div class="maincontent generalbox">';
+    print_search_form();
     print_judgeresult_chart();
     echo '</div>';
 
@@ -41,14 +45,26 @@
     print_footer($course);
 
 function count_judgeresult() {
-    global $CFG, $a;
+    global $CFG, $a, $range, $groupid;
+
+    $rfrom = $rwhere = '';
+    if ($range == 1) {
+        $rfrom = ", {$CFG->prefix}programming_result AS pr";
+        $rwhere = " AND pr.programmingid = {$a}
+                    AND pr.latestsubmitid = ps.id";
+    }
+    $gfrom = $gwhere = '';
+    if ($groupid) {
+        $gfrom = ", {$CFG->prefix}groups_members AS gm";
+        $gwhere = " AND gm.groupid = $groupid AND gm.userid = ps.userid";
+    }
     
-    $sql = "SELECT ps.judgeresult AS judgeresult, COUNT(*) AS count
-              FROM {$CFG->prefix}programming_submits AS ps,
-                   {$CFG->prefix}programming_result AS pr
-             WHERE pr.programmingid = {$a}
-               AND ps.programmingid = {$a}
-               AND pr.latestsubmitid = ps.id
+    $sql = "SELECT ps.judgeresult AS judgeresult,
+                   COUNT(*) AS count
+              FROM {$CFG->prefix}programming_submits AS ps
+                   $rfrom $gfrom
+             WHERE ps.programmingid = {$a}
+                   $rwhere $gwhere
           GROUP BY ps.judgeresult";
     $rst = get_recordset_sql($sql);
     $ret = array();
@@ -57,6 +73,23 @@ function count_judgeresult() {
     }
     $rst->Close();
     return $ret;
+}
+
+function print_search_form() {
+    global $a, $range, $groupid;
+    $values = array('a' => $a, 'range' => $range, 'group' => $groupid);
+
+    $mform = new judgeresultchart_search_form(null, null, 'get');
+    $mform->set_data($values);
+    $mform->display();
+    echo '
+<script type="text/javascript" language="JavaScript">
+$(document).ready(function() {
+    $(".maincontent .mform select").change(function() {
+         $(".maincontent .mform").submit();
+    });
+});
+</script>';
 }
 
 function print_judgeresult_chart() {
