@@ -41,7 +41,7 @@
         echo '<table class="noticebox" border="0" cellpadding="20" cellspacing="0">';
         echo '<tr><td class="noticeboxcontent">';
         echo '<h2 class="main">'.get_string('rejudgeprograms', 'programming', $programming).'</h2>';
-        echo '<form name="form" method="get" action="rejudge.php">';
+        echo '<form name="form" method="post" action="rejudge.php">';
         echo '<input type="hidden" name="a" value="'.$a.'" />';
         echo '<input type="hidden" name="confirm" value="1" />';
         echo '<input type="hidden" name="href" value="'.$_SERVER['HTTP_REFERER'].'" />';
