@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 function print_judgeresult_chart() {
     $c = count_judgeresult();
-    $keys = array('AC', 'PE', 'WA', 'TLE', 'MLE', 'OLE', 'CE');
+    $keys = array('AC', 'PE', 'WA', 'RE', 'TLE', 'MLE', 'OLE', 'CE');
     $setvalues = '';
     $i = 0;
     foreach ($keys as $key) {
