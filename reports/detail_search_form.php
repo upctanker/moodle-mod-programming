@@ -22,11 +22,13 @@ class detail_search_form extends moodleform {
             programming_judgeresult_options(true));
 
         $groups = get_records('groups', 'courseid', $course->id);
-        $options = array('' => get_string('all'));
-        foreach ($groups as $group) {
-            $options[$group->id] = $group->name;
+        if (is_array($groups)) {
+            $options = array('' => get_string('all'));
+            foreach ($groups as $group) {
+                $options[$group->id] = $group->name;
+            }
+            $mform->addElement('select', 'group', get_string('groups'), $options);
         }
-        $mform->addElement('select', 'group', get_string('groups'), $options);
 
         $options = array(10 => 10, 30 => 30, 100 => 100);
         $mform->addElement('select', 'perpage', get_string('showperpage', 'programming'), $options);

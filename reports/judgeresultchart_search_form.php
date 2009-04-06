@@ -15,11 +15,13 @@ class judgeresultchart_search_form extends moodleform {
                    '1' => get_string('showlatestonly', 'programming')));
 
         $groups = get_records('groups', 'courseid', $course->id);
-        $options = array('' => get_string('all'));
-        foreach ($groups as $group) {
-            $options[$group->id] = $group->name;
+        if (is_array($groups)) {
+            $options = array('' => get_string('all'));
+            foreach ($groups as $group) {
+                $options[$group->id] = $group->name;
+            }
+            $mform->addElement('select', 'group', get_string('groups'), $options);
         }
-        $mform->addElement('select', 'group', get_string('groups'), $options);
     }
 
 }
