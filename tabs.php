@@ -47,6 +47,7 @@
 		$row[] = new tabobject('reports-summary', $CFG->wwwroot.'/mod/programming/reports/summary.php?a='.$programming->id, get_string('summary','programming'));
 		$row[] = new tabobject('reports-detail', $CFG->wwwroot.'/mod/programming/reports/detail.php?a='.$programming->id.'&amp;latestonly=1', get_string('detail','programming'));
 		$row[] = new tabobject('reports-best', $CFG->wwwroot.'/mod/programming/reports/best.php?a='.$programming->id, get_string('bestprograms','programming'));
+		$row[] = new tabobject('reports-judgeresultchart', $CFG->wwwroot.'/mod/programming/reports/judgeresultchart.php?a='.$programming->id, get_string('judgeresultcountchart','programming'));
 		$tabs[] = $row;
 	}
 

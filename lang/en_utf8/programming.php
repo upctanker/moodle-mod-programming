@@ -242,5 +242,7 @@ $string['deletesubmits'] = 'Delete submits';
 $string['rejudgestarted'] = 'Rejudge started';
 $string['bestprograms'] = 'Best Programs';
 $string['rank'] = 'Rank';
+$string['others'] = 'Others';
+$string['judgeresultcountchart'] = 'Judge Result Count Chart';
 
 ?>

@@ -231,5 +231,7 @@ $string['deletesubmits'] = '删除程序';
 $string['rejudgestarted'] = '已经开始重判';
 $string['bestprograms'] = '优秀程序';
 $string['rank'] = '排名';
+$string['others'] = '其它';
+$string['judgeresultcountchart'] = '运行结果统计图';
 
 ?>
