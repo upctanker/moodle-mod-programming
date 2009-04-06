@@ -303,7 +303,7 @@ function xmldb_programming_upgrade($oldversion=0) {
                 $memused = programming_submit_memused($results);
                 $judgeresult = programming_submit_judgeresult($results);
             } else {
-                $timeused = $memused = 0;
+                $timeused = $memused = 'NULL';
                 $judgeresult = 'CE';
             }
 
