@@ -175,7 +175,7 @@ function print_test_result_table()
 
             // error message
             if (!empty($result->stderr)) {
-                $html = "<div class='programming-io>";
+                $html = "<div class='programming-io'>";
                 $html.= link_to_popup_window($downloadurl."&amp;submit={$result->submitid}&amp;type=err&amp;download=0", '_blank', $strshowasplaintext, 300, 400, null, null, true);
                 $html.= '&nbsp;';
                 $html.= "<a href='$downloadurl&amp;submit={$result->submitid}&amp;type=err'>$strdownload</a>";
