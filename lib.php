@@ -266,6 +266,67 @@ function programming_grades($programmingid) {
     return $return;
 }
 
+/**
+ * Update the grade of a submission.
+ *
+ * @param $submitid ID of submission.
+ */
+function programming_update_grade($submitid) {
+    global $CFG;
+
+    $submit = get_record('programming_submits', 'id', $submitid);
+    if (empty($submit)) return;
+    $p = get_record('programming', 'id', $submit->programmingid);
+    if (empty($p)) return;
+
+    $grade = 0;
+    if ($submit->judgeresult != 'CE') {
+        // get the summary of weight of all the test
+        $total_weight = get_field_select('programming_tests', 'SUM(weight)', 'programmingid='.$submit->programmingid);
+        if ($total_weight == 0) $total_weight = 1;
+        $sql = "SELECT SUM(pt.weight) AS weight
+                  FROM {$CFG->prefix}programming_test_results AS ptr,
+                       {$CFG->prefix}programming_tests AS pt
+                 WHERE ptr.submitid = $submit->id
+                   AND ptr.passed = 1
+                   AND pt.programmingid = $submit->programmingid
+                   AND ptr.testid = pt.id";
+        $rs = get_recordset_sql($sql);
+        if ($rs) {
+            if ($row = $rs->FetchNextObject(false)) {
+                $grade = $p->grade * $row->weight / $total_weight;
+                if ($submit->timemodified > $p->timediscount) {
+                    $grade *= $p->discount;
+                }
+            }
+            $rs->Close();
+        }
+    }
+    programming_grade_item_update($p, $submit, $grade);
+}
+
+function programming_grade_item_update($programming, $submit, $grade) {
+    global $CFG;
+
+    if (!function_exists('grade_update')) { //workaround for buggy PHP versions
+        require_once($CFG->libdir.'/gradelib.php');
+    }
+
+    $cm = get_coursemodule_from_instance('programming', $programming->id, $programming->course);
+
+    $params = array('itemname' => $programming->name,
+                    'idnumber' => $cm->id,
+                    'grademax' => $programming->grade,
+                    'grademin' => 0,
+                    'gradetype' => GRADE_TYPE_VALUE);
+    $grades = new Object();
+    $grades->itemid = $cm->id;
+    $grades->userid = $submit->userid;
+    $grades->rawgrade = $grade;
+
+    return grade_update('mod/programming', $programming->course, 'mod', 'programming', $programming->id, 0, $grades, $params);
+}
+
 function programming_get_participants($programmingid) {
 //Must return an array of user records (all data) who are participants
 //for a given instance of programming. Must include every user involved

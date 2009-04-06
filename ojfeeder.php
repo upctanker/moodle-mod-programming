@@ -281,11 +281,13 @@ function update_submit_test_results($xmlrpcmsg)
                 judgeresult = '{$judgeresult}',
                      passed = {$passed}
              WHERE id = {$sid}";
-    system("echo \"$sql\" >> /tmp/log");
     execute_sql($sql, false);
     if ($CFG->rcache === true) {
         rcache_unset('programming_submits', (int) $sid);
     }
+
+    # For moodle 1.9, update grade
+    programming_update_grade($sid);
 
     return new xmlrpcresp(new xmlrpcval(null, 'null'));
 }
