@@ -31,6 +31,7 @@
     require_login($course->id);
 
     require_capability('mod/programming:viewreport', $context);
+    $rejudge = has_capability('mod/programming:rejudge', $context);
     $deleteothersubmit = has_capability('mod/programming:deleteothersubmit', $context);
     $viewotherresult = has_capability('mod/programming:viewotherresult', $context);
     $viewotherprogram = has_capability('mod/programming:viewotherprogram', $context);
@@ -111,10 +112,12 @@ function get_submits() {
 
 function print_submit_table($submits, $total) {
     global $CFG, $page, $perpage, $programming, $course;
-    global $viewotherresult, $viewotherprogram;
+    global $viewotherresult, $viewotherprogram, $deleteothersubmit, $rejudge;
 
     $table = new flexible_table('detail-table');
-    $def = array('id', 'timemodified', 'user', 'language', 'code', 'judgeresult', 'timeused', 'memused', 'select');
+    $def = array('id', 'timemodified', 'user', 'language', 'code', 'judgeresult', 'timeused', 'memused');
+    if ($deleteothersubmit || $rejudge) $def[] = 'select';
+
     $table->define_columns($def);
     $headers = array(
         get_string('ID', 'programming'),
@@ -125,8 +128,8 @@ function print_submit_table($submits, $total) {
         get_string('result', 'programming'),
         get_string('timeused', 'programming'),
         get_string('memused', 'programming'),
-        get_string('select')
         );
+    if ($deleteothersubmit || $rejudge) $headers[] = get_string('select');
     $table->define_headers($headers);
 
     #$table->pagesize($perpage, $total);
@@ -170,7 +173,9 @@ function print_submit_table($submits, $total) {
         } else {
             $data[] = '';
         }
-        $data[] = "<input class='selectsubmit' type='checkbox' name='submitid[]' value='$submit->id'></input>";
+        if ($deleteothersubmit || $rejudge) {
+            $data[] = "<input class='selectsubmit' type='checkbox' name='submitid[]' value='$submit->id'></input>";
+        }
         $table->add_data($data);
     }
 
