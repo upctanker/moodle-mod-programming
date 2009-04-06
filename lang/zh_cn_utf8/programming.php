@@ -229,5 +229,7 @@ $string['range'] = '范围';
 $string['showperpage'] = '每页显示';
 $string['deletesubmits'] = '删除程序';
 $string['rejudgestarted'] = '已经开始重判';
+$string['bestprograms'] = '优秀程序';
+$string['rank'] = '排名';
 
 ?>

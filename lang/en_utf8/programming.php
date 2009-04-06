@@ -240,5 +240,7 @@ $string['range'] = 'Range';
 $string['showperpage'] = 'Show Perpage';
 $string['deletesubmits'] = 'Delete submits';
 $string['rejudgestarted'] = 'Rejudge started';
+$string['bestprograms'] = 'Best Programs';
+$string['rank'] = 'Rank';
 
 ?>
