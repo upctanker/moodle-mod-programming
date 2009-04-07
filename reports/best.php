@@ -3,11 +3,13 @@
     require_once('../../../config.php');
     require_once('../lib.php');
     require_once($CFG->dirroot.'/lib/tablelib.php');
+    require_once('best_search_form.php');
 
     $a = optional_param('a', 0, PARAM_INT);     // programming ID
     $page = optional_param('page', 0, PARAM_INT);
     $perpage = optional_param('perpage', 10, PARAM_INT);
     $tsort = optional_param('tsort', 'timemodified', PARAM_CLEAN);
+    $language = optional_param('language', '', PARAM_INT);
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -41,23 +43,55 @@
 /// Print the main part of the page
     echo '<div class="maincontent">';
     echo '<h1>'.get_string('bestprograms', 'programming').'</h1>';
+    print_search_form();
     print_submit_table();
     echo '</div>';
 
 /// Finish the page
     print_footer($course);
 
-function get_submits($orderby) {
-    global $CFG, $page, $perpage, $programming, $course, $tsort;
+function print_search_form() {
+    global $a, $page, $perpage, $groupid, $language;
+    $values = array('a' => $a, 'page' => $page, 'perpage' => $perpage,
+                    'group' => $groupid, 'language' => $language);
 
+    $mform = new best_search_form(null, null, 'get');
+    $mform->set_data($values);
+    $mform->display();
+    echo '
+<script type="text/javascript" language="JavaScript">
+$(document).ready(function() {
+    $(".maincontent .mform select").change(function() {
+         $(".maincontent .mform").submit();
+    });
+});
+</script>';
+}
+
+function get_submits($orderby) {
+    global $CFG, $page, $perpage, $programming, $course, $language;
+
+    $gfrom = $gwhere = '';
+    if ($groupid) {
+        $gfrom = ", {$CFG->prefix}groups_members AS gm";
+        $gwhere = " AND gm.groupid = $groupid AND gm.userid = ps.userid";
+    }
+
+    $lwhere = '';
+    if ($language) {
+        $lwhere = " AND ps.language = $language";
+    }
+    
     $submits = 0;
     $total = 0;
     $crit = " FROM {$CFG->prefix}programming_submits AS ps,
                    {$CFG->prefix}programming_result AS pr
+                   $gfrom
              WHERE ps.programmingid = {$programming->id}
                AND pr.programmingid = {$programming->id}
                AND pr.latestsubmitid = ps.id
                AND ps.judgeresult = 'AC'
+                   $gwhere $lwhere
           ORDER BY $orderby";
     $sql = "SELECT ps.* $crit";
     $submits = get_records_sql($sql, $page * $perpage, $perpage);
@@ -68,7 +102,7 @@ function get_submits($orderby) {
 }
 
 function print_submit_table() {
-    global $CFG, $page, $perpage, $programming, $course;
+    global $CFG, $page, $perpage, $programming, $course, $language, $groupid;
     global $viewotherresult, $viewotherprogram;
 
     $table = new flexible_table('detail-table');
@@ -126,9 +160,11 @@ function print_submit_table() {
 
     }
 
+    echo '<div class="maincontent2">';
     $table->print_html();
 
-    print_paging_bar($totalcount, $page, $perpage, "{$CFG->wwwroot}/mod/programming/reports/best.php?a={$programming->id}&amp;");
+    print_paging_bar($totalcount, $page, $perpage, "{$CFG->wwwroot}/mod/programming/reports/best.php?a={$programming->id}&amp;perpage=$perpage&amp;language=$language&amp;group=$groupid&amp;");
+    echo '</div>';
 
 }
 

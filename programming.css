@@ -189,8 +189,17 @@
     float: none;
 }
 
-#mod-programming-reports-judgeresultchart .maincontent .mform {
-    width: 200px;
+#mod-programming-reports-best .maincontent .maincontent2 {
+    margin: 0 220px;
+}
+
+.mod-programming-reports .maincontent2 .generaltable {
+    width: 100%;
+}
+
+#mod-programming-reports-judgeresultchart .maincontent .mform,
+#mod-programming-reports-best .maincontent .mform {
+    width: 220px;
     float: right;
 }
 
