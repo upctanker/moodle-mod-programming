@@ -29,7 +29,7 @@ class best_search_form extends moodleform {
             $mform->addElement('select', 'language', get_string('language', 'programming'), $options);
         }
 
-        $options = array(10 => 10, 30 => 30, 100 => 100);
+        $options = array(10 => 10, 20 => 20, 30 => 30, 50 => 50, 100 => 100);
         $mform->addElement('select', 'perpage', get_string('showperpage', 'programming'), $options);
     }
 
