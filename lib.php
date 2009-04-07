@@ -276,6 +276,11 @@ function programming_update_grade($submitid) {
 
     $submit = get_record('programming_submits', 'id', $submitid);
     if (empty($submit)) return;
+
+    # do not update grade if this is not the latest submission
+    $rst = get_record('programming_result', 'programmingid', $submit->programmingid, 'userid', $submit->userid);
+    if ($rst->latestsubmitid != $submitid) return;
+
     $p = get_record('programming', 'id', $submit->programmingid);
     if (empty($p)) return;
 
