@@ -334,7 +334,7 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_index($table, $idx);
     }
 
-    if ($result && $oldversion < 2009040702) {
+    if ($result && $oldversion < 2009040703) {
         $rs = get_recordset('programming_result');
         while ($rst = $rs->FetchNextObject(false)) {
             programming_update_grade($rst->latestsubmitid);

@@ -301,7 +301,7 @@ function programming_update_grade($submitid) {
             if ($row = $rs->FetchNextObject(false)) {
                 $grade = $p->grade * $row->weight / $total_weight;
                 if ($submit->timemodified > $p->timediscount) {
-                    $grade *= $p->discount;
+                    $grade = $grade * $p->discount / 10.0;
                 }
             }
             $rs->Close();
