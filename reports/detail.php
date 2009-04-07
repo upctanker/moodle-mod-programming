@@ -92,7 +92,11 @@ function get_submits() {
         $gfrom = $gwhere = '';
     }
     if ($judgeresult) {
-        $jrwhere = " AND ps.judgeresult = '$judgeresult'";
+        if ($judgeresult == 'NULL') {
+            $jrwhere = " AND ps.judgeresult IS NULL";
+        } else {
+            $jrwhere = " AND ps.judgeresult = '$judgeresult'";
+        }
     } else {
         $jrwhere = '';
     }

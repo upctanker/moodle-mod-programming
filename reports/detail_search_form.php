@@ -17,9 +17,10 @@ class detail_search_form extends moodleform {
              array('0' => get_string('showall', 'programming'),
                    '1' => get_string('showlatestonly', 'programming')));
 
+        $options = programming_judgeresult_options(true);
+        $options['NULL'] = get_string('statusshortnew', 'programming');
         $mform->addElement(
-            'select', 'judgeresult', get_string('judgeresult', 'programming'),
-            programming_judgeresult_options(true));
+            'select', 'judgeresult', get_string('judgeresult', 'programming'), $options);
 
         $groups = get_records('groups', 'courseid', $course->id);
         if (is_array($groups)) {
