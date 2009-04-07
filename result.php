@@ -141,7 +141,7 @@ function print_test_result_table()
         $data[] = programming_format_timelimit($tests[$result->testid]->timelimit);
         $data[] = programming_format_memlimit($tests[$result->testid]->memlimit);
         $downloadurl = $CFG->wwwroot."/mod/programming/download_io.php?a={$programming->id}&amp;test={$result->testid}";
-        if ($viewhiddentestcase || programming_test_case_visible($tests, $results)) {
+        if ($viewhiddentestcase || programming_test_case_visible($tests, $result)) {
             // input
             $html = "<div class='programming-io'>";
             $html.= link_to_popup_window($downloadurl.'&amp;type=in&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
@@ -185,9 +185,8 @@ function print_test_result_table()
                 $data[] = get_string('n/a', 'programming');
             }
         } else {
-            $html = div($strsecuretestcase, $clazz);
-            $data[] = $html; $data[] = $html;
-            $data[] = $html; $data[] = $html;
+            $data[] = $strsecuretestcase; $data[] = $strsecuretestcase;
+            $data[] = $strsecuretestcase; $data[] = $strsecuretestcase;
         }
 
         $data[] = round($result->timeused, 3);
