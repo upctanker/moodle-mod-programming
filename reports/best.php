@@ -10,6 +10,7 @@
     $perpage = optional_param('perpage', 10, PARAM_INT);
     $tsort = optional_param('tsort', 'timemodified', PARAM_CLEAN);
     $language = optional_param('language', '', PARAM_INT);
+    $groupid = optional_param('group', 0, PARAM_INT);
 
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -69,7 +70,7 @@ $(document).ready(function() {
 }
 
 function get_submits($orderby) {
-    global $CFG, $page, $perpage, $programming, $course, $language;
+    global $CFG, $page, $perpage, $programming, $course, $language, $groupid;
 
     $gfrom = $gwhere = '';
     if ($groupid) {
