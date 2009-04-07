@@ -3,8 +3,8 @@
 /// This page lists all the instances of programming in a particular course
 /// Replace programming with the name of your module
 
-    require_once('../../config.php');
-    require_once('lib.php');
+    require_once('../../../config.php');
+    require_once('../lib.php');
 
     $id = required_param('id', PARAM_INT);   // course
 
@@ -25,10 +25,10 @@
 
 /// Print the header
     $title = get_string('resemble', 'programming');
-    include_once('pageheader.php');
+    include_once('../pageheader.php');
 
     $currenttab = 'resemble';
-    include_once('index_tabs.php');
+    include_once('../index_tabs.php');
 
 /// Get all the appropriate data
 

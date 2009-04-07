@@ -9,7 +9,7 @@
 
     $row = array();
     $row[] = new tabobject('result', "$CFG->wwwroot/mod/programming/index.php?id=$id", get_string('result','programming'), '', true);
-    $row[] = new tabobject('resemble', "$CFG->wwwroot/mod/programming/index_resemble.php?id=$id", get_string('resemble','programming'), '', true);
+    $row[] = new tabobject('resemble', "$CFG->wwwroot/mod/programming/course/resemble.php?id=$id", get_string('resemble','programming'), '', true);
     $tabs[] = $row;
 
     /*****************************
