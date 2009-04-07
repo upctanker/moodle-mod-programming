@@ -136,9 +136,12 @@ function print_summary_chart($stat_results) {
         $style = 'style="float: left;"';
     }
 
+    $strvisitgoogleneeded = get_string('visitgoogleneeded', 'programming');
     echo '<div id="summary-charts" style="height: 300px; margin: 0 auto; width: 900px;">';
-    echo "<div id='summary-group-count-chart' $style> </div>";
-    echo "<div id='summary-percent-chart' $style> </div>";
+    if ($groupcount) {
+        echo "<div id='summary-group-count-chart' $style class='googlechart'><p>$strvisitgoogleneeded</p></div>";
+    }
+    echo "<div id='summary-percent-chart' $style class='googlechart'><p>$strvisitgoogleneeded</p></div>";
     echo '</div>';
 
     echo "
@@ -146,6 +149,7 @@ function print_summary_chart($stat_results) {
     google.load('visualization', '1', {packages:['piechart', 'columnchart']});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
+        $('.googlechart').empty();
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Result');
         data.addColumn('number', 'Count');

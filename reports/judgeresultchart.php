@@ -111,9 +111,10 @@ function print_judgeresult_chart() {
     $setvalues .= "data.setValue($i, 1, $others);\n";
     $i++;
     $strjudgeresultchart = get_string('judgeresultcountchart', 'programming');
+    $strvisitgoogleneeded = get_string('visitgoogleneeded', 'programming');
 
     echo '<div id="summary-charts" style="height: 400px; margin: 0 auto; width: 800px;">';
-    echo "<div id='count-judge-result-chart'> </div>";
+    echo "<div id='count-judge-result-chart' class='googlechart'><p>$strvisitgoogleneeded</p></div>";
     echo '</div>';
 
     echo "
@@ -121,6 +122,7 @@ function print_judgeresult_chart() {
     google.load('visualization', '1', {packages:['piechart']});
     google.setOnLoadCallback(drawChart);
     function drawChart() {
+        $('.googlechart').empty();
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Result');
         data.addColumn('number', 'Count');
