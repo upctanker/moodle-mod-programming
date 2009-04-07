@@ -791,7 +791,7 @@ function programming_submit_memused(&$results) {
 }
 
 function programming_judgeresult_options($addempty = false) {
-    $rst = array('AC', 'PE', 'WA', 'RE', 'KS', 'OLE', 'MLE', 'TLE', 'RFC', 'JGE', 'JSE');
+    $rst = array('AC', 'PE', 'WA', 'RE', 'FPE', 'KS', 'OLE', 'MLE', 'TLE', 'RFC', 'JGE', 'JSE');
     $ret = array();
     if ($addempty) $ret[''] = get_string('all');
     foreach ($rst as $k) {
@@ -803,7 +803,7 @@ function programming_judgeresult_options($addempty = false) {
 function programming_submit_judgeresult(&$results) {
     $err = array('JSE' => 20, 'JGE' => 19, 'RFC' => 18,
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,
-                 'KS' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
+                 'KS' => 14, 'FPE' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
 
     $c = -1;
     $errstr = null;
