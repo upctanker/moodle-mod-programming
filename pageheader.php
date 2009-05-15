@@ -24,7 +24,7 @@
         $navigation = build_navigation($strprogrammings);
     }
 
-    print_header_simple(
+    print_header(
         empty($programming) ? $strprogrammings.' '.$title : $course->shortname.': '.$programming->name,
         $course->fullname,
         $navigation,
