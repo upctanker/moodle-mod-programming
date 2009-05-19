@@ -92,7 +92,7 @@ class mod_programming_mod_form extends moodleform_mod {
             $default_values['discount'] = 8;
         }
 
-        if (empty($default_values['langlimit'])) {
+        if (empty($default_values['langlimit']) && !empty($default_values['id'])) {
             $default_values['langlimit'] = array();
             $rows = get_records('programming_langlimit', 'programmingid', $default_values['id']);
             if (is_array($rows)) {
