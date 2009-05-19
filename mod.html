@@ -101,7 +101,7 @@ for ($i = 10; $i > 0; $i -= 1) {
 <tr valign="top">
     <td align="right"><b><?php print_string('globalid', 'programming') ?>:</b></td>
      <td align="left">
-       <input type="text" name="globalid" size="10" value="<?php  p($form->globalid) ?>">
+       <input type="text" name="globalid" size="10" value="<?php p(isset($form->globalid) ? $form->globalid : '') ?>">
     </td>
 </tr>
 
@@ -261,7 +261,7 @@ for ($i = 10; $i > 0; $i -= 1) {
 <tr valign="top">
     <td align="right"><b><?php print_string('showmode', 'programming') ?>:</b></td>
     <td align="left">
-        <?php choose_from_menu($showmodeoptions, 'showmode', $form->showmode, ''); ?>
+        <?php choose_from_menu($showmodeoptions, 'showmode', isset($form->showmode) ? $form->showmode : 0, ''); ?>
     </td>
 </tr>
 
