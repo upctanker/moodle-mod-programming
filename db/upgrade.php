@@ -342,6 +342,19 @@ function xmldb_programming_upgrade($oldversion=0) {
         $rs->Close();
     }
 
+    if ($result && $oldversion < 2009051902) {
+        $names = array('fpc-2.2', 'python-2.5', 'gmcs-2.0', 'bash-3');
+        foreach ($names as $name) {
+            if (!$result) break;
+            $l = get_record('programming_languages', 'name', $name);
+            if (!$l) {
+                $l = new stdClass;
+                $l->name = $name;
+                $result = insert_record('programming_languages', $l);
+            }
+        }
+    }
+
     return $result;
 }
 
