@@ -186,6 +186,10 @@
         <SENTENCE TEXT="(name) VALUES ('g++-3.3')" />
         <SENTENCE TEXT="(name) VALUES ('java-1.5')" />
         <SENTENCE TEXT="(name) VALUES ('java-1.6')" />
+        <SENTENCE TEXT="(name) VALUES ('fpc-2.2')" />
+        <SENTENCE TEXT="(name) VALUES ('python-2.5')" />
+        <SENTENCE TEXT="(name) VALUES ('gmcs-2.0')" />
+        <SENTENCE TEXT="(name) VALUES ('bash-3')" />
       </SENTENCES>
     </STATEMENT>
   </STATEMENTS>
