@@ -236,5 +236,7 @@ $string['rank'] = '排名';
 $string['others'] = '其它';
 $string['judgeresultcountchart'] = '运行结果统计图';
 $string['visitgoogleneeded'] = '显示图表需访问谷歌的网站，请稍候……';
+$string['inputfile'] = '输入文件';
+$string['outputfile'] = '输出文件';
 
 ?>

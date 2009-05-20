@@ -355,6 +355,20 @@ function xmldb_programming_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2009052001) {
+        $table = new XMLDBTable('programming');
+        $field = new XMLDBField('inputfile');
+        $field->setAttributes(XMLDB_TYPE_CHAR, 50, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='keeplatestonly');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009052001) {
+        $table = new XMLDBTable('programming');
+        $field = new XMLDBField('outputfile');
+        $field->setAttributes(XMLDB_TYPE_CHAR, 50, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='inputfile');
+        $result = add_field($table, $field);
+    }
+
     return $result;
 }
 

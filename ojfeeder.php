@@ -168,6 +168,8 @@ function get_problem($xmlrpcmsg)
     $ret = new xmlrpcval(array(
             'id' => new xmlrpcval(sprintf('%010d', $p->id), 'string'),
             'timemodified' => new xmlrpcval($p->timemodified, 'int'),
+            'input_filename' => new xmlrpcval($p->inputfile, 'string'),
+            'output_filename' => new xmlrpcval($p->outputfile, 'string'),
             'validator_code' => new xmlrpcval($p->validator, 'base64'),
             'validator_type' => new xmlrpcval($vtype, 'string'),
             'generator_code' =>  new xmlrpcval('', 'base64'),
