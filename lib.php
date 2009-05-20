@@ -33,6 +33,9 @@ define('PROGRAMMING_TEST_SHOW', 1);
 define('PROGRAMMING_PRESET_BEGIN', "/* PRESET CODE BEGIN - NEVER TOUCH CODE BELOW */");
 define('PROGRAMMING_PRESET_END', "/* PRESET CODE END - NEVER TOUCH CODE ABOVE*/");
 
+define('PROGRAMMING_RANGE_ALL', 0);
+define('PROGRAMMING_RANGE_LATEST', 1);
+
 function programming_add_instance($programming) {
 /// Given an object containing all the necessary data, 
 /// (defined by the form in mod.html) this function 
