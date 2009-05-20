@@ -251,5 +251,6 @@ $string['stdin'] = 'stdin';
 $string['stdout'] = 'stdout';
 $string['inputfromfile'] = 'Input from file';
 $string['outputtofile'] = 'Output to file';
+$string['program'] = 'Program';
 
 ?>

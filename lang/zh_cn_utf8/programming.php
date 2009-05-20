@@ -242,5 +242,6 @@ $string['stdin'] = '标准输入';
 $string['stdout'] = '标准输出';
 $string['inputfromfile'] = '从文件输入';
 $string['outputtofile'] = '输入到文件';
+$string['program'] = '程序';
 
 ?>

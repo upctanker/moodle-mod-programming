@@ -26,6 +26,40 @@ class mod_programming_mod_form extends moodleform_mod {
         $mform->setType('description', PARAM_RAW);
         $mform->addRule('description', get_string('required'), 'required', null, 'client');
         $mform->setHelpButton('description', array('writing', 'questions', 'richtext'), false, 'editorhelpbutton');
+        $mform->addElement('format', 'descformat', get_string('format'));
+
+//-------------------------------------------------------------------------------
+        $mform->addElement('header', '', get_string('grade'));
+
+        $options = array();
+        $options[0] = get_string('nograde', 'programming');
+        for ($i = 5; $i <= 100; $i += 5) {
+            $options[$i] = $i;
+        }
+        $mform->addElement('select', 'grade', get_string('grade'), $options);
+
+        $options = array();
+        for ($i = 10; $i > 0; $i -= 1) {
+            $options[$i] = $i / 10.0;
+        }
+        $mform->addElement('select', 'discount', get_string('discount', 'programming'), $options);
+
+        $mform->addElement('date_time_selector', 'timeopen', get_string('timeopen', 'programming'));
+        $mform->addElement('date_time_selector', 'timediscount', get_string('timediscount', 'programming'));
+        $mform->addElement('date_time_selector', 'timeclose', get_string('timeclose', 'programming'));
+
+        $mform->addElement('selectyesno', 'allowlate', get_string('allowlate', 'programming'));
+    
+//-------------------------------------------------------------------------------
+        $mform->addElement('header', '', get_string('program', 'programming'));
+
+        $languages = get_records('programming_languages', '', '', 'id');
+        $langs = array();
+        foreach ($languages as $key => $lang) {
+            $langs[$key] = $lang->name;
+        }
+        $select = $mform->addElement('select', 'langlimit', get_string('langlimit', 'programming'), $langs);
+        $select->setMultiple(true);
 
         $inputs = array();
         $inputs[] = &MoodleQuickForm::createElement('radio', 'inputs', null, get_string('stdin', 'programming'), 0);
@@ -40,23 +74,6 @@ class mod_programming_mod_form extends moodleform_mod {
         $outputs[] = &MoodleQuickForm::createElement('text', 'outputfile');
         $mform->addGroup($outputs, 'outputs', get_string('outputfile', 'programming'), ' ', false);
         $mform->disabledIf('outputfile', 'outputs', 'eq', 0);
-
-        $mform->addElement('date_time_selector', 'timeopen', get_string('timeopen', 'programming'));
-        $mform->addElement('date_time_selector', 'timediscount', get_string('timediscount', 'programming'));
-        $mform->addElement('date_time_selector', 'timeclose', get_string('timeclose', 'programming'));
-
-        $options = array();
-        $options[0] = get_string('nograde', 'programming');
-        for ($i = 5; $i <= 100; $i += 5) {
-            $options[$i] = $i;
-        }
-        $mform->addElement('select', 'grade', get_string('grade'), $options);
-
-        $options = array();
-        for ($i = 10; $i > 0; $i -= 1) {
-            $options[$i] = $i / 10.0;
-        }
-        $mform->addElement('select', 'discount', get_string('discount', 'programming'), $options);
 
         $options = programming_get_timelimit_options();
         $mform->addElement('select', 'timelimit', get_string('timelimit', 'programming'), $options);
@@ -74,19 +91,9 @@ class mod_programming_mod_form extends moodleform_mod {
 
         $mform->addElement('selectyesno', 'keeplatestonly', get_string('keeplatestonly', 'programming'));
 
-        $mform->addElement('selectyesno', 'allowlate', get_string('allowlate', 'programming'));
-    
         $options = programming_get_showmode_options();
         $mform->addElement('select', 'showmode', get_string('showmode', 'programming'), $options);
         
-        $languages = get_records('programming_languages', '', '', 'id');
-        $langs = array();
-        foreach ($languages as $key => $lang) {
-            $langs[$key] = $lang->name;
-        }
-        $select = $mform->addElement('select', 'langlimit', get_string('langlimit', 'programming'), $langs);
-        $select->setMultiple(true);
-
 //-------------------------------------------------------------------------------
         $features = new stdClass;
         $features->groups = true;
