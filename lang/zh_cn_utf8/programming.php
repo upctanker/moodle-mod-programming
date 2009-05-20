@@ -238,5 +238,9 @@ $string['judgeresultcountchart'] = '运行结果统计图';
 $string['visitgoogleneeded'] = '显示图表需访问谷歌的网站，请稍候……';
 $string['inputfile'] = '输入文件';
 $string['outputfile'] = '输出文件';
+$string['stdin'] = '标准输入';
+$string['stdout'] = '标准输出';
+$string['inputfromfile'] = '从文件输入';
+$string['outputtofile'] = '输入到文件';
 
 ?>

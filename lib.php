@@ -44,11 +44,10 @@ function programming_add_instance($programming) {
 
     $programming->timemodified = mktime();
 
-    $programming->timeopen = make_timestamp($programming->openyear, $programming->openmonth, $programming->openday, $programming->openhour, $programming->openminute);
-    $programming->timeclose = make_timestamp($programming->closeyear, $programming->closemonth, $programming->closeday, $programming->closehour, $programming->closeminute);
-    $programming->timediscount = make_timestamp($programming->discountyear, $programming->discountmonth, $programming->discountday, $programming->discounthour, $programming->discountminute);
+    if ($programming->inputs == 0) $programming->inputfile = '';
+    if ($programming->outputs == 0) $programming->outputfile = '';
 
-    $id = insert_record("programming", $programming);
+    $id = insert_record('programming', $programming);
 
     if (isset($programming->langlimit) && is_array($programming->langlimit)) {
         foreach ($programming->langlimit as $lang) {
@@ -71,15 +70,8 @@ function programming_update_instance($programming) {
     $programming->timemodified = mktime();
     $programming->id = $programming->instance;
 
-    if (isset($programming->openyear)) {
-        $programming->timeopen = make_timestamp($programming->openyear, $programming->openmonth, $programming->openday, $programming->openhour, $programming->openminute);
-    }
-    if (isset($programming->closeyear)) {
-        $programming->timeclose = make_timestamp($programming->closeyear, $programming->closemonth, $programming->closeday, $programming->closehour, $programming->closeminute);
-    }
-    if (isset($programming->discountyear)) {
-        $programming->timediscount = make_timestamp($programming->discountyear, $programming->discountmonth, $programming->discountday, $programming->discounthour, $programming->discountminute);
-    }
+    if ($programming->inputs == 0) $programming->inputfile = '';
+    if ($programming->outputs == 0) $programming->outputfile = '';
 
     if (isset($programming->keeplatestonly) and $programming->keeplatestonly) {
         programming_delete_old_submits($programming->id);

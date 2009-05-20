@@ -247,5 +247,9 @@ $string['judgeresultcountchart'] = 'Judge Result Count Chart';
 $string['visitgoogleneeded'] = 'To show the charts, the browser needs to visit google website...';
 $string['inputfile'] = 'Input file';
 $string['outputfile'] = 'Output file';
+$string['stdin'] = 'stdin';
+$string['stdout'] = 'stdout';
+$string['inputfromfile'] = 'Input from file';
+$string['outputtofile'] = 'Output to file';
 
 ?>
