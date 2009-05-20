@@ -550,11 +550,13 @@ function programming_delete_old_submits($programmingid = -1, $userid = -1) {
         }
         $ids = implode(',', $ids);
     
-        #delete from submits table
-        execute_sql("DELETE FROM {$CFG->prefix}programming_submits WHERE id IN ({$ids})", false);
+        if ($ids) {
+            #delete from submits table
+            execute_sql("DELETE FROM {$CFG->prefix}programming_submits WHERE id IN ({$ids})", false);
 
-        #delete from test results table
-        execute_sql("DELETE FROM {$CFG->prefix}programming_test_results WHERE submitid IN ({$ids})", false);
+            #delete from test results table
+            execute_sql("DELETE FROM {$CFG->prefix}programming_test_results WHERE submitid IN ({$ids})", false);
+        }
     }
 
     return true;
