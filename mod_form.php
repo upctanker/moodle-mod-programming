@@ -111,11 +111,11 @@ class mod_programming_mod_form extends moodleform_mod {
         }
 
         if (empty($default_values['inputs'])) {
-            $default_values['inputs'] = $default_values['inputfile'] ? 1 : 0;
+            $default_values['inputs'] = (isset($default_values['inputfile']) && $default_values['inputfile']) ? 1 : 0;
         }
 
         if (empty($default_values['outputs'])) {
-            $default_values['outputs'] = $default_values['outputfile'] ? 1 : 0;
+            $default_values['outputs'] = (isset($default_values['outputfile']) && $default_values['outputfile']) ? 1 : 0;
         }
 
         if (empty($default_values['langlimit']) && !empty($default_values['id'])) {
