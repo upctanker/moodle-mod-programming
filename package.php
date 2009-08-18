@@ -87,7 +87,13 @@
     }
 
     // zip file
-    $dest = $CFG->dataroot.'/'.$course->id.'/programming-'.$programming->id;
+    // eli changed ! 2009-8-18 22:37:12
+    $dest = $CFG->dataroot.'/'.$course->id;
+    if (!file_exists($dest)) {
+        mkdir($dest, 0777) or error('Failed to create dir');
+    }
+    $dest .= '/programming-'.$programming->id;
+
     if ($group === 0) {
         $dest .= '-all';
     } else {
