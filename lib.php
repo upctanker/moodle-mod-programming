@@ -734,7 +734,7 @@ function programming_rejudge($programming, $submitid, $groupid, $ac) {
 
     $sql = "UPDATE {$CFG->prefix}programming_submits
                SET judgeresult=null, timeused=null, memused=null,
-                   passed=null, status=0
+                   passed=null, status=0, compilemessage=null
              WHERE id IN ($ids)";
     execute_sql($sql, False);
 
