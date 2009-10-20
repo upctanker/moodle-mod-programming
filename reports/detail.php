@@ -183,18 +183,20 @@ function print_submit_table($submits, $total) {
         $table->add_data($data);
     }
 
+    $strrejudge = get_string('rejudge', 'programming');
+    $strdelete = get_string('delete');
     echo "<form id='submitaction' method='post'>";
     echo "<input type='hidden' name='a' value='$programming->id' />";
     $table->print_html();
     echo '<div id="submitbuttons" style="display: none">';
-    echo '<input id="rejudge" type="button" name="action" value="Rejudge" />';
-    echo '<input id="delete" type="button" name="action" value="Delete" />';
+    echo "<input id='rejudge' type='button' value='$strrejudge' />";
+    echo "<input id='delete' type='button' value='$strdelete' />";
     echo '</div>';
     echo '</form>';
     echo "
 <script type='text/javascript' language='JavaScript'>
 $(document).ready(function() {
-    $('.selectsubmit').change(function() {
+    $('.selectsubmit').click(function() {
         var show = false;
         $('.selectsubmit').each(function() {
             if ($(this).attr('checked')) show = true;
@@ -208,11 +210,11 @@ $(document).ready(function() {
         }
     });
     $('#rejudge').click(function() {
-        $('#submitaction').get(0).action = '{$CFG->wwwroot}/mod/programming/rejudge.php';
+        $('#submitaction').attr('action', '../rejudge.php');
         $('#submitaction').submit();
     });
     $('#delete').click(function() {
-        $('#submitaction').get(0).action = '{$CFG->wwwroot}/mod/programming/deletesubmit.php';
+        $('#submitaction').attr('action', '../deletesubmit.php');
         $('#submitaction').submit();
     });
 });
