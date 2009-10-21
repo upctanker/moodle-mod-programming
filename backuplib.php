@@ -69,10 +69,14 @@
         fwrite($bf, full_tag('ALLOWLATE', 4, false, $programming->allowlate));
         fwrite($bf, full_tag('ATTEMPTS', 4, false, $programming->attempts));
         fwrite($bf, full_tag('KEEPLATESTONLY', 4, false, $programming->keeplatestonly));
-        fwrite($bf, full_tag('SHOWMODE', 4, false, $programming->showmode));
+        fwrite($bf, full_tag('INPUTFILE', 4, false, $programming->inputfile));
+        fwrite($bf, full_tag('OUTPUTFILE', 4, false, $programming->outputfile));
         fwrite($bf, full_tag('PRESETCODE', 4, false, $programming->presetcode));
+        fwrite($bf, full_tag('GENERATOR', 4, false, $programming->generator));
         fwrite($bf, full_tag('VALIDATOR', 4, false, $programming->validator));
+        fwrite($bf, full_tag('GENERATORTYPE', 4, false, $programming->generatortype));
         fwrite($bf, full_tag('VALIDATORTYPE', 4, false, $programming->validatortype));
+        fwrite($bf, full_tag('SHOWMODE', 4, false, $programming->showmode));
 
         programming_backup_langlimit($bf, $preferences, $programming);
         programming_backup_testcase($bf, $preferences, $programming);
@@ -114,7 +118,9 @@
                 fwrite($bf, start_tag('TESTCASE', 5, true));
                 fwrite($bf, full_tag('ID', 6, false, $test->id));
                 fwrite($bf, full_tag('INPUT', 6, false, base64_encode($test->input)));
+                fwrite($bf, full_tag('GZINPUT', 6, false, base64_encode($test->gzinput)));
                 fwrite($bf, full_tag('OUTPUT', 6, false, base64_encode($test->output)));
+                fwrite($bf, full_tag('GZOUTPUT', 6, false, base64_encode($test->gzoutput)));
                 fwrite($bf, full_tag('TIMELIMIT', 6, false, $test->timelimit));
                 fwrite($bf, full_tag('MEMLIMIT', 6, false, $test->memlimit));
                 fwrite($bf, full_tag('PUB', 6, false, $test->pub));

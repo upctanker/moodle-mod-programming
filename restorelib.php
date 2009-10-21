@@ -29,10 +29,14 @@
             $programming->allowlate  = backup_todb($info['MOD']['#']['ALLOWLATE']['0']['#']);
             $programming->attempts = backup_todb($info['MOD']['#']['ATTEMPTS']['0']['#']);
             $programming->keeplatestonly = backup_todb($info['MOD']['#']['KEEPLATESTONLY']['0']['#']);
-            $programming->showmode = backup_todb($info['MOD']['#']['SHOWMODE']['0']['#']);
+            $programming->inputfile = backup_todb($info['MOD']['#']['INPUTFILE']['0']['#']);
+            $programming->outputfile = backup_todb($info['MOD']['#']['OUTPUTFILE']['0']['#']);
             $programming->presetcode = backup_todb($info['MOD']['#']['PRESETCODE']['0']['#']);
+            $programming->generator = backup_todb($info['MOD']['#']['GENERATOR']['0']['#']);
             $programming->validator = backup_todb($info['MOD']['#']['VALIDATOR']['0']['#']);
+            $programming->generatortype = backup_todb($info['MOD']['#']['GENERATORTYPE']['0']['#']);
             $programming->validatortype = backup_todb($info['MOD']['#']['VALIDATORTYPE']['0']['#']);
+            $programming->showmode = backup_todb($info['MOD']['#']['SHOWMODE']['0']['#']);
 
             $newid = insert_record('programming', $programming);
             
@@ -100,8 +104,10 @@
 
             $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
             $test->programmingid = $programmingid;
-            $test->input = base64_decode(backup_todb($opt_info['#']['INPUT']['0']['#']));
-            $test->output = base64_decode(backup_todb($opt_info['#']['OUTPUT']['0']['#']));
+            $test->input = backup_todb(base64_decode($opt_info['#']['INPUT']['0']['#']));
+            $test->gzinput = backup_todb(base64_decode($opt_info['#']['GZINPUT']['0']['#']));
+            $test->output = backup_todb(base64_decode($opt_info['#']['OUTPUT']['0']['#']));
+            $test->gzoutput = backup_todb(base64_decode($opt_info['#']['GZOUTPUT']['0']['#']));
             $test->timelimit = backup_todb($opt_info['#']['TIMELIMIT']['0']['#']);
             $test->memlimit = backup_todb($opt_info['#']['MEMLIMIT']['0']['#']);
             $test->pub = backup_todb($opt_info['#']['PUB']['0']['#']);
