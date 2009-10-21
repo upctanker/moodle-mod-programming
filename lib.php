@@ -401,7 +401,7 @@ function programming_get_test_pub_options() {
 function programming_get_weight_options() {
     $weightoptions = array();
     //$weightoptions[0] = get_string('weightsetting', 'programming');
-    for ($i = 0; $i <= 5; $i += 1) {
+    for ($i = 0; $i <= 10; $i += 1) {
         $weightoptions[$i] =  $i;
     }
     return $weightoptions;
