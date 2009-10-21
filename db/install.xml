@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/programming/db" VERSION="20090328" COMMENT="XMLDB file for Moodle mod/programming"
+<XMLDB PATH="mod/programming/db" VERSION="20091021" COMMENT="XMLDB file for Moodle mod/programming"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -7,30 +7,32 @@
     <TABLE NAME="programming" COMMENT="programming table retrofitted from MySQL" NEXT="programming_tests">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
-        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="course" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="descformat"/>
-        <FIELD NAME="descformat" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="float" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="descformat" NEXT="timeopen"/>
-        <FIELD NAME="timeopen" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="timeclose"/>
-        <FIELD NAME="timeclose" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timeopen" NEXT="timelimit"/>
-        <FIELD NAME="timelimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="timeclose" NEXT="memlimit"/>
-        <FIELD NAME="memlimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="timelimit" NEXT="timediscount"/>
-        <FIELD NAME="timediscount" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="130000000" SEQUENCE="false" ENUM="false" PREVIOUS="memlimit" NEXT="discount"/>
-        <FIELD NAME="discount" TYPE="float" NOTNULL="true" UNSIGNED="false" DEFAULT="8" SEQUENCE="false" ENUM="false" PREVIOUS="timediscount" NEXT="allowlate"/>
-        <FIELD NAME="allowlate" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="discount" NEXT="attempts"/>
-        <FIELD NAME="attempts" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="allowlate" NEXT="keeplatestonly"/>
-        <FIELD NAME="keeplatestonly" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="attempts" NEXT="presetcode"/>
-        <FIELD NAME="presetcode" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="keeplatestonly" NEXT="generator"/>
+        <FIELD NAME="descformat" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="grade"/>
+        <FIELD NAME="grade" TYPE="float" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="descformat" NEXT="timeopen"/>
+        <FIELD NAME="timeopen" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="timeclose"/>
+        <FIELD NAME="timeclose" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timeopen" NEXT="timelimit"/>
+        <FIELD NAME="timelimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timeclose" NEXT="memlimit"/>
+        <FIELD NAME="memlimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timelimit" NEXT="timediscount"/>
+        <FIELD NAME="timediscount" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="130000000" SEQUENCE="false" ENUM="false" PREVIOUS="memlimit" NEXT="discount"/>
+        <FIELD NAME="discount" TYPE="float" NOTNULL="true" UNSIGNED="true" DEFAULT="8" SEQUENCE="false" ENUM="false" PREVIOUS="timediscount" NEXT="allowlate"/>
+        <FIELD NAME="allowlate" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="discount" NEXT="attempts"/>
+        <FIELD NAME="attempts" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="allowlate" NEXT="keeplatestonly"/>
+        <FIELD NAME="keeplatestonly" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="attempts" NEXT="inputfile"/>
+        <FIELD NAME="inputfile" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="keeplatestonly" NEXT="outputfile"/>
+        <FIELD NAME="outputfile" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="inputfile" NEXT="presetcode"/>
+        <FIELD NAME="presetcode" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="outputfile" NEXT="generator"/>
         <FIELD NAME="generator" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="presetcode" NEXT="validator"/>
         <FIELD NAME="validator" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="generator" NEXT="generatortype"/>
-        <FIELD NAME="generatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="validator" NEXT="validatortype"/>
-        <FIELD NAME="validatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="generatortype" NEXT="showmode"/>
-        <FIELD NAME="showmode" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="validatortype" NEXT="timemodified"/>
+        <FIELD NAME="generatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="validator" NEXT="validatortype"/>
+        <FIELD NAME="validatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="generatortype" NEXT="showmode"/>
+        <FIELD NAME="showmode" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="validatortype" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="showmode"/>
       </FIELDS>
       <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for programming"/>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
       <INDEXES>
         <INDEX NAME="mdl_prog_cou_ix" UNIQUE="false" FIELDS="course"/>
@@ -70,7 +72,7 @@
         <FIELD NAME="codesize" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="codelines" NEXT="status"/>
         <FIELD NAME="status" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="codesize" NEXT="compilemessage"/>
         <FIELD NAME="compilemessage" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="status" NEXT="timeused"/>
-        <FIELD NAME="timeused" TYPE="float" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="compilemessage" NEXT="memused"/>
+        <FIELD NAME="timeused" TYPE="float" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="compilemessage" NEXT="memused"/>
         <FIELD NAME="memused" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timeused" NEXT="judgeresult"/>
         <FIELD NAME="judgeresult" TYPE="char" LENGTH="5" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="memused" NEXT="passed"/>
         <FIELD NAME="passed" TYPE="int" LENGTH="1" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="judgeresult"/>
