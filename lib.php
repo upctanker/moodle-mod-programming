@@ -1199,6 +1199,10 @@ function get_visible_programmings($courseid)
 
 function programming_test_case_visible($tests, $result)
 {
+    if (! is_object($result)) {
+        return false;
+    }
+
     return $tests[$result->testid]->pub == PROGRAMMING_TEST_SHOW ||
            $tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWINRESULT ||
            ($tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $programming->timediscount <= time());
