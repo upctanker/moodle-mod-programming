@@ -369,30 +369,6 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_field($table, $field);
     }
 
-    if ($result && $oldversion < 2009112503) {
-    /// Define table programming_presetcode to be created
-        $table = new XMLDBTable('programming_presetcode');
-
-    /// Adding fields to table programming_result
-        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
-        $table->addFieldInfo('programmingid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('languageid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('sequence', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('presetcode', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('presetcodeforcheck', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-
-    /// Adding keys to table programming_result
-        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
-
-    /// Adding indexes to table programming_result
-        $table->addIndexInfo('prog-lang-name', XMLDB_INDEX_UNIQUE, array('programmingid', 'languageid', 'name'));
-        $table->addIndexInfo('prog-seq', XMLDB_INDEX_NOTUNIQUE, array('programmingid', 'sequence'));
-
-    /// Launch create table for programming_result
-        $result = $result && create_table($table);
-    }
-
     if ($result && $oldversion < 2009112506) {
         $table = new XMLDBTable('programming_languages');
         $field = new XMLDBField('description');
@@ -454,6 +430,30 @@ function xmldb_programming_upgrade($oldversion=0) {
         $l->description = 'Bash (Bash 3)';
         $l->sourceext = '.sh';
         update_record('programming_languages', $l);
+    }
+
+    if ($result && $oldversion < 2009112507) {
+    /// Define table programming_presetcode to be created
+        $table = new XMLDBTable('programming_presetcode');
+
+    /// Adding fields to table programming_result
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('programmingid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('languageid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('sequence', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('presetcode', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('presetcodeforcheck', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+
+    /// Adding keys to table programming_result
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table programming_result
+        $table->addIndexInfo('prog-lang-name', XMLDB_INDEX_UNIQUE, array('programmingid', 'languageid', 'name'));
+        $table->addIndexInfo('prog-seq', XMLDB_INDEX_NOTUNIQUE, array('programmingid', 'sequence'));
+
+    /// Launch create table for programming_result
+        $result = $result && create_table($table);
     }
 
     return $result;
