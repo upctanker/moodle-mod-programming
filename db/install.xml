@@ -177,7 +177,7 @@
         <FIELD NAME="languageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="programmingid" NEXT="name"/>
         <FIELD NAME="name" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="languageid" NEXT="sequence"/>
         <FIELD NAME="sequence" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="presetcode"/>
-        <FIELD NAME="presetcode" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="sequence" NEXT="presetcodeforcheck"/>
+        <FIELD NAME="presetcode" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="sequence" NEXT="presetcodeforcheck"/>
         <FIELD NAME="presetcodeforcheck" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="presetcode"/>
       </FIELDS>
       <KEYS>

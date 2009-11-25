@@ -443,7 +443,7 @@ function xmldb_programming_upgrade($oldversion=0) {
         $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
         $table->addFieldInfo('sequence', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
         $table->addFieldInfo('presetcode', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
-        $table->addFieldInfo('presetcodeforcheck', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('presetcodeforcheck', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NULL, null, null, null, null);
 
     /// Adding keys to table programming_result
         $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
@@ -454,6 +454,23 @@ function xmldb_programming_upgrade($oldversion=0) {
 
     /// Launch create table for programming_result
         $result = $result && create_table($table);
+    }
+
+    if ($result && $oldversion < 2009112511) {
+    /// Move presetcode to separate table
+        $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
+        foreach ($programmings as $p) {
+            if (!empty($p->presetcode)) {
+                $code = new stdClass;
+                $code->programmingid = $p->id;
+                $code->languageid = 1;
+                $code->name = '<prepend>';
+                $code->sequence = 1;
+                $code->presetcode = $p->presetcode;
+                $code->presetcodeforcheck = NULL;
+                insert_record('programming_presetcode', $code);
+            }
+        }
     }
 
     return $result;
