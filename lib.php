@@ -1185,8 +1185,11 @@ function programming_submit_remove_preset($code)
  */
 function programming_format_code($programming, $submit, $check = false)
 {
-    $prepend = get_record('programming_presetcode', 'programmingid', $programming->id, 'languageid', $submit->language, 'name', '<prepend>');
-    $postpend = get_record('programming_presetcode', 'programmingid', $programming->id, 'languageid', $submit->language, 'name', '<postpend>');
+    if (is_object($programming)) {
+        $programming = $programming->id;
+    }
+    $prepend = get_record('programming_presetcode', 'programmingid', $programming, 'languageid', $submit->language, 'name', '<prepend>');
+    $postpend = get_record('programming_presetcode', 'programmingid', $programming, 'languageid', $submit->language, 'name', '<postpend>');
 
     $ret = array();
     if (!empty($prepend)) {

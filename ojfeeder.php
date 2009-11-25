@@ -47,7 +47,7 @@ function get_submits($xmlrpcmsg) {
     execute_sql($sql, false);
 
     // Find marked records
-    $sql = "SELECT ps.*, pt.*, p.presetcode
+    $sql = "SELECT ps.*, pt.*
               FROM {$CFG->prefix}programming_submits AS ps,
                    {$CFG->prefix}programming_testers AS pt,
                    {$CFG->prefix}programming AS p
@@ -61,11 +61,7 @@ function get_submits($xmlrpcmsg) {
     if (is_array($rs)) {
         $ids = array();
         foreach ($rs as $id => $submit) {
-            if ($submit->presetcode) {
-                $code = $submit->presetcode."\n".$submit->code;
-            } else {
-                $code = $submit->code;
-            }
+            $code = programming_format_code($submit->programmingid, $submit, true);
             $r = array(
                 'id' => new xmlrpcval(sprintf('%010d', $submit->id), 'string'),
                 'problem_id' => new xmlrpcval(
