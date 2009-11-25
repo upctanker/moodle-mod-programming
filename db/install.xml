@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/programming/db" VERSION="20091021" COMMENT="XMLDB file for Moodle mod/programming"
+<XMLDB PATH="mod/programming/db" VERSION="20091125" COMMENT="XMLDB file for Moodle mod/programming"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="programming" COMMENT="programming table retrofitted from MySQL" NEXT="programming_tests">
+    <TABLE NAME="programming" COMMENT="programming table retrofitted from MySQL" NEXT="programming_languages">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
@@ -38,7 +38,19 @@
         <INDEX NAME="mdl_prog_cou_ix" UNIQUE="false" FIELDS="course"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="programming_tests" COMMENT="Test cases for problems are saved in this table." PREVIOUS="programming" NEXT="programming_submits">
+    <TABLE NAME="programming_languages" COMMENT="programming_languages table retrofitted from MySQL" PREVIOUS="programming" NEXT="programming_tests">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="description"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="sourceext"/>
+        <FIELD NAME="sourceext" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="headerext"/>
+        <FIELD NAME="headerext" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="sourceext"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="programming_tests" COMMENT="Test cases for problems are saved in this table." PREVIOUS="programming_languages" NEXT="programming_submits">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programmingid"/>
         <FIELD NAME="programmingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="input"/>
@@ -112,7 +124,7 @@
         <INDEX NAME="timeused" UNIQUE="false" FIELDS="timeused" PREVIOUS="testid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="programming_result" COMMENT="Record submit count and latestsubmit for each user of each programming exercise." PREVIOUS="programming_test_results" NEXT="programming_languages">
+    <TABLE NAME="programming_result" COMMENT="Record submit count and latestsubmit for each user of each programming exercise." PREVIOUS="programming_test_results" NEXT="programming_resemble">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programmingid"/>
         <FIELD NAME="programmingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
@@ -127,16 +139,7 @@
         <INDEX NAME="programming-user" UNIQUE="false" FIELDS="programmingid, userid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="programming_languages" COMMENT="programming_languages table retrofitted from MySQL" PREVIOUS="programming_result" NEXT="programming_resemble">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="id"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for programming_languages"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="programming_resemble" COMMENT="programming_resemble table retrofitted from MySQL" PREVIOUS="programming_languages" NEXT="programming_langlimit">
+    <TABLE NAME="programming_resemble" COMMENT="programming_resemble table retrofitted from MySQL" PREVIOUS="programming_result" NEXT="programming_langlimit">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programmingid"/>
         <FIELD NAME="programmingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="matchedcount"/>
@@ -155,7 +158,7 @@
         <INDEX NAME="proglines" UNIQUE="false" FIELDS="programmingid, flag, matchedcount"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="programming_langlimit" COMMENT="programming_langlimit table retrofitted from MySQL" PREVIOUS="programming_resemble" NEXT="programming_testers">
+    <TABLE NAME="programming_langlimit" COMMENT="programming_langlimit table retrofitted from MySQL" PREVIOUS="programming_resemble" NEXT="programming_presetcode">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programmingid"/>
         <FIELD NAME="programmingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="languageid"/>
@@ -167,7 +170,25 @@
         <KEY NAME="languageprogramming" TYPE="unique" FIELDS="languageid, programmingid" PREVIOUS="programminglanguage"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="programming_testers" COMMENT="Judging information is saved in this table." PREVIOUS="programming_langlimit">
+    <TABLE NAME="programming_presetcode" COMMENT="programming_presetcode table retrofitted from MySQL" PREVIOUS="programming_langlimit" NEXT="programming_testers">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="programmingid"/>
+        <FIELD NAME="programmingid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="languageid"/>
+        <FIELD NAME="languageid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="programmingid" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="languageid" NEXT="sequence"/>
+        <FIELD NAME="sequence" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="presetcode"/>
+        <FIELD NAME="presetcode" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="sequence" NEXT="presetcodeforcheck"/>
+        <FIELD NAME="presetcodeforcheck" TYPE="text" LENGTH="small" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="presetcode"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="mdl_progpres_prolannam_uix"/>
+        <KEY NAME="mdl_progpres_prolannam_uix" TYPE="unique" FIELDS="programmingid, languageid, name" PREVIOUS="primary"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="mdl_progpres_proseq_ix" UNIQUE="false" FIELDS="programmingid, sequence"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="programming_testers" COMMENT="Judging information is saved in this table." PREVIOUS="programming_presetcode">
       <FIELDS>
         <FIELD NAME="submitid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" NEXT="testerid"/>
         <FIELD NAME="testerid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" ENUM="false" PREVIOUS="submitid" NEXT="priority"/>
@@ -185,14 +206,15 @@
   <STATEMENTS>
     <STATEMENT NAME="insert programming_languages" TYPE="insert" TABLE="programming_languages" COMMENT="Initial insert of records on table programming_languages">
       <SENTENCES>
-        <SENTENCE TEXT="(name) VALUES ('gcc-3.3')" />
-        <SENTENCE TEXT="(name) VALUES ('g++-3.3')" />
-        <SENTENCE TEXT="(name) VALUES ('java-1.5')" />
-        <SENTENCE TEXT="(name) VALUES ('java-1.6')" />
-        <SENTENCE TEXT="(name) VALUES ('fpc-2.2')" />
-        <SENTENCE TEXT="(name) VALUES ('python-2.5')" />
-        <SENTENCE TEXT="(name) VALUES ('gmcs-2.0')" />
-        <SENTENCE TEXT="(name) VALUES ('bash-3')" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('gcc-3.3', 'C (GCC 3.3)', '.c', '.h')" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('g++-3.3', 'C++ (G++ 3.3)', '.cpp .cxx', '.h .hpp')" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('java-1.5', 'Java (Sun JDK 5)', '.java', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('java-1.6', 'Java (Sun JDK 6)', '.java', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('fpc-2.2', 'Pascal (Free Pascal 2)', '.pas', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('python-2.5', 'Python 2.5', '.py', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('gmcs-2.0', 'C# (Mono 2.0)', '.cs', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
+        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
       </SENTENCES>
     </STATEMENT>
   </STATEMENTS>
