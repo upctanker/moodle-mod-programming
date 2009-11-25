@@ -369,6 +369,93 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2009112503) {
+    /// Define table programming_presetcode to be created
+        $table = new XMLDBTable('programming_presetcode');
+
+    /// Adding fields to table programming_result
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null, null);
+        $table->addFieldInfo('programmingid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('languageid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('name', XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('sequence', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('presetcode', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+        $table->addFieldInfo('presetcodeforcheck', XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, XMLDB_NOTNULL, null, null, null, null);
+
+    /// Adding keys to table programming_result
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table programming_result
+        $table->addIndexInfo('prog-lang-name', XMLDB_INDEX_UNIQUE, array('programmingid', 'languageid', 'name'));
+        $table->addIndexInfo('prog-seq', XMLDB_INDEX_NOTUNIQUE, array('programmingid', 'sequence'));
+
+    /// Launch create table for programming_result
+        $result = $result && create_table($table);
+    }
+
+    if ($result && $oldversion < 2009112506) {
+        $table = new XMLDBTable('programming_languages');
+        $field = new XMLDBField('description');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='name');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009112506) {
+        $table = new XMLDBTable('programming_languages');
+        $field = new XMLDBField('sourceext');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='description');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009112506) {
+        $table = new XMLDBTable('programming_languages');
+        $field = new XMLDBField('headerext');
+        $field->setAttributes(XMLDB_TYPE_CHAR, '255', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='sourceext');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009112506) {
+        $l = get_record('programming_languages', 'id', 1);
+        $l->description = 'C (GCC 3.3)';
+        $l->sourceext = '.c'; $l->headerext = '.h';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 2);
+        $l->description = 'C++ (G++ 3.3)';
+        $l->sourceext = '.cpp .cxx'; $l->headerext = '.h .hpp';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 3);
+        $l->description = 'Java (Sun JDK 5)';
+        $l->sourceext = '.java';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 4);
+        $l->description = 'Java (Sun JDK 6)';
+        $l->sourceext = '.java';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 5);
+        $l->description = 'Pascal (Free Pascal 2)';
+        $l->sourceext = '.pas';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 6);
+        $l->description = 'Python 2.5';
+        $l->sourceext = '.py';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 7);
+        $l->description = 'C# (Mono 2.0)';
+        $l->sourceext = '.cs';
+        update_record('programming_languages', $l);
+
+        $l = get_record('programming_languages', 'id', 8);
+        $l->description = 'Bash (Bash 3)';
+        $l->sourceext = '.sh';
+        update_record('programming_languages', $l);
+    }
+
     return $result;
 }
 

@@ -53,11 +53,7 @@ class mod_programming_mod_form extends moodleform_mod {
 //-------------------------------------------------------------------------------
         $mform->addElement('header', '', get_string('program', 'programming'));
 
-        $languages = get_records('programming_languages', '', '', 'id');
-        $langs = array();
-        foreach ($languages as $key => $lang) {
-            $langs[$key] = $lang->name;
-        }
+        $langs = programming_get_language_options();
         $select = $mform->addElement('select', 'langlimit', get_string('langlimit', 'programming'), $langs);
         $select->setMultiple(true);
 

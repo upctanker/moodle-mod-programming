@@ -425,7 +425,12 @@ function programming_get_memlimit_options() {
 function programming_get_language_options($programming = False) {
     global $CFG;
     if ($programming) {
-        $languages = get_records_sql("SELECT * FROM {$CFG->prefix}programming_languages WHERE id in (SELECT languageid FROM {$CFG->prefix}programming_langlimit WHERE programmingid={$programming->id})");
+        $sql = "SELECT * FROM {$CFG->prefix}programming_languages
+                 WHERE id in (
+                SELECT languageid
+                  FROM {$CFG->prefix}programming_langlimit
+                 WHERE programmingid={$programming->id})";
+        $languages = get_records_sql($sql);
         if (!is_array($languages) || count($languages) == 0) {
             $languages = get_records('programming_languages');
         }
@@ -1208,5 +1213,38 @@ function programming_test_case_visible($tests, $result)
            ($tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $programming->timediscount <= time());
 }
 
+
+function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
+{
+    global $CFG;
+
+    $codes = get_records('programming_presetcode', 'programmingid', $programmingid, 'sequence', 'id, sequence');
+
+    $seq = array();
+    $i = 1; $idx = 0;
+    foreach ($codes as $code) {
+        if ($moveid == $code->id) $idx = $i;
+        $seq[$i++] = $code;
+    }
+
+    if ($idx) {
+        if ($direction == 1 && $idx > 1) { // move up
+            $t = $seq[$idx];
+            $seq[$idx] = $seq[$idx-1];
+            $seq[$idx-1] = $t;
+        } else if ($direction == 2 && $idx < count($codes)) {
+            $t = $seq[$idx];
+            $seq[$idx] = $seq[$idx+1];
+            $seq[$idx+1] = $t;
+        }
+    }
+
+    foreach ($seq as $i => $code) {
+        if ($code->sequence != $i) {
+            $code->sequence = $i;
+            update_record('programming_presetcode', $code);
+        }
+    }
+}
 
 ?>
