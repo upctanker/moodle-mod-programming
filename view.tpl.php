@@ -18,10 +18,13 @@
 <?php echo format_text($programming->description, $programming->descformat); ?>
 </div>
 
-<?php if ($programming->presetcode) : ?>
+<?php if (is_array($presetcodes)) : ?>
 <div id="presetcode">
 <h2><?php echo get_string('presetcode', 'programming'); ?></h2>
-<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlspecialchars(programming_format_code($programming)); ?></textarea>
+<?php foreach ($presetcodes as $pcode): ?>
+<h3><?php echo programming_get_presetcode_name($pcode); ?></h3>
+<textarea rows="20" cols="60" name="code" class="c#" id="code"><?php echo htmlspecialchars(programming_format_presetcode($pcode)); ?></textarea>
+<?php endforeach; ?>
 </div>
 <?php endif; ?>
 

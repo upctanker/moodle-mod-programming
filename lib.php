@@ -1180,13 +1180,47 @@ function programming_submit_remove_preset($code)
     return implode("\n", $ret);
 }
 
-function programming_format_code($programming, $submit = null)
+/**
+ * Put prepend and postpend preset code and user submitted code together.
+ */
+function programming_format_code($programming, $submit, $check = false)
 {
-    $ret = array(PROGRAMMING_PRESET_BEGIN, $programming->presetcode,
-                 PROGRAMMING_PRESET_END);
-    if (is_object($submit)) {
-        $ret []= $submit->code;
+    $prepend = get_record('programming_presetcode', 'programmingid', $programming->id, 'languageid', $submit->language, 'name', '<prepend>');
+    $postpend = get_record('programming_presetcode', 'programmingid', $programming->id, 'languageid', $submit->language, 'name', '<postpend>');
+
+    $ret = array();
+    if (!empty($prepend)) {
+        $ret[] = PROGRAMMING_PRESET_BEGIN;
+        $ret[] = trim(!$check ? $prepend->presetcode : $prepend->presetcodeforcheck);
+        $ret[] = PROGRAMMING_PRESET_END;
     }
+
+    if (is_object($submit)) {
+        $ret[] = $submit->code;
+    }
+
+    if (!empty($postpend)) {
+        $ret[] = PROGRAMMING_PRESET_BEGIN;
+        $ret[] = trim(!$check ? $postpend->presetcode : $postpend->presetcodeforcheck);
+        $ret[] = PROGRAMMING_PRESET_END;
+    }
+    return implode("\n\n", $ret);
+}
+
+function programming_get_presetcode_name($presetcode) {
+    switch ($presetcode->name) {
+    case '<prepend>':
+        return get_string('prependcode', 'programming');
+    case '<postpend>':
+        return get_string('postpendcode', 'programming');
+    default:
+        return $presetcode->name;
+    }
+}
+
+function programming_format_presetcode($presetcode) {
+    $ret = array(PROGRAMMING_PRESET_BEGIN, trim($presetcode->presetcode),
+                 PROGRAMMING_PRESET_END);
     return implode("\n\n", $ret);
 }
 

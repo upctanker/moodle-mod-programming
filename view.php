@@ -70,6 +70,8 @@
         $results = get_records('programming_test_results', 'submitid', $submit->id);
     }
 
+    $presetcodes = get_records('programming_presetcode', 'programmingid', $programming->id, 'sequence');
+
     $notlate = $programming->allowlate || $time <= $programming->timeclose;
 
     include_once('view.tpl.php');
