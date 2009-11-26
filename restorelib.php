@@ -44,6 +44,7 @@
                 backup_putid($restore->backup_unique_code, $mod->modtype, $mod->id, $newid);
 
                 programming_langlimit_restore_mods($newid, $info, $restore);
+                programming_presetcode_restore_mods($newid, $info, $restore);
                 programming_tests_restore_mods($newid, $info, $restore);
             } else {
                 $status = false;
@@ -72,6 +73,7 @@
         foreach ($langlimits as $opt_info) {
 
             $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
+            $langlimit = new stdClass;
             $langlimit->programmingid = $programmingid;
             $langlimit->languageid = backup_todb($opt_info['#']['LANGUAGEID']['0']['#']);
 
@@ -92,6 +94,42 @@
         return $status;
     }
 
+    function programming_presetcode_restore_mods($programmingid, $info, $restore) {
+        global $CFG;
+
+        $status = true;
+
+        $codes = $info['MOD']['#']['PRESETCODES']['0']['#']['PRESETCODE'];
+        
+        foreach ($codes as $opt_info) {
+
+            $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
+            $code = new stdClass;
+            $code->programmingid = $programmingid;
+            $code->languageid = backup_todb($opt_info['#']['LANGUAGEID']['0']['#']);
+            $code->name = backup_todb($opt_info['#']['NAME']['0']['#']);
+            $code->sequence = backup_todb($opt_info['#']['SEQUENCE']['0']['#']);
+            $code->presetcode = backup_todb($opt_info['#']['PRESETCODE']['0']['#']); 
+            $code->presetcodeforcheck = backup_todb($opt_info['#']['PRESETCODEFORCHECK']['0']['#']);
+
+            $newid = insert_record('programming_presetcode', $code);
+
+            if (!defined('RESTORE_SILENTLY')) {
+                echo '.';
+            }
+            backup_flush(300);
+
+            if ($newid) {
+                backup_putid($restore->backup_unique_code, 'programming_presetcode', $oldid, $newid);
+            } else {
+                $status = false;
+            }
+        }
+
+        return $status;
+    }
+
+
     function programming_tests_restore_mods($programmingid, $info, $restore) {
 
         global $CFG;
@@ -103,6 +141,7 @@
         foreach ($tests as $opt_info) {
 
             $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
+            $test = new stdClass;
             $test->programmingid = $programmingid;
             $test->input = backup_todb(base64_decode($opt_info['#']['INPUT']['0']['#']));
             $test->gzinput = backup_todb(base64_decode($opt_info['#']['GZINPUT']['0']['#']));

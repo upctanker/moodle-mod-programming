@@ -79,6 +79,7 @@
         fwrite($bf, full_tag('SHOWMODE', 4, false, $programming->showmode));
 
         programming_backup_langlimit($bf, $preferences, $programming);
+        programming_backup_presetcode($bf, $preferences, $programming);
         programming_backup_testcase($bf, $preferences, $programming);
 
         $status = fwrite($bf, end_tag('MOD', 3, false));
@@ -102,6 +103,31 @@
             }
         }
         fwrite($bf, end_tag('LANGLIMITS', 4, true));
+
+        return $status;
+    }
+
+    function programming_backup_presetcode($bf, $preferences, $programming) {
+
+        $presetcodes = get_records('programming_presetcode', 'programmingid', $programming->id, 'id');
+
+        $status = true;
+
+        fwrite($bf, start_tag('PRESETCODES', 4, true));
+        if ($presetcodes) {
+            foreach ($presetcodes as $pc) {
+                fwrite($bf, start_tag('PRESETCODE', 5, true));
+                fwrite($bf, full_tag('ID', 6, false, $pc->id));
+                fwrite($bf, full_tag('PROGRAMMINGID', 6, false, $pc->programmingid));
+                fwrite($bf, full_tag('LANGUAGEID', 6, false, $pc->languageid));
+                fwrite($bf, full_tag('NAME', 6, false, $pc->name));
+                fwrite($bf, full_tag('SEQUENCE', 6, false, $pc->sequence));
+                fwrite($bf, full_tag('PRESETCODE', 6, false, $pc->presetcode));
+                fwrite($bf, full_tag('PRESETCODEFORCHECK', 6, false, $pc->presetcodeforcheck));
+                fwrite($bf, end_tag('PRESETCODE', 5, true));
+            }
+        }
+        fwrite($bf, end_tag('PRESETCODES', 4, true));
 
         return $status;
     }
