@@ -320,9 +320,12 @@ function update_submit_test_results($xmlrpcmsg)
 }
 
 $addr = getremoteaddr();
-if (!in_array($addr, explode(' ', $CFG->programming_ojip))) {
+if (empty($CFG->programming_ojip) || !in_array($addr, explode(' ', $CFG->programming_ojip))) {
     header('HTTP/1.0 401 Unauthorized');
-    echo '401 Unauthorized';
+    echo '401 Unauthorized.';
+    if (empty($CFG->programming_ojip)) {
+        echo "<a href='{$CFG->wwwroot}/admin/module.php?module=programming'>Please setup OJ IP.</a>";
+    }
     exit;
 }
 
