@@ -221,10 +221,13 @@ function get_presetcodes($xmlrpcmsg)
             }
             $code = empty($r->presetcodeforcheck) ?
                 $r->presetcode : $r->presetcodeforcheck;
+            $extname = substr($r->name, strrpos($r->name, '.'));
+            $isheader = in_array($extname, explode(' ', $lang->headerext));
             $r = new xmlrpcval(array(
                 'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
                 'name' => new xmlrpcval($r->name, 'string'),
                 'code' => new xmlrpcval($code, 'base64'),
+                'isheader' => new xmlrpcval($isheader, 'boolean'),
             ), 'struct');
             $codes[] = $r;
         }
