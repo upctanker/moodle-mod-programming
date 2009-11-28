@@ -211,7 +211,7 @@ function get_presetcodes($xmlrpcmsg)
 
     $codes = array();
     $lang = get_record('programming_languages', 'name', $language);
-    $rs = get_records(
+    $rs = get_records_select(
             'programming_presetcode',
             "programmingid={$programmingid} AND languageid={$lang->id}");
     if (is_array($rs)) {
@@ -219,12 +219,12 @@ function get_presetcodes($xmlrpcmsg)
             if ($r->name == '<prepend>' || $r->name == '<postpend>') {
                 continue;
             }
-            $code = $r->presetcodeforcheck;
-            if (!$code) $code = $r->presetcode;
+            $code = empty($r->presetcodeforcheck) ?
+                $r->presetcode : $r->presetcodeforcheck;
             $r = new xmlrpcval(array(
                 'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
                 'name' => new xmlrpcval($r->name, 'string'),
-                'code' => new xmlrpcval($code, 'string'),
+                'code' => new xmlrpcval($code, 'base64'),
             ), 'struct');
             $codes[] = $r;
         }
