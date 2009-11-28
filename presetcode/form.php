@@ -64,6 +64,11 @@ class presetcode_form extends moodleform {
                 $errors['name'] = get_string('required');
             }
 
+            /// filename should only contain alpha, digit and underlins
+            if (!preg_match('/^[a-zA-Z0-9_\-\.]+$/', $data['name'])) {
+                $errors['name'] = get_string('filenamechars', 'programming');
+            }
+
             /// file extension must be correct
             $lang = get_record('programming_languages', 'id', $data['languageid']);
             $allowedext = array_merge(explode(' ', $lang->headerext), explode(' ', $lang->sourceext));
