@@ -18,7 +18,7 @@
     $row[] = new tabobject('history', $CFG->wwwroot.'/mod/programming/history.php?a='.$programming->id, get_string('submithistory','programming'), '', true);
 
     if (has_capability('mod/programming:edittestcase', $context)) {
-        $row[] = new tabobject('edittest', $CFG->wwwroot.'/mod/programming/edittest_list.php?a='.$programming->id, get_string('testcase','programming'));
+        $row[] = new tabobject('edittest', $CFG->wwwroot.'/mod/programming/edittest_list.php?a='.$programming->id, get_string('testenv','programming'));
     }
     if (has_capability('mod/programming:viewreport', $context)) {
         $row[] = new tabobject('reports', $CFG->wwwroot.'/mod/programming/reports/summary.php?a='.$programming->id, get_string('reports','programming'), '', true);

@@ -262,5 +262,6 @@ $string['filename'] = '文件名';
 $string['usepresetcodeforcheck'] = '使用判分代码';
 $string['deletepresetcodeconfirm'] = '您确定吗?';
 $string['nopresetcode'] = '没有预设代码';
+$string['testenv'] = '测试环境';
 
 ?>

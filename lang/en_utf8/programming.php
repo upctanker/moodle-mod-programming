@@ -271,5 +271,6 @@ $string['filename'] = 'Filename';
 $string['usepresetcodeforcheck'] = 'Use check code';
 $string['deletepresetcodeconfirm'] = 'Are you sure?';
 $string['nopresetcode'] = 'No preset codes';
+$string['testenv'] = 'Test Environment';
 
 ?>
