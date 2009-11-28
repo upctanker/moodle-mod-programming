@@ -207,11 +207,13 @@ function get_tests($xmlrpcmsg)
 function get_presetcodes($xmlrpcmsg)
 {
     $programmingid = $xmlrpcmsg->getParam(0)->scalarVal();
-    $language = $xmlrpcmsg->getParam(0)->scalarVal();
+    $language = $xmlrpcmsg->getParam(1)->scalarVal();
 
     $codes = array();
     $lang = get_record('programming_languages', 'name', $language);
-    $rs = get_records('programming_presetcode', 'programmingid', $programmingid, 'languageid', $lang->id);
+    $rs = get_records(
+            'programming_presetcode',
+            "programmingid={$programmingid} AND languageid={$lang->id}");
     if (is_array($rs)) {
         foreach ($rs as $rid => $r) {
             if ($r->name == '<prepend>' || $r->name == '<postpend>') {
@@ -220,6 +222,7 @@ function get_presetcodes($xmlrpcmsg)
             $code = $r->presetcodeforcheck;
             if (!$code) $code = $r->presetcode;
             $r = new xmlrpcval(array(
+                'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
                 'name' => new xmlrpcval($r->name, 'string'),
                 'code' => new xmlrpcval($code, 'string'),
             ), 'struct');
@@ -347,8 +350,8 @@ $s = new xmlrpc_server(
         'signature' => array(array($xmlrpcArray, $xmlrpcString, $xmlrpcBoolean)),
     ),
     'oj.get_presetcodes' => array(
-        'function' => 'get_presetcode',
-        'signature' => array(array($xmlrpcArray, $xmlrpcString)),
+        'function' => 'get_presetcodes',
+        'signature' => array(array($xmlrpcArray, $xmlrpcString, $xmlrpcString)),
     ),
     'oj.get_test' => array(
         'function' => 'get_test',
