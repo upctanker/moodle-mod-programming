@@ -1256,6 +1256,7 @@ function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $di
     global $CFG;
 
     $codes = get_records('programming_presetcode', 'programmingid', $programmingid, 'sequence', 'id, sequence');
+    if (!is_array($codes)) return;
 
     $seq = array();
     $i = 1; $idx = 0;
