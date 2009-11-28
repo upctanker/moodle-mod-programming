@@ -1194,7 +1194,7 @@ function programming_format_code($programming, $submit, $check = false)
     $ret = array();
     if (!empty($prepend)) {
         $ret[] = PROGRAMMING_PRESET_BEGIN;
-        $ret[] = trim(!$check ? $prepend->presetcode : $prepend->presetcodeforcheck);
+        $ret[] = trim(!$check || empty($prepend->presetcodeforcheck) ? $prepend->presetcode : $prepend->presetcodeforcheck);
         $ret[] = PROGRAMMING_PRESET_END;
     }
 
@@ -1204,7 +1204,7 @@ function programming_format_code($programming, $submit, $check = false)
 
     if (!empty($postpend)) {
         $ret[] = PROGRAMMING_PRESET_BEGIN;
-        $ret[] = trim(!$check ? $postpend->presetcode : $postpend->presetcodeforcheck);
+        $ret[] = trim(!$check || empty($postpend->presetcodeforcheck) ? $postpend->presetcode : $postpend->presetcodeforcheck);
         $ret[] = PROGRAMMING_PRESET_END;
     }
     return implode("\n\n", $ret);
