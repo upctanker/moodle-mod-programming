@@ -33,7 +33,7 @@
         update_record('programming_presetcode', $data);
 
         add_to_log($course->id, 'programming', 'presetcode_add', 'preset/add.php?a='.$programming->id, 'add preset code');
-        redirect('list.php?a='.$programming->id, get_string('presetcodeadded', 'programming'));
+        redirect('list.php?a='.$programming->id, get_string('presetcodemodified', 'programming'));
 
     } else {
         $data = get_record('programming_presetcode', 'id', $ppid);

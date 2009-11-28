@@ -50,9 +50,9 @@ function print_presetcode_table() {
         get_string('sequence', 'programming'),
         get_string('name', 'programming'),
         get_string('language'),
-        get_string('presetcode', 'programming'),
-        get_string('presetcodeforcheck', 'programming'),
-        get_string('edit', 'programming'),
+        get_string('codeforuser', 'programming'),
+        get_string('codeforcheck', 'programming'),
+        get_string('action'),
         );
     $table->define_headers($headers);
 
@@ -67,6 +67,8 @@ function print_presetcode_table() {
     $codes = get_records('programming_presetcode', 'programmingid', $programming->id, 'sequence');
     if (is_array($codes)) {
         $langs = get_records('programming_languages');
+        $codes_count = count($codes)-1;
+        $i = 0;
         foreach ($codes as $code) {
             $data = array();
             $data[] = $code->sequence;
@@ -74,8 +76,17 @@ function print_presetcode_table() {
             $data[] = $langs[$code->languageid]->name;
             $data[] = $code->presetcode ? 'Yes' : '';
             $data[] = $code->presetcodeforcheck ? 'Yes' : '';
-            $data[] = "<a href='move.php?a={$programming->id}&amp;id={$code->id}&amp;direction=1'>MoveUp</a>, <a href='move.php?a={$programming->id}&amp;id={$code->id}&amp;direction=2'>MoveDown</a>, <a href='edit.php?a={$programming->id}&amp;id={$code->id}'>Edit</a>, <a href='delete.php?a={$programming->id}&amp;id={$code->id}'>Delete</a>";
+            $html = "<a class='icon edit' href='edit.php?a={$programming->id}&amp;id={$code->id}'><img src='{$CFG->pixpath}/t/edit.gif' /></a> ";
+            $html .= "<a class='icon delete' href='delete.php?a={$programming->id}&amp;id={$code->id}'><img src='{$CFG->pixpath}/t/delete.gif' /></a> ";
+            if ($i > 0) {
+                $html .= "<a class='icon up' href='move.php?a={$programming->id}&amp;id={$code->id}&amp;direction=1'><img src='{$CFG->pixpath}/t/up.gif' /></a> ";
+            }
+            if ($i < $codes_count) {
+                $html .= "<a class='icon down' href='move.php?a={$programming->id}&amp;id={$code->id}&amp;direction=2'><img src='{$CFG->pixpath}/t/down.gif' /></a> ";
+            }
+            $data[] = $html;
             $table->add_data($data);
+            $i++;
         }
 
         echo '<div class="maincontent2">';

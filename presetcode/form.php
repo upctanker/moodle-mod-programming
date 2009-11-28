@@ -27,10 +27,10 @@ class presetcode_form extends moodleform {
 
         $mform->addElement('select', 'languageid', get_string('language', 'programming'), programming_get_language_options($programming));
 
-        $mform->addElement('textarea', 'presetcode', get_string('presetcode', 'programming'), 'rows="5" cols="50"');
+        $mform->addElement('textarea', 'presetcode', get_string('codeforuser', 'programming'), 'rows="5" cols="50"');
 
         $mform->addElement('checkbox', 'usepresetcodeforcheck', get_string('usepresetcodeforcheck', 'programming'));
-        $mform->addElement('textarea', 'presetcodeforcheck', get_string('presetcodeforcheck', 'programming'), 'rows="5" cols="50"');
+        $mform->addElement('textarea', 'presetcodeforcheck', get_string('codeforcheck', 'programming'), 'rows="5" cols="50"');
         $mform->disabledIf('presetcodeforcheck', 'usepresetcodeforcheck');
 
 // buttons
@@ -40,8 +40,10 @@ class presetcode_form extends moodleform {
     function set_data($data) {
         if (empty($data->name) || $data->name == '<prepend>') {
             $data->choosename = 1;
+            $data->name = '';
         } else if ($data->name == '<postpend>') {
             $data->choosename = 2;
+            $data->name = '';
         } else {
             $data->choosename = 0;
         }
