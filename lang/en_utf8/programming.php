@@ -252,5 +252,24 @@ $string['stdout'] = 'stdout';
 $string['inputfromfile'] = 'Input from file';
 $string['outputtofile'] = 'Output to file';
 $string['program'] = 'Program';
+$string['prependcode'] = 'Prepend Code';
+$string['postpendcode'] = 'Postpend Code';
+$string['addpresetcode']= 'Add Preset Code';
+$string['sequence'] = 'No.';
+$string['name'] = 'Filename';
+$string['codeforuser'] = 'Code for user';
+$string['codeforcheck'] = 'Code for check';
+$string['presetcodemoved'] = 'Preset code has been moved';
+$string['presetcodeadded'] = 'Preset code has been added';
+$string['presetcodemodified'] = 'Preset code has been modified';
+$string['presetcodedeleted'] = 'Preset code has been deleted';
+$string['place'] = 'Place';
+$string['prepend'] = 'Prepend';
+$string['postpend'] = 'Postpend';
+$string['customfile'] = 'Custom file';
+$string['filename'] = 'Filename';
+$string['usepresetcodeforcheck'] = 'Use check code';
+$string['deletepresetcodeconfirm'] = 'Are you sure?';
+$string['nopresetcode'] = 'No preset codes';
 
 ?>

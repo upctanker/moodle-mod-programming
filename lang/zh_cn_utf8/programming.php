@@ -243,5 +243,24 @@ $string['stdout'] = '标准输出';
 $string['inputfromfile'] = '从文件输入';
 $string['outputtofile'] = '输入到文件';
 $string['program'] = '程序';
+$string['prependcode'] = '前置代码';
+$string['postpendcode'] = '后置代码';
+$string['addpresetcode']= '添加预设代码';
+$string['sequence'] = '序号';
+$string['name'] = '文件名';
+$string['codeforuser'] = '用户可见代码';
+$string['codeforcheck'] = '用于判分代码';
+$string['presetcodemoved'] = '已移动预设代码';
+$string['presetcodeadded'] = '已添加预设代码';
+$string['presetcodemodified'] = '已修改预设代码';
+$string['presetcodedeleted'] = '已删除预设代码';
+$string['place'] = '位置';
+$string['prepend'] = '前置';
+$string['postpend'] = '后置';
+$string['customfile'] = '独立文件';
+$string['filename'] = '文件名';
+$string['usepresetcodeforcheck'] = '使用判分代码';
+$string['deletepresetcodeconfirm'] = '您确定吗?';
+$string['nopresetcode'] = '没有预设代码';
 
 ?>
