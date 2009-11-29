@@ -29,7 +29,7 @@
     }
 
 /// Print the page header
-    $pagename = get_string('edittests', 'programming');
+    $pagename = get_string('deletepresetcode', 'programming');
     include_once('../pageheader.php');
 
 /// Print tabs

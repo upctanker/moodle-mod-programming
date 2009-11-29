@@ -67,7 +67,7 @@ class presetcode_form extends moodleform {
             }
 
             /// filename should only contain alpha, digit and underlins
-            if (!preg_match('/^[a-zA-Z0-9_\-\.]+$/', $data['name'])) {
+            if (empty($errors['name']) && !preg_match('/^[a-zA-Z0-9_\-\.]+$/', $data['name'])) {
                 $errors['name'] = get_string('filenamechars', 'programming');
             }
 
@@ -75,12 +75,12 @@ class presetcode_form extends moodleform {
             $lang = get_record('programming_languages', 'id', $data['languageid']);
             $allowedext = array_merge(explode(' ', $lang->headerext), explode(' ', $lang->sourceext));
             $ext = substr($data['name'], strrpos($data['name'], '.'));
-            if (!in_array($ext, $allowedext)) {
+            if (empty($errors['name']) && !in_array($ext, $allowedext)) {
                 $errors['name'] = get_string('extmustbe', 'programming', implode(', ', $allowedext));
             }
 
             /// file name should not duplicate
-            if (empty($data['id']) && count_records_select('programming_presetcode', "programmingid={$data['programmingid']} AND name='{$data['name']}'")) {
+            if (empty($errors['name']) && empty($data['id']) && count_records_select('programming_presetcode', "programmingid={$data['programmingid']} AND name='{$data['name']}'")) {
                 $errors['name'] = get_string('presetcodenamedupliate', 'programming');
             }
 

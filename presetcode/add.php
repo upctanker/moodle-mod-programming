@@ -38,7 +38,7 @@
 
     } else {
         /// Print the page header
-        $pagename = get_string('edittests', 'programming');
+        $pagename = get_string('addpresetcode', 'programming');
         include_once('../pageheader.php');
 
         /// Print tabs

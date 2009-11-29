@@ -3,9 +3,8 @@
     require_once('../../../config.php');
     require_once($CFG->libdir.'/tablelib.php');
     require_once('../lib.php');
-    require_once('form.php');
 
-    $a = optional_param('a', 0, PARAM_INT);     // programming ID
+    $a = required_param('a', PARAM_INT);     // programming ID
         
     if (! $programming = get_record('programming', 'id', $a)) {
         error('Course module is incorrect');
@@ -21,10 +20,10 @@
 
     require_login($course->id);
 
-    require_capability('mod/programming:viewtestcase', $context);
+    require_capability('mod/programming:viewhiddentestcase', $context);
 
 /// Print the page header
-    $pagename = get_string('edittests', 'programming');
+    $pagename = get_string('presetcodes', 'programming');
     include_once('../pageheader.php');
 
 /// Print tabs

@@ -271,6 +271,14 @@ $string['filename'] = 'Filename';
 $string['usepresetcodeforcheck'] = 'Use check code';
 $string['deletepresetcodeconfirm'] = 'Are you sure?';
 $string['nopresetcode'] = 'No preset codes';
+$string['presetcodes'] = 'Preset codes';
+$string['editpresetcode']= 'Edit preset code';
+$string['deletepresetcode']= 'Delete preset code';
+$string['filenamechars'] = 'Filename should only contain alphas, digits and \"-_.\" chars.';
+$string['extmustbe'] = 'Extention name can only be \"{$a}\".';
+$string['presetcodenamedupliate'] = 'Preset code filename duplicate.';
+$string['prependcodeexists'] = 'Prepend code exists';
+$string['postpendcodeexists'] = 'Postpend code exists';
 $string['testenv'] = 'Test Environment';
 
 ?>

@@ -262,6 +262,14 @@ $string['filename'] = '文件名';
 $string['usepresetcodeforcheck'] = '使用判分代码';
 $string['deletepresetcodeconfirm'] = '您确定吗?';
 $string['nopresetcode'] = '没有预设代码';
+$string['presetcodes'] = '预设代码';
+$string['editpresetcode']= '修改预设代码';
+$string['deletepresetcode']= '删除预设代码';
+$string['filenamechars'] = '文件名中只能有字母、数字和\"-_.\"等符号';
+$string['extmustbe'] = '文件的扩展名必须是\"{$a}\"。';
+$string['presetcodenamedupliate'] = '预设代码文件名重复';
+$string['prependcodeexists'] = '已经有前置代码了';
+$string['postpendcodeexists'] = '已经有后置代码了';
 $string['testenv'] = '测试环境';
 
 ?>

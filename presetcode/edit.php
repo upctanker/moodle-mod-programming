@@ -39,7 +39,7 @@
         $data = get_record('programming_presetcode', 'id', $ppid);
         $mform->set_data($data);
         /// Print the page header
-        $pagename = get_string('edittests', 'programming');
+        $pagename = get_string('editpresetcode', 'programming');
         include_once('../pageheader.php');
 
         /// Print tabs
