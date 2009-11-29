@@ -473,6 +473,34 @@ function xmldb_programming_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2009113002) {
+    /// Define table programming_datafile to be created
+        $table = new XMLDBTable('programming_datafile');
+
+    /// Adding fields to table programming_datafile
+        $table->addFieldInfo('id', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL, XMLDB_SEQUENCE);
+        $table->addFieldInfo('programmingid', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
+        $table->addFieldInfo('seq', XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, XMLDB_NOTNULL);
+        $table->addFieldInfo('filename', XMLDB_TYPE_CHAR, '50', XMLDB_UNSIGNED, XMLDB_NOTNULL);
+        $table->addFieldInfo('isbinary', XMLDB_TYPE_INTEGER, '1', XMLDB_UNSIGNED, XMLDB_NOTNULL, $default='0');
+        $table->addFieldInfo('datasize', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL, $default='0');
+        $table->addFieldInfo('data', XMLDB_TYPE_BINARY, 'medium', XMLDB_UNSIGNED, XMLDB_NOTNULL);
+        $table->addFieldInfo('checkdatasize', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL, $default='0');
+        $table->addFieldInfo('checkdata', XMLDB_TYPE_BINARY, 'medium', XMLDB_UNSIGNED, XMLDB_NULL);
+        $table->addFieldInfo('memo', XMLDB_TYPE_TEXT, 'small');
+        $table->addFieldInfo('timemodified', XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, XMLDB_NOTNULL);
+
+    /// Adding keys to table programming_datafile
+        $table->addKeyInfo('primary', XMLDB_KEY_PRIMARY, array('id'));
+
+    /// Adding indexes to table programming_datafile
+        $table->addIndexInfo('prog-seq', XMLDB_INDEX_NOTUNIQUE, array('programmingid', 'seq'));
+        $table->addIndexInfo('prog-filename', XMLDB_INDEX_UNIQUE, array('programmingid', 'filename'));
+
+    /// Launch create table for programming_datafile
+        $result = $result && create_table($table);
+    }
+
     return $result;
 }
 

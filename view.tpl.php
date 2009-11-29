@@ -18,6 +18,17 @@
 <?php echo format_text($programming->description, $programming->descformat); ?>
 </div>
 
+<?php if (is_array($datafiles)) : ?>
+<div id="datafile">
+<h2><?php echo get_string('datafile', 'programming'); ?></h2>
+<ul>
+<?php foreach ($datafiles as $datafile): ?>
+<li><a href="datafile/download.php?a=<?php echo $datafile->programmingid; ?>&id=<?php echo $datafile->id; ?>" title="<?php echo get_string('presstodownload', 'programming'); ?>"><?php echo $datafile->filename; ?></a></li>
+<?php endforeach; ?>
+</ul>
+</div>
+<?php endif; ?>
+
 <?php if (is_array($presetcodes)) : ?>
 <div id="presetcode">
 <h2><?php echo get_string('presetcode', 'programming'); ?></h2>

@@ -71,6 +71,7 @@
     }
 
     $presetcodes = get_records('programming_presetcode', 'programmingid', $programming->id, 'sequence');
+    $datafiles = get_records('programming_datafile', 'programmingid', $programming->id, 'seq', 'id, programmingid, filename, isbinary, datasize, checkdatasize');
 
     $notlate = $programming->allowlate || $time <= $programming->timeclose;
 

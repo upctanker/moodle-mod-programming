@@ -204,6 +204,28 @@ function get_tests($xmlrpcmsg)
     return new xmlrpcresp(new xmlrpcval($tests, 'array'));
 }
 
+function get_datafiles($xmlrpcmsg)
+{
+    $programmingid = $xmlrpcmsg->getParam(0)->scalarVal();
+
+    $files = array();
+    $rs = get_records('programming_datafile', 'programmingid', $programmingid);
+    if (is_array($rs)) {
+        foreach ($rs as $rid => $r) {
+            $data = empty($r->checkdata) ? $r->data : $r->checkdata;
+            $r = new xmlrpcval(array(
+                'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
+                'filename' => new xmlrpcval($r->filename, 'string'),
+                'data' => new xmlrpcval($data, 'base64'),
+                'isbinary' => new xmlrpcval($r->isbinary == 1, 'boolean'),
+            ), 'struct');
+            $files[] = $r;
+        }
+    }
+
+    return new xmlrpcresp(new xmlrpcval($files, 'array'));
+}
+
 function get_presetcodes($xmlrpcmsg)
 {
     $programmingid = $xmlrpcmsg->getParam(0)->scalarVal();
@@ -351,6 +373,10 @@ $s = new xmlrpc_server(
     'oj.get_tests' => array(
         'function' => 'get_tests',
         'signature' => array(array($xmlrpcArray, $xmlrpcString, $xmlrpcBoolean)),
+    ),
+    'oj.get_datafiles' => array(
+        'function' => 'get_datafiles',
+        'signature' => array(array($xmlrpcArray, $xmlrpcString)),
     ),
     'oj.get_presetcodes' => array(
         'function' => 'get_presetcodes',

@@ -1285,4 +1285,39 @@ function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $di
     }
 }
 
+
+function programming_datafile_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
+{
+    global $CFG;
+
+    $codes = get_records('programming_datafile', 'programmingid', $programmingid, 'seq', 'id, seq');
+    if (!is_array($codes)) return;
+
+    $seq = array();
+    $i = 1; $idx = 0;
+    foreach ($codes as $code) {
+        if ($moveid == $code->id) $idx = $i;
+        $seq[$i++] = $code;
+    }
+
+    if ($idx) {
+        if ($direction == 1 && $idx > 1) { // move up
+            $t = $seq[$idx];
+            $seq[$idx] = $seq[$idx-1];
+            $seq[$idx-1] = $t;
+        } else if ($direction == 2 && $idx < count($codes)) {
+            $t = $seq[$idx];
+            $seq[$idx] = $seq[$idx+1];
+            $seq[$idx+1] = $t;
+        }
+    }
+
+    foreach ($seq as $i => $code) {
+        if ($code->seq != $i) {
+            $code->seq = $i;
+            update_record('programming_datafile', $code);
+        }
+    }
+}
+
 ?>
