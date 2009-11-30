@@ -209,21 +209,39 @@ function get_datafiles($xmlrpcmsg)
     $programmingid = $xmlrpcmsg->getParam(0)->scalarVal();
 
     $files = array();
-    $rs = get_records('programming_datafile', 'programmingid', $programmingid);
+    $rs = get_records('programming_datafile', 'programmingid', $programmingid, 'seq', 'id, filename, isbinary, timemodified');
     if (is_array($rs)) {
         foreach ($rs as $rid => $r) {
-            $data = empty($r->checkdata) ? $r->data : $r->checkdata;
             $r = new xmlrpcval(array(
                 'id' => new xmlrpcval(sprintf('%010d', $r->id), 'string'),
+                'problem_id' => new xmlrpcval(sprintf('%010d', $programmingid), 'string'),
                 'filename' => new xmlrpcval($r->filename, 'string'),
-                'data' => new xmlrpcval($data, 'base64'),
-                'isbinary' => new xmlrpcval($r->isbinary == 1, 'boolean'),
+                'type' => new xmlrpcval($r->isbinary ? 'binary' : 'text', 'string'),
+                'timemodified' => new xmlrpcval($r->timemodified, 'int'),
             ), 'struct');
             $files[] = $r;
         }
     }
 
     return new xmlrpcresp(new xmlrpcval($files, 'array'));
+}
+
+function get_datafile_data($xmlrpcmsg)
+{
+    $datafileid = $xmlrpcmsg->getParam(0)->scalarVal();
+
+    $datafile = get_record('programming_datafile', 'id', $datafileid);
+    if (!empty($datafile)) {
+        if (empty($datafile->checkdata)) {
+            $r = new xmlrpcval($datafile->data, 'base64');
+        } else {
+            $r = new xmlrpcval($datafile->checkdata, 'base64');
+        }
+    } else {
+        $r = new xmlrpcval('', 'base64');
+    }
+
+    return $r;
 }
 
 function get_presetcodes($xmlrpcmsg)
@@ -377,6 +395,10 @@ $s = new xmlrpc_server(
     'oj.get_datafiles' => array(
         'function' => 'get_datafiles',
         'signature' => array(array($xmlrpcArray, $xmlrpcString)),
+    ),
+    'oj.get_datafile_data' => array(
+        'function' => 'get_datafile_data',
+        'signature' => array(array($xmlrpcBase64, $xmlrpcString)),
     ),
     'oj.get_presetcodes' => array(
         'function' => 'get_presetcodes',
