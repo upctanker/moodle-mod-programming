@@ -80,6 +80,7 @@
 
         programming_backup_langlimit($bf, $preferences, $programming);
         programming_backup_presetcode($bf, $preferences, $programming);
+        programming_backup_datafile($bf, $preferences, $programming);
         programming_backup_testcase($bf, $preferences, $programming);
 
         $status = fwrite($bf, end_tag('MOD', 3, false));
@@ -128,6 +129,35 @@
             }
         }
         fwrite($bf, end_tag('PRESETCODES', 4, true));
+
+        return $status;
+    }
+
+    function programming_backup_datafile($bf, $preferences, $programming) {
+
+        $presetcodes = get_records('programming_datafile', 'programmingid', $programming->id, 'id');
+
+        $status = true;
+
+        fwrite($bf, start_tag('DATAFILES', 4, true));
+        if ($presetcodes) {
+            foreach ($presetcodes as $pc) {
+                fwrite($bf, start_tag('DATAFILE', 5, true));
+                fwrite($bf, full_tag('ID', 6, false, $pc->id));
+                fwrite($bf, full_tag('PROGRAMMINGID', 6, false, $pc->programmingid));
+                fwrite($bf, full_tag('FILENAME', 6, false, $pc->filename));
+                fwrite($bf, full_tag('SEQ', 6, false, $pc->seq));
+                fwrite($bf, full_tag('ISBINARY', 6, false, $pc->isbinary));
+                fwrite($bf, full_tag('DATASIZE', 6, false, $pc->datasize));
+                fwrite($bf, full_tag('DATA', 6, false, base64_encode($pc->data)));
+                fwrite($bf, full_tag('CHECKDATASIZE', 6, false, $pc->checkdatasize));
+                fwrite($bf, full_tag('CHECKDATA', 6, false, base64_encode($pc->checkdata)));
+                fwrite($bf, full_tag('MEMO', 6, false, $pc->memo));
+                fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $pc->timemodified));
+                fwrite($bf, end_tag('DATAFILE', 5, true));
+            }
+        }
+        fwrite($bf, end_tag('DATAFILES', 4, true));
 
         return $status;
     }
