@@ -23,7 +23,7 @@
     require_capability('mod/programming:viewtestcase', $context);
 
 /// Print the page header
-    $pagename = get_string('listdatafiles', 'programming');
+    $pagename = get_string('datafiles', 'programming');
     include_once('../pageheader.php');
 
 /// Print tabs
@@ -32,7 +32,7 @@
 
 /// Print page content
     echo '<div class="maincontent">';
-    echo '<h1>'.get_string('datafile', 'programming').'</h1>';
+    echo '<h1>'.get_string('datafiles', 'programming').'</h1>';
     print_datafile_table();
     echo '</div>';
 
@@ -43,12 +43,12 @@ function print_datafile_table() {
     global $CFG, $page, $perpage, $programming, $course, $language, $groupid;
 
     $table = new flexible_table('datafile-table');
-    $def = array('sequence', 'filename', 'isbinary', 'data', 'checkdata', 'action');
+    $def = array('sequence', 'filename', 'filetype', 'data', 'checkdata', 'action');
     $table->define_columns($def);
     $headers = array(
         get_string('sequence', 'programming'),
         get_string('filename', 'programming'),
-        get_string('isbinary', 'programming'),
+        get_string('filetype', 'programming'),
         get_string('data', 'programming'),
         get_string('checkdata', 'programming'),
         get_string('action'),

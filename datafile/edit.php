@@ -27,7 +27,6 @@
         redirect('list.php?a='.$programming->id);
 
     } else if ($data = $mform->get_data()) {
-    print_r($data);
         $content = $mform->get_file_content('data');
         if (!empty($content)) {
             $data->datasize = strlen($content);

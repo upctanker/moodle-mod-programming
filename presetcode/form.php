@@ -81,7 +81,7 @@ class presetcode_form extends moodleform {
 
             /// file name should not duplicate
             if (empty($errors['name']) && empty($data['id']) && count_records_select('programming_presetcode', "programmingid={$data['programmingid']} AND name='{$data['name']}'")) {
-                $errors['name'] = get_string('presetcodenamedupliate', 'programming');
+                $errors['name'] = get_string('filenamedupliate', 'programming');
             }
 
         } else if (empty($data['id']) && $data['choosename'] == 1 && count_records_select('programming_presetcode', "programmingid={$data['programmingid']} AND name='<prepend>'")) {
