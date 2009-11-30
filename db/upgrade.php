@@ -501,6 +501,14 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = $result && create_table($table);
     }
 
+    if ($result && $oldversion < 2009120103) {
+    /// Add field to table programming
+        $table = new XMLDBTable('programming');
+        $field = new XMLDBField('nproc');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 2, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0, $previous='memlimit');
+        $result = add_field($table, $field);
+    }
+
     return $result;
 }
 

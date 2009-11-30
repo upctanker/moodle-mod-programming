@@ -422,6 +422,14 @@ function programming_get_memlimit_options() {
     return $memlimitoptions;
 }
 
+function programming_get_nproc_options() {
+    $options = array();
+    for ($i = 1; $i <= 16; $i++) {
+        $options[$i] = "$i";
+    }
+    return $options;
+}
+
 function programming_get_language_options($programming = False) {
     global $CFG;
     if ($programming) {
