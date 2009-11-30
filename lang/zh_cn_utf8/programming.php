@@ -291,5 +291,6 @@ $string['editdatafile'] = '修改数据文件';
 $string['deletedatafile'] = '删除数据文件';
 $string['deletedatafileconfirm'] = '您确定要删除数据文件么？';
 $string['filenamedupliate'] = '已经有另一个文件使用了该文件名';
+$string['nodatafile'] = '没有数据文件';
 
 ?>

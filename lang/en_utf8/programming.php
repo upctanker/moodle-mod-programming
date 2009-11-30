@@ -300,5 +300,6 @@ $string['editdatafile'] = 'Edit data file';
 $string['deletedatafile'] = 'Delete data file';
 $string['deletedatafileconfirm'] = 'Are you sure to delete the data file?';
 $string['filenamedupliate'] = 'The name has been used by another file';
+$string['nodatafile'] = 'No data file';
 
 ?>
