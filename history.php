@@ -27,8 +27,10 @@
 
     $submits = get_records_select('programming_submits', 'programmingid='.$programming->id.' AND userid='.$userid, 'id DESC');
     if ($programming->presetcode) {
-        foreach ($submits as $submit) {
-            $submit->code = programming_format_code($programming, $submit);
+        if (is_array($submits)) {
+            foreach ($submits as $submit) {
+                $submit->code = programming_format_code($programming, $submit);
+            }
         }
     }
 
