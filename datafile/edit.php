@@ -47,7 +47,7 @@
         $data->timemodified = time();
         update_record('programming_datafile', $data);
 
-        add_to_log($course->id, 'programming', 'datafile_add', 'datafile/add.php?a='.$programming->id, 'add data file');
+        add_to_log($course->id, 'programming', 'datafile_edit', 'datafile/edit.php?a='.$programming->id, 'edit data file');
         redirect('list.php?a='.$programming->id, get_string('datafilemodified', 'programming'));
 
     } else {
