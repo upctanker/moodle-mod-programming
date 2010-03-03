@@ -389,13 +389,29 @@ function programming_get_timelimit_options($default = 0) {
     return $timelimitoptions;
 }
 
-function programming_get_test_pub_options() {
+function programming_testcase_pub_options() {
     $options = array();
     $options[PROGRAMMING_TEST_SHOWAFTERDISCOUNT] = get_string('afterdiscount', 'programming');
     $options[PROGRAMMING_TEST_HIDDEN] = get_string('never', 'programming');
     $options[PROGRAMMING_TEST_SHOWINRESULT] = get_string('inresult', 'programming');
     $options[PROGRAMMING_TEST_SHOW] = get_string('always', 'programming');
     return $options;
+}
+
+function programming_testcase_pub_getstring($pub) {
+    $options = programming_testcase_pub_options();
+    return $options[$pub];    
+}
+
+function programming_testcase_require_view_capability($context, $case, $inresult = false, $afterdiscount = false)
+{
+    if ($case->pub == PROGRAMMING_TEST_HIDDEN ||
+        $case->pub == PROGRAMMING_TEST_SHOWINRESULT && $inresult ||
+        $case->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $afterdiscount) {
+        require_capability('mod/programming:viewhiddentestcase', $context);
+    } else {
+        require_capability('mod/programming:viewpubtestcase', $context);
+    }
 }
 
 function programming_get_weight_options() {
@@ -424,7 +440,7 @@ function programming_get_memlimit_options() {
 
 function programming_get_nproc_options() {
     $options = array();
-    for ($i = 1; $i <= 16; $i++) {
+    for ($i = 0; $i <= 16; $i++) {
         $options[$i] = "$i";
     }
     return $options;
@@ -463,6 +479,7 @@ function programming_test_add_instance($testcase) {
     }
     $testcase->input = addslashes($testcase->input);
     $testcase->output = addslashes($testcase->output);
+    $testcase->timemodified = time();
     return insert_record("programming_tests", $testcase);
 }
 
@@ -477,6 +494,7 @@ function programming_test_update_instance($testcase) {
     }
     $testcase->input = addslashes($testcase->input);
     $testcase->output = addslashes($testcase->output);
+    $testcase->timemodified = time();
     return update_record("programming_tests", $testcase);
 }
 
@@ -1258,19 +1276,13 @@ function programming_test_case_visible($tests, $result)
            ($tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $programming->timediscount <= time());
 }
 
-
-function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
+function programming_adjust_sequence(&$records, $moveid, $direction)
 {
-    global $CFG;
-
-    $codes = get_records('programming_presetcode', 'programmingid', $programmingid, 'sequence', 'id, sequence');
-    if (!is_array($codes)) return;
-
     $seq = array();
     $i = 1; $idx = 0;
-    foreach ($codes as $code) {
-        if ($moveid == $code->id) $idx = $i;
-        $seq[$i++] = $code;
+    foreach ($records as $rec) {
+        if ($moveid == $rec->id) $idx = $i;
+        $seq[$i++] = $rec;
     }
 
     if ($idx) {
@@ -1278,12 +1290,21 @@ function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $di
             $t = $seq[$idx];
             $seq[$idx] = $seq[$idx-1];
             $seq[$idx-1] = $t;
-        } else if ($direction == 2 && $idx < count($codes)) {
+        } else if ($direction == 2 && $idx < count($records)) {
             $t = $seq[$idx];
             $seq[$idx] = $seq[$idx+1];
             $seq[$idx+1] = $t;
         }
     }
+    return $seq;
+}
+
+function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
+{
+    $codes = get_records('programming_presetcode', 'programmingid', $programmingid, 'sequence', 'id, sequence');
+    if (!is_array($codes)) return;
+
+    $seq = programming_adjust_sequence($codes, $moveid, $direction);
 
     foreach ($seq as $i => $code) {
         if ($code->sequence != $i) {
@@ -1293,32 +1314,12 @@ function programming_presetcode_adjust_sequence($programmingid, $moveid = 0, $di
     }
 }
 
-
 function programming_datafile_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
 {
-    global $CFG;
-
     $codes = get_records('programming_datafile', 'programmingid', $programmingid, 'seq', 'id, seq');
     if (!is_array($codes)) return;
 
-    $seq = array();
-    $i = 1; $idx = 0;
-    foreach ($codes as $code) {
-        if ($moveid == $code->id) $idx = $i;
-        $seq[$i++] = $code;
-    }
-
-    if ($idx) {
-        if ($direction == 1 && $idx > 1) { // move up
-            $t = $seq[$idx];
-            $seq[$idx] = $seq[$idx-1];
-            $seq[$idx-1] = $t;
-        } else if ($direction == 2 && $idx < count($codes)) {
-            $t = $seq[$idx];
-            $seq[$idx] = $seq[$idx+1];
-            $seq[$idx+1] = $t;
-        }
-    }
+    $seq = programming_adjust_sequence($codes, $moveid, $direction);
 
     foreach ($seq as $i => $code) {
         if ($code->seq != $i) {
@@ -1328,4 +1329,18 @@ function programming_datafile_adjust_sequence($programmingid, $moveid = 0, $dire
     }
 }
 
+function programming_testcase_adjust_sequence($programmingid, $moveid = 0, $direction = 0)
+{
+    $codes = get_records('programming_tests', 'programmingid', $programmingid, 'seq', 'id, seq');
+    if (!is_array($codes)) return;
+
+    $seq = programming_adjust_sequence($codes, $moveid, $direction);
+
+    foreach ($seq as $i => $code) {
+        if ($code->seq != $i) {
+            $code->seq = $i;
+            update_record('programming_tests', $code);
+        }
+    }
+}
 ?>

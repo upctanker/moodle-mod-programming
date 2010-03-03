@@ -533,6 +533,22 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2010030401) {
+    /// Add field to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('memo');
+        $field->setAttributes(XMLDB_TYPE_TEXT, 'small', XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='weight');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010030403) {
+    /// Change field pub to signed
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('pub');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 3, false, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='nproc');
+        $result = change_field_type($table, $field);
+    }
+
     return $result;
 }
 

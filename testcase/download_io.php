@@ -1,7 +1,7 @@
 <?php
 
-    require_once('../../config.php');
-    require_once('lib.php');
+    require_once('../../../config.php');
+    require_once('../lib.php');
 
     $a = required_param('a', PARAM_INT);     // programming ID
     $testid = required_param('test', PARAM_INT);
@@ -28,11 +28,7 @@
         if (! $test = get_record('programming_tests', 'id', $testid)) {
             error('Test ID was incorrect');
         }
-        if ($test->pub >= 0) {
-            require_capability('mod/programming:viewpubtestcase', $context);
-        } else {
-            require_capability('mod/programming:viewhiddentestcase', $context);
-        }
+        programming_testcase_require_view_capability($test, $context);
         $filename = sprintf('test-%d.%s', $testid, $type);
         if ($type == 'in') {
             $content = !empty($test->gzinput) ? bzdecompress($test->gzinput) : $test->input;

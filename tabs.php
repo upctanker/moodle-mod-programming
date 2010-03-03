@@ -18,7 +18,7 @@
     $row[] = new tabobject('history', $CFG->wwwroot.'/mod/programming/history.php?a='.$programming->id, get_string('submithistory','programming'), '', true);
 
     if (has_capability('mod/programming:edittestcase', $context)) {
-        $row[] = new tabobject('edittest', $CFG->wwwroot.'/mod/programming/edittest_list.php?a='.$programming->id, get_string('testenv','programming'));
+        $row[] = new tabobject('edittest', $CFG->wwwroot.'/mod/programming/testcase/list.php?a='.$programming->id, get_string('testenv','programming'));
     }
     if (has_capability('mod/programming:viewreport', $context)) {
         $row[] = new tabobject('reports', $CFG->wwwroot.'/mod/programming/reports/summary.php?a='.$programming->id, get_string('reports','programming'), '', true);
@@ -32,8 +32,7 @@
     if ($currenttab == 'edittest' && has_capability('mod/programming:edittestcase', $context)) {
         $row = array();
         $inactive[] = 'edittest';
-        $row[] = new tabobject('listtest', $CFG->wwwroot.'/mod/programming/edittest_list.php?a='.$programming->id, get_string('list','programming'));
-        $row[] = new tabobject('addtest', $CFG->wwwroot.'/mod/programming/edittest_modify.php?a='.$programming->id, get_string('add'));
+        $row[] = new tabobject('testcase', $CFG->wwwroot.'/mod/programming/testcase/list.php?a='.$programming->id, get_string('testcase','programming'));
         $row[] = new tabobject('datafile', $CFG->wwwroot.'/mod/programming/datafile/list.php?a='.$programming->id, get_string('datafile','programming'));
         $row[] = new tabobject('presetcode', $CFG->wwwroot.'/mod/programming/presetcode/list.php?a='.$programming->id, get_string('presetcode','programming'));
         $row[] = new tabobject('validator', $CFG->wwwroot.'/mod/programming/edittest_validator.php?a='.$programming->id, get_string('validator','programming'));

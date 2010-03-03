@@ -197,6 +197,7 @@ function get_tests($xmlrpcmsg)
                 'output' => new xmlrpcval($full ? $r->output : '', 'base64'),
                 'timelimit' => new xmlrpcval($r->timelimit, 'int'),
                 'memlimit' => new xmlrpcval($r->memlimit, 'int'),
+                'nproc' => new xmlrpcval($r->nproc, 'int'),
             ), 'struct');
             $tests[] = $r;
         }
@@ -291,6 +292,7 @@ function get_test($xmlrpcmsg)
             'output' => new xmlrpcval($r->output, 'base64'),
             'timelimit' => new xmlrpcval($r->timelimit, 'int'),
             'memlimit' => new xmlrpcval($r->memlimit, 'int'),
+            'nproc' => new xmlrpcval($r->nproc, 'int'),
         ), 'struct');
     return new xmlrpcresp($ret);
 }
@@ -311,6 +313,7 @@ function get_gztest($xmlrpcmsg)
             'output' => new xmlrpcval($r->gzoutput, 'base64'),
             'timelimit' => new xmlrpcval($r->timelimit, 'int'),
             'memlimit' => new xmlrpcval($r->memlimit, 'int'),
+            'nproc' => new xmlrpcval($r->nproc, 'int'),
         ), 'struct');
     return new xmlrpcresp($ret);
 }

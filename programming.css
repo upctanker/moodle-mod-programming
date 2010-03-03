@@ -4,6 +4,7 @@
 
 .mod-programming .maincontent,
 .mod-programming-reports .maincontent,
+.mod-programming-testcase .maincontent,
 .mod-programming-datafile .maincontent,
 .mod-programming-presetcode .maincontent,
 .blocks-programming_standing .maincontent {
@@ -213,11 +214,11 @@
     width: 60%;
 }
 
-.programming-io a {
+td.programming-io a {
     font-size: 9pt;
 }
 
-.programming-io div {
+td.programming-io div {
     vertical-align: top;
     padding: 0px 5px 0px 0px;
     width: 10em;
@@ -225,7 +226,7 @@
     overflow: auto;
 }
 
-.programming-io ol {
+td.programming-io ol {
     text-align: left;
     margin-top: 0;
     margin-right: 0;
@@ -234,14 +235,14 @@
     overflow: visible;
 }
 
-.programming-io li {
+td.programming-io li {
     font-family: "Consolas","Courier New",Courier,mono,serif;
     margin: 0;
     padding: 0;
     overflow: visible;
 }
 
-.programming-io span {
+td.programming-io span {
     background-color: #D3D3D3;
     margin: 0;
     padding: 0;
