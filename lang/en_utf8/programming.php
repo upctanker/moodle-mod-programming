@@ -301,7 +301,12 @@ $string['deletedatafile'] = 'Delete data file';
 $string['deletedatafileconfirm'] = 'Are you sure to delete the data file?';
 $string['filenamedupliate'] = 'The name has been used by another file';
 $string['nodatafile'] = 'No data file';
-$string['nproc'] = 'Extra process number';
+$string['extraproc'] = 'Extra process number';
 $string['presstodownload'] = 'Press to download';
+$string['addtestcase'] = 'Add Test Case';
+$string['edittestcase'] = 'Edit Test Case';
+$string['nproc'] = '{$a} more process';
+$string['deletetestcaseconfirm'] = 'Are you sure to delete the test case?';
+$string['testcasemoved'] = 'Test case moved';
 
 ?>

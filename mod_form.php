@@ -78,7 +78,7 @@ class mod_programming_mod_form extends moodleform_mod {
         $mform->addElement('select', 'memlimit', get_string('memlimit', 'programming'), $options);
 
         $options = programming_get_nproc_options();
-        $mform->addElement('select', 'nproc', get_string('nproc', 'programming'), $options);
+        $mform->addElement('select', 'nproc', get_string('extraproc', 'programming'), $options);
 
         $options = array();
         $options[0] = get_string('attemptsunlimited', 'programming');
