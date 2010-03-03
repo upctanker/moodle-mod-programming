@@ -48,6 +48,7 @@
 	<th><?php echo get_string('expectedoutput', 'programming'); helpbutton('expectedoutput', 'expectedoutput', 'programming'); ?></th>
 	<th><?php echo get_string('timelimit', 'programming'); helpbutton('timelimit', 'timelimit', 'programming'); ?></th>
 	<th><?php echo get_string('memlimit', 'programming'); helpbutton('memlimit', 'memlimit', 'programming'); ?></th>
+	<th><?php echo get_string('extraproc', 'programming'); helpbutton('nproc', 'nproc', 'programming'); ?></th>
   </tr>
 
 <?php
@@ -55,7 +56,7 @@
   foreach ($pubtests as $programmingtest):
 ?>
   <tr>
-    <th><?php echo get_string('testcasen', 'programming', $i++); ?></th>
+    <th><?php echo get_string('testcasen', 'programming', $programmingtest->seq); ?></th>
     <td class="programming-io cell">
     <?php echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
 	  <?php echo programming_format_io($programmingtest->input, true); ?>
@@ -69,6 +70,9 @@
 	</td>
     <td class="cell">
 	  <?php echo programming_format_memlimit($programmingtest->memlimit); ?>
+	</td>
+    <td class="cell">
+	  <?php echo $programmingtest->nproc; ?>
 	</td>
   </tr>
 <?php endforeach; ?>
