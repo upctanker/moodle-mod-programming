@@ -42,9 +42,14 @@
         $pagename = get_string('editpresetcode', 'programming');
         include_once('../pageheader.php');
 
+        echo '<div class="maincontent generalbox">';
+        echo '<h1>'.get_string('editpresetcode', 'programming').'</h1>';
+
         /// Print tabs
         $currenttab = 'edittest';
         include_once('../tabs.php');
+
+        echo '</div>';
 
         /// Print page content
         $mform->display();

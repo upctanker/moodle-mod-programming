@@ -302,5 +302,6 @@ $string['deletedatafileconfirm'] = 'Are you sure to delete the data file?';
 $string['filenamedupliate'] = 'The name has been used by another file';
 $string['nodatafile'] = 'No data file';
 $string['nproc'] = 'Extra process number';
+$string['presstodownload'] = 'Press to download';
 
 ?>

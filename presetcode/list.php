@@ -31,7 +31,7 @@
     include_once('../tabs.php');
 
 /// Print page content
-    echo '<div class="maincontent">';
+    echo '<div class="maincontent generalbox">';
     echo '<h1>'.get_string('presetcode', 'programming').'</h1>';
     print_presetcode_table();
     echo '</div>';

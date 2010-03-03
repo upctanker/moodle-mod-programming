@@ -45,9 +45,13 @@
         $currenttab = 'edittest';
         include_once('../tabs.php');
 
+        echo '<div class="maincontent generalbox">';
+        echo '<h1>'.get_string('addpresetcode', 'programming').'</h1>';
+
         /// Print page content
         $mform->display();
 
+        echo '</div>';
         /// Finish the page
         print_footer($course);
     }
