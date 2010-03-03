@@ -73,6 +73,7 @@
 
             if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL || has_capability('mod/programming:viewdetailresultincontest', $context)) {
                 $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
+                uasort($results, 'cmp_results_by_test_seq');
                 echo '<div id="test-result-detail">';
                 echo '<p>'.get_string('testresult', 'programming', programming_get_test_results_desc($submit, $results)).'</p>';
                 echo '<p>'.get_string('iostripped', 'programming', '1').'</p>';
@@ -128,6 +129,10 @@ function print_test_result_table()
     $table->set_attribute('align', 'center');
     $table->set_attribute('cellpadding', '3');
     $table->set_attribute('cellspacing', '1');
+    $table->column_class('input', 'programming-io');
+    $table->column_class('expectedoutput', 'programming-io');
+    $table->column_class('output', 'programming-io');
+    $table->column_class('errormessag', 'programming-io');
     $table->setup();
 
     if (!is_array($results)) $results = array();
@@ -136,38 +141,32 @@ function print_test_result_table()
     foreach ($results as $result) {
         $rowclazz[] = $result->passed ? 'passed' : 'notpassed';
         $data = array();
-        $data[] = $i++;
+        $data[] = $tests[$result->testid]->seq;
         $data[] = $tests[$result->testid]->weight;
         $data[] = programming_format_timelimit($tests[$result->testid]->timelimit);
         $data[] = programming_format_memlimit($tests[$result->testid]->memlimit);
         $downloadurl = $CFG->wwwroot."/mod/programming/download_io.php?a={$programming->id}&amp;test={$result->testid}";
-        if ($viewhiddentestcase || programming_test_case_visible($tests, $result)) {
+        if ($viewhiddentestcase || programming_testcase_visible($tests, $result, true, $programming->timediscount <= time())) {
             // input
-            $html = "<div class='programming-io'>";
-            $html.= link_to_popup_window($downloadurl.'&amp;type=in&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
+            $html = link_to_popup_window($downloadurl.'&amp;type=in&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
             $html.= '&nbsp;';
             $html.= "<a href='$downloadurl&amp;type=in'>$strdownload</a>";
             $html.= programming_format_io($tests[$result->testid]->input, true);
-            $html.= '</div>';
             $data[] = $html;
 
             // expected output
-            $html = "<div class='programming-io'>";
-            $html.= link_to_popup_window($downloadurl.'&amp;type=out&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
+            $html = link_to_popup_window($downloadurl.'&amp;type=out&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
             $html.= '&nbsp;';
             $html.= "<a href='$downloadurl&amp;type=out'>$strdownload</a>";
             $html.= programming_format_io($tests[$result->testid]->output, true);
-            $html.= '</div>';
             $data[] = $html;
 
             // output
             if (!empty($result->output)) {
-                $html = "<div class='programming-io'>";
-                $html.= link_to_popup_window($downloadurl."&amp;submit={$result->submitid}&amp;type=out&amp;download=0", '_blank', $strshowasplaintext, 300, 400, null, null, true);
+                $html = link_to_popup_window($downloadurl."&amp;submit={$result->submitid}&amp;type=out&amp;download=0", '_blank', $strshowasplaintext, 300, 400, null, null, true);
                 $html.= '&nbsp;';
                 $html.= "<a href='$downloadurl&amp;submit={$result->submitid}&amp;type=out'>$strdownload</a>";
                 $html.= programming_format_io($result->output, false);
-                $html.= "</div>";
                 $data[] = $html;
             } else {
                 $data[] = get_string('noresult', 'programming');
@@ -175,8 +174,7 @@ function print_test_result_table()
 
             // error message
             if (!empty($result->stderr)) {
-                $html = "<div class='programming-io'>";
-                $html.= link_to_popup_window($downloadurl."&amp;submit={$result->submitid}&amp;type=err&amp;download=0", '_blank', $strshowasplaintext, 300, 400, null, null, true);
+                $html = link_to_popup_window($downloadurl."&amp;submit={$result->submitid}&amp;type=err&amp;download=0", '_blank', $strshowasplaintext, 300, 400, null, null, true);
                 $html.= '&nbsp;';
                 $html.= "<a href='$downloadurl&amp;submit={$result->submitid}&amp;type=err'>$strdownload</a>";
                 $html.= programming_format_io($result->stderr, false);
@@ -215,6 +213,11 @@ function print_test_result_table()
     echo '  });';
     echo '});';
     echo '</script>';
+}
+
+function cmp_results_by_test_seq($a, $b) {
+    global $tests;
+    return $tests[$a->testid]->seq - $tests[$b->testid]->seq;
 }
 
 ?>

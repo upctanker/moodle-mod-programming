@@ -414,6 +414,18 @@ function programming_testcase_require_view_capability($context, $case, $inresult
     }
 }
 
+function programming_testcase_visible($tests, $result, $inresult = false, $afterdiscount = false)
+{
+    if (! is_object($result)) {
+        return false;
+    }
+
+    $pub = $tests[$result->testid]->pub;
+    return $pub == PROGRAMMING_TEST_SHOW ||
+           $pub == PROGRAMMING_TEST_SHOWINRESULT && $inresult ||
+           $pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $afterdiscount;
+}
+
 function programming_get_weight_options() {
     $weightoptions = array();
     //$weightoptions[0] = get_string('weightsetting', 'programming');
@@ -1263,17 +1275,6 @@ function get_visible_programmings($courseid)
                AND cm.instance = p.id
           ORDER BY p.name";
     return get_records_sql($sql);
-}
-
-function programming_test_case_visible($tests, $result)
-{
-    if (! is_object($result)) {
-        return false;
-    }
-
-    return $tests[$result->testid]->pub == PROGRAMMING_TEST_SHOW ||
-           $tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWINRESULT ||
-           ($tests[$result->testid]->pub == PROGRAMMING_TEST_SHOWAFTERDISCOUNT && $programming->timediscount <= time());
 }
 
 function programming_adjust_sequence(&$records, $moveid, $direction)
