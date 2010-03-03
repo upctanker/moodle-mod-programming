@@ -509,6 +509,30 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = add_field($table, $field);
     }
 
+    if ($result && $oldversion < 2009120104) {
+    /// Add field to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('seq');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0, $previous='programmingid');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009120104) {
+    /// Add field to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('nproc');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 2, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=0, $previous='memlimit');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2009120104) {
+    /// Add field to table programming_tests
+        $table = new XMLDBTable('programming_tests');
+        $field = new XMLDBField('cmdargs');
+        $field->setAttributes(XMLDB_TYPE_CHAR, 255, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='gzoutput');
+        $result = add_field($table, $field);
+    }
+
     return $result;
 }
 
