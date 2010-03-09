@@ -100,6 +100,7 @@
 
         $status = true;
 
+        if (empty($info['MOD']['#']['PRESETCODES'])) return $status;
         $codes = $info['MOD']['#']['PRESETCODES']['0']['#']['PRESETCODE'];
         
         foreach ($codes as $opt_info) {
@@ -135,6 +136,7 @@
 
         $status = true;
 
+        if (empty($info['MOD']['#']['DATAFILES'])) return $status;
         $files = $info['MOD']['#']['DATAFILES']['0']['#']['DATAFILE'];
         
         foreach ($files as $opt_info) {
