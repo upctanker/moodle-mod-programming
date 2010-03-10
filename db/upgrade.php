@@ -532,7 +532,7 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = change_field_type($table, $field);
     }
 
-    if ($result && $oldversion < 2010031003) {
+    if ($result && $oldversion < 2010031004) {
     /// Move presetcode to separate table
         $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
         foreach ($programmings as $p) {
@@ -543,7 +543,7 @@ function xmldb_programming_upgrade($oldversion=0) {
                 $code->name = '<prepend>';
                 $code->sequence = 1;
                 $code->presetcode = addslashes($p->presetcode);
-                $code->presetcodeforcheck = NULL;
+                $code->presetcodeforcheck = '';
                 print_r($code);
                 insert_record('programming_presetcode', $code);
             }
