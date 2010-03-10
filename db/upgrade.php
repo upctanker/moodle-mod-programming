@@ -456,23 +456,6 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2009112511) {
-    /// Move presetcode to separate table
-        $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
-        foreach ($programmings as $p) {
-            if (!empty($p->presetcode)) {
-                $code = new stdClass;
-                $code->programmingid = $p->id;
-                $code->languageid = 1;
-                $code->name = '<prepend>';
-                $code->sequence = 1;
-                $code->presetcode = $p->presetcode;
-                $code->presetcodeforcheck = NULL;
-                insert_record('programming_presetcode', $code);
-            }
-        }
-    }
-
     if ($result && $oldversion < 2009113002) {
     /// Define table programming_datafile to be created
         $table = new XMLDBTable('programming_datafile');
@@ -547,6 +530,24 @@ function xmldb_programming_upgrade($oldversion=0) {
         $field = new XMLDBField('pub');
         $field->setAttributes(XMLDB_TYPE_INTEGER, 3, false, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='nproc');
         $result = change_field_type($table, $field);
+    }
+
+    if ($result && $oldversion < 2010031003) {
+    /// Move presetcode to separate table
+        $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
+        foreach ($programmings as $p) {
+            if (!empty($p->presetcode)) {
+                $code = new stdClass;
+                $code->programmingid = $p->id;
+                $code->languageid = 1;
+                $code->name = '<prepend>';
+                $code->sequence = 1;
+                $code->presetcode = addslashes($p->presetcode);
+                $code->presetcodeforcheck = NULL;
+                print_r($code);
+                insert_record('programming_presetcode', $code);
+            }
+        }
     }
 
     return $result;
