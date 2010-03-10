@@ -39,6 +39,16 @@ class testcase_form extends moodleform {
         $this->add_action_buttons();
     }
 
+    function set_data($data) {
+        if (strlen($data->input) > 1023) {
+            $data->input = '';
+        }
+        if (strlen($data->output) > 1023) {
+            $data->output = '';
+        }
+        parent::set_data($data);
+    }
+
     function validation($data, $files) {
         $errors = array();
 
