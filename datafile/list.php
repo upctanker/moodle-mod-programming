@@ -20,7 +20,7 @@
 
     require_login($course->id);
 
-    require_capability('mod/programming:viewtestcase', $context);
+    require_capability('mod/programming:viewhiddentestcase', $context);
 
 /// Print the page header
     $pagename = get_string('datafiles', 'programming');
