@@ -145,7 +145,7 @@ function print_test_result_table()
         $data[] = $tests[$result->testid]->weight;
         $data[] = programming_format_timelimit($tests[$result->testid]->timelimit);
         $data[] = programming_format_memlimit($tests[$result->testid]->memlimit);
-        $downloadurl = $CFG->wwwroot."/mod/programming/download_io.php?a={$programming->id}&amp;test={$result->testid}";
+        $downloadurl = $CFG->wwwroot."/mod/programming/testcase/download_io.php?a={$programming->id}&amp;test={$result->testid}";
         if ($viewhiddentestcase || programming_testcase_visible($tests, $result, true, $programming->timediscount <= time())) {
             // input
             $html = link_to_popup_window($downloadurl.'&amp;type=in&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
