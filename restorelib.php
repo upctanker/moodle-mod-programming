@@ -100,31 +100,32 @@
 
         $status = true;
 
-        if (empty($info['MOD']['#']['PRESETCODES'])) return $status;
-        $codes = $info['MOD']['#']['PRESETCODES']['0']['#']['PRESETCODE'];
-        
-        foreach ($codes as $opt_info) {
+        $codes = $info['MOD']['#']['PRESETCODES']['0']['#'];
+        print_r($info['MOD']['#']['PRESETCODES']);
+        if (!empty($codes)) {
+            foreach ($codes['PRESETCODE'] as $opt_info) {
 
-            $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
-            $code = new stdClass;
-            $code->programmingid = $programmingid;
-            $code->languageid = backup_todb($opt_info['#']['LANGUAGEID']['0']['#']);
-            $code->name = backup_todb($opt_info['#']['NAME']['0']['#']);
-            $code->sequence = backup_todb($opt_info['#']['SEQUENCE']['0']['#']);
-            $code->presetcode = backup_todb($opt_info['#']['PRESETCODE']['0']['#']); 
-            $code->presetcodeforcheck = backup_todb($opt_info['#']['PRESETCODEFORCHECK']['0']['#']);
+                $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
+                $code = new stdClass;
+                $code->programmingid = $programmingid;
+                $code->languageid = backup_todb($opt_info['#']['LANGUAGEID']['0']['#']);
+                $code->name = backup_todb($opt_info['#']['NAME']['0']['#']);
+                $code->sequence = backup_todb($opt_info['#']['SEQUENCE']['0']['#']);
+                $code->presetcode = backup_todb($opt_info['#']['PRESETCODE']['0']['#']); 
+                $code->presetcodeforcheck = backup_todb($opt_info['#']['PRESETCODEFORCHECK']['0']['#']);
 
-            $newid = insert_record('programming_presetcode', $code);
+                $newid = insert_record('programming_presetcode', $code);
 
-            if (!defined('RESTORE_SILENTLY')) {
-                echo '.';
-            }
-            backup_flush(300);
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '.';
+                }
+                backup_flush(300);
 
-            if ($newid) {
-                backup_putid($restore->backup_unique_code, 'programming_presetcode', $oldid, $newid);
-            } else {
-                $status = false;
+                if ($newid) {
+                    backup_putid($restore->backup_unique_code, 'programming_presetcode', $oldid, $newid);
+                } else {
+                    $status = false;
+                }
             }
         }
 
@@ -136,35 +137,35 @@
 
         $status = true;
 
-        if (empty($info['MOD']['#']['DATAFILES'])) return $status;
-        $files = $info['MOD']['#']['DATAFILES']['0']['#']['DATAFILE'];
-        
-        foreach ($files as $opt_info) {
+        $files = $info['MOD']['#']['DATAFILES'][0]['#'];
+        if (!empty($files)) {
+            foreach ($files['DATAFILE'] as $opt_info) {
 
-            $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
-            $file = new stdClass;
-            $file->programmingid = $programmingid;
-            $file->filename = backup_todb($opt_info['#']['FILENAME']['0']['#']);
-            $file->seq = backup_todb($opt_info['#']['SEQ']['0']['#']);
-            $file->isbinary = backup_todb($opt_info['#']['ISBINARY']['0']['#']);
-            $file->datasize = backup_todb($opt_info['#']['DATASIZE']['0']['#']);
-            $file->data = backup_todb(base64_decode($opt_info['#']['DATA']['0']['#']));
-            $file->checkdatasize = backup_todb($opt_info['#']['CHECKDATASIZE']['0']['#']);
-            $file->checkdata = backup_todb(base64_decode($opt_info['#']['CHECKDATA']['0']['#']));
-            $file->memo = backup_todb($opt_info['#']['MEMO']['0']['#']);
-            $file->timemodified = backup_todb($opt_info['#']['TIMEMODIFIED']['0']['#']);
+                $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
+                $file = new stdClass;
+                $file->programmingid = $programmingid;
+                $file->filename = backup_todb($opt_info['#']['FILENAME']['0']['#']);
+                $file->seq = backup_todb($opt_info['#']['SEQ']['0']['#']);
+                $file->isbinary = backup_todb($opt_info['#']['ISBINARY']['0']['#']);
+                $file->datasize = backup_todb($opt_info['#']['DATASIZE']['0']['#']);
+                $file->data = backup_todb(base64_decode($opt_info['#']['DATA']['0']['#']));
+                $file->checkdatasize = backup_todb($opt_info['#']['CHECKDATASIZE']['0']['#']);
+                $file->checkdata = backup_todb(base64_decode($opt_info['#']['CHECKDATA']['0']['#']));
+                $file->memo = backup_todb($opt_info['#']['MEMO']['0']['#']);
+                $file->timemodified = backup_todb($opt_info['#']['TIMEMODIFIED']['0']['#']);
 
-            $newid = insert_record('programming_datafile', $file);
+                $newid = insert_record('programming_datafile', $file);
 
-            if (!defined('RESTORE_SILENTLY')) {
-                echo '.';
-            }
-            backup_flush(300);
+                if (!defined('RESTORE_SILENTLY')) {
+                    echo '.';
+                }
+                backup_flush(300);
 
-            if ($newid) {
-                backup_putid($restore->backup_unique_code, 'programming_datafile', $oldid, $newid);
-            } else {
-                $status = false;
+                if ($newid) {
+                    backup_putid($restore->backup_unique_code, 'programming_datafile', $oldid, $newid);
+                } else {
+                    $status = false;
+                }
             }
         }
 
