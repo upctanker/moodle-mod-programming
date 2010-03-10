@@ -496,18 +496,26 @@ function programming_test_add_instance($testcase) {
 }
 
 function programming_test_update_instance($testcase) {
-    if (strlen($testcase->input) > 1024) {
+    # If input is not provided, do not update input and gzinput
+    if (empty($testcase->input)) {
+        unset($testcase->input);
+        unset($testcase->gzinput);
+    } else {
         $testcase->gzinput = addslashes(bzcompress($testcase->input));
-        $testcase->input = substr($testcase->input, 0, 1024);
+        $testcase->input = addslashes(substr($testcase->input, 0, 1024));
     }
-    if (strlen($testcase->output) > 1024) {
+
+    # If output is not provided, do not update output and gzoutput
+    if (empty($testcase->output)) {
+        unset($testcase->output);
+        unset($testcase->gzoutput);
+    } else {
         $testcase->gzoutput = addslashes(bzcompress($testcase->output));
-        $testcase->output = substr($testcase->output, 0, 1024);
+        $testcase->output = addslashes(substr($testcase->output, 0, 1024));
     }
-    $testcase->input = addslashes($testcase->input);
-    $testcase->output = addslashes($testcase->output);
+
     $testcase->timemodified = time();
-    return update_record("programming_tests", $testcase);
+    return update_record('programming_tests', $testcase);
 }
 
 function programming_submit_add_instance($programming, $submit) {
