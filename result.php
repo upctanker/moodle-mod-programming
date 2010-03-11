@@ -132,7 +132,7 @@ function print_test_result_table()
     $table->column_class('input', 'programming-io');
     $table->column_class('expectedoutput', 'programming-io');
     $table->column_class('output', 'programming-io');
-    $table->column_class('errormessag', 'programming-io');
+    $table->column_class('errormessage', 'programming-io');
     $table->setup();
 
     if (!is_array($results)) $results = array();
