@@ -71,16 +71,18 @@
         if (!empty($submit->judgeresult)) {
             $results = get_records('programming_test_results', 'submitid', $submit->id, 'testid');
 
-            if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL || has_capability('mod/programming:viewdetailresultincontest', $context)) {
-                $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
-                uasort($results, 'cmp_results_by_test_seq');
-                echo '<div id="test-result-detail">';
-                echo '<p>'.get_string('testresult', 'programming', programming_get_test_results_desc($submit, $results)).'</p>';
-                echo '<p>'.get_string('iostripped', 'programming', '1').'</p>';
-                print_test_result_table();
-                echo '</div>';
-            } else {
-                echo'<p>'.programming_contest_get_judgeresult($results).'</p>';
+            if (!empty($results)) {
+                if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL || has_capability('mod/programming:viewdetailresultincontest', $context)) {
+                    $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
+                    uasort($results, 'cmp_results_by_test_seq');
+                    echo '<div id="test-result-detail">';
+                    echo '<p>'.get_string('testresult', 'programming', programming_get_test_results_desc($submit, $results)).'</p>';
+                    echo '<p>'.get_string('iostripped', 'programming', '1').'</p>';
+                    print_test_result_table();
+                    echo '</div>';
+                } else {
+                    echo'<p>'.programming_contest_get_judgeresult($results).'</p>';
+                }
             }
         }
 
