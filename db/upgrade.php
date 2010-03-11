@@ -550,6 +550,19 @@ function xmldb_programming_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2010031201) {
+    /// Calc seq of testcases
+        $programmings = get_records('programming', null, null, $sort='id', $fields='id');
+        foreach ($programmings as $p) {
+            $cases = get_records('programming_tests', 'programmingid', $p->id, $sort='seq, id', $fields='id, seq');
+            $i = 1;
+            foreach ($cases as $c) {
+                $c->seq = $i++;
+                update_record('programming_tests', $c);
+            }
+        }
+    }
+
     return $result;
 }
 
