@@ -53,7 +53,8 @@ class testcase_form extends moodleform {
         $errors = array();
 
         if (empty($data['output']) or trim($data['output']) == '')
-            $errors['output'] = get_string('required');
+            if (empty($files['outputfile']))
+                $errors['output'] = get_string('required');
 
         return $errors;
     }
