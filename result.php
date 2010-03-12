@@ -192,7 +192,7 @@ function print_test_result_table()
         $data[] = round($result->timeused, 3);
         $data[] = $result->memused;
     
-        if ($viewhiddentestcase || programming_test_case_visible($tests, $results)) {
+        if ($viewhiddentestcase || programming_testcase_visible($tests, $results)) {
             $data[] = $result->exitcode;
         } else {
             $data[] = $strsecuretestcase;
