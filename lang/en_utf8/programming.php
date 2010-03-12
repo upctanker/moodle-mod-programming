@@ -308,5 +308,6 @@ $string['edittestcase'] = 'Edit Test Case';
 $string['nproc'] = '{$a} more process';
 $string['deletetestcaseconfirm'] = 'Are you sure to delete the test case?';
 $string['testcasemoved'] = 'Test case moved';
+$string['notestcase'] = 'No test case';
 
 ?>

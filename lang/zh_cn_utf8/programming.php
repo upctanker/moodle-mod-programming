@@ -298,5 +298,6 @@ $string['edittestcase'] = '修改测试用例';
 $string['nproc'] = '{$a} 个额外进程';
 $string['deletetestcaseconfirm'] = '您确定要删除测试用例么？';
 $string['testcasemoved'] = '已调整测试用例位置';
+$string['notestcase'] = '没有测试用例';
 
 ?>
