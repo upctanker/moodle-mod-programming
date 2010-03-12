@@ -24,6 +24,7 @@
             $programming->timeclose = backup_todb($info['MOD']['#']['TIMECLOSE']['0']['#']);
             $programming->timelimit = backup_todb($info['MOD']['#']['TIMELIMIT']['0']['#']);
             $programming->memlimit = backup_todb($info['MOD']['#']['MEMLIMIT']['0']['#']);
+            $programming->nproc = backup_todb($info['MOD']['#']['NPROC']['0']['#']);
             $programming->timediscount = backup_todb($info['MOD']['#']['TIMEDISCOUNT']['0']['#']);
             $programming->discount = backup_todb($info['MOD']['#']['DISCOUNT']['0']['#']);
             $programming->allowlate  = backup_todb($info['MOD']['#']['ALLOWLATE']['0']['#']);
@@ -184,12 +185,14 @@
             $oldid = backup_todb($opt_info['#']['ID']['0']['#']);
             $test = new stdClass;
             $test->programmingid = $programmingid;
+            $test->seq = backup_todb($opt_info['#']['SEQ']['0']['#']);
             $test->input = backup_todb(base64_decode($opt_info['#']['INPUT']['0']['#']));
             $test->gzinput = backup_todb(base64_decode($opt_info['#']['GZINPUT']['0']['#']));
             $test->output = backup_todb(base64_decode($opt_info['#']['OUTPUT']['0']['#']));
             $test->gzoutput = backup_todb(base64_decode($opt_info['#']['GZOUTPUT']['0']['#']));
             $test->timelimit = backup_todb($opt_info['#']['TIMELIMIT']['0']['#']);
             $test->memlimit = backup_todb($opt_info['#']['MEMLIMIT']['0']['#']);
+            $test->nproc = backup_todb($opt_info['#']['NPROC']['0']['#']);
             $test->pub = backup_todb($opt_info['#']['PUB']['0']['#']);
             $test->weight = backup_todb($opt_info['#']['WEIGHT']['0']['#']);
             $test->timemodified = backup_todb($opt_info['#']['TIMEMODIFIED']['0']['#']);
