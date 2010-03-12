@@ -101,7 +101,6 @@
         $status = true;
 
         $codes = $info['MOD']['#']['PRESETCODES']['0']['#'];
-        print_r($info['MOD']['#']['PRESETCODES']);
         if (!empty($codes)) {
             foreach ($codes['PRESETCODE'] as $opt_info) {
 
