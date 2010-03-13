@@ -2,18 +2,23 @@
     vertical-align: middle;
 }
 
-.mod-programming .maincontent,
-.mod-programming-reports .maincontent,
-.mod-programming-testcase .maincontent,
-.mod-programming-datafile .maincontent,
-.mod-programming-presetcode .maincontent,
-.blocks-programming_standing .maincontent {
+.maincontent {
 	text-align: center;
     padding: 4px;
 }
-.mod-programming .maincontent table { margin: auto; }
-.mod-programming .maincontent td { padding: 3px; }
-.mod-programming .cell { vertical-align: middle; } 
+
+.maincontent table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.maincontent td {
+    padding: 3px;
+}
+
+.maincontent .cell {
+    vertical-align: middle;
+}
 
 #mod-programming-view #description { text-align: left; padding: 0em 1em 0em 1em; }
 #mod-programming-view #datafile { text-align: left; padding: 0em 1em 0em 1em; }
