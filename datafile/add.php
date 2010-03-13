@@ -55,7 +55,7 @@
         include_once('../tabs.php');
 
         echo '<div class="maincontent generalbox">';
-        echo '<h1>'.get_string('adddatafile', 'programming').'</h1>';
+        echo '<h1>'.get_string('adddatafile', 'programming').helpbutton('datafile', 'datafile', 'programming', true, false, '', true).'</h1>';
 
         /// Print page content
         $mform->display();

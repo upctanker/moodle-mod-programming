@@ -32,7 +32,7 @@
 
 /// Print page content
     echo '<div class="maincontent generalbox">';
-    echo '<h1>'.get_string('presetcode', 'programming').'</h1>';
+    echo '<h1>'.get_string('presetcode', 'programming').helpbutton('presetcode', 'presetcode', 'programming', true, false, '', true).'</h1>';
     print_presetcode_table();
     echo '</div>';
 
