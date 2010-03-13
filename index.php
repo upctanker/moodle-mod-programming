@@ -148,9 +148,10 @@
         $table->data[] = array($strtotal, '', '', $totallines, $totalsubmit);
     }
 
-    echo '<br />';
-
+    echo '<div class="maincontent generalbox">';
+    echo '<h1>'.get_string('result', 'programming').'</h1>';
     print_table($table);
+    echo '</div>';
 
 /// Finish the page
 
