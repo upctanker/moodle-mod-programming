@@ -36,7 +36,6 @@
         $row[] = new tabobject('datafile', $CFG->wwwroot.'/mod/programming/datafile/list.php?a='.$programming->id, get_string('datafile','programming'));
         $row[] = new tabobject('presetcode', $CFG->wwwroot.'/mod/programming/presetcode/list.php?a='.$programming->id, get_string('presetcode','programming'));
         $row[] = new tabobject('validator', $CFG->wwwroot.'/mod/programming/edittest_validator.php?a='.$programming->id, get_string('validator','programming'));
-//      $row[] = new tabobject('generator', $CFG->wwwroot.'/mod/programming/edittest_generator.php?a='.$programming->id, get_string('generator','programming'));
 
         $tabs[] = $row;
     }
