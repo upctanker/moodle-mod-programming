@@ -302,5 +302,7 @@ $string['notestcase'] = '没有测试用例';
 $string['noresemble'] = '暂时还没有发现相似的情况';
 $string['packagedesc'] = '将所有的程序打包以便下载';
 $string['retestdesc'] = '删除测试结果并重新测试提交的程序';
+$string['validatortype'] = '验证程序类型';
+$string['validatorcode'] = '验证程序代码';
 
 ?>
