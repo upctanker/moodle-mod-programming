@@ -97,9 +97,8 @@
       // write files
       $exts = array('.txt', '.c', '.cxx', '.java', '.java', '.pas', '.py', '.cs');
       foreach ($latestsubmits as $submit) {
-          if (!$users[$submit->userid]->idnumber) continue;
           $ext = $exts[$submit->language];
-          $filename = $dirname.'/'.$users[$submit->userid]->idnumber.'-'.$submit->id.$ext;
+          $filename = "{$dirname}/{$submit->userid}-{$submit->id}{$ext}";
           $files[] = $filename;
           $f = fopen($filename, 'w');
           fwrite($f, $submit->code);
@@ -110,7 +109,9 @@
 
       $cwd = getcwd();
       chdir($dirname);
-      $url = exec("perl $cwd/moss.pl -u {$CFG->programming_moss_userid} *");
+      $url = array();
+      exec("perl $cwd/moss.pl -u {$CFG->programming_moss_userid} *", $url);
+      $url = $url[count($url)-1];
       echo "See result $url <br />";
 
       // remove temp
