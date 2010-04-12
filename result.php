@@ -34,7 +34,7 @@
 
     $viewhiddentestcase = has_capability('mod/programming:viewhiddentestcase', $context);
 
-    add_to_log($course->id, 'programming', 'result', 'result.php?a'.$programming->id, $programming->name);
+    add_to_log($course->id, 'programming', 'result', 'result.php?a='.$programming->id, $programming->name);
 
     // get title of the page
     if ($submit && $submit->userid != $USER->id) {
