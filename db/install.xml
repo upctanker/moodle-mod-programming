@@ -243,7 +243,6 @@
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('python-2.5', 'Python 2.5', '.py', NULL)" />
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('gmcs-2.0', 'C# (Mono 2.0)', '.cs', NULL)" />
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
-        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
       </SENTENCES>
     </STATEMENT>
   </STATEMENTS>
