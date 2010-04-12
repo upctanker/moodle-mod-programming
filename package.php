@@ -78,7 +78,7 @@
     foreach ($latestsubmits as $submit) {
         if ($submit->language == 1) $ext = '.c';
         elseif ($submit->language == 2) $ext = '.cxx';
-        $filename = $dirname.'/'.$users[$submit->userid]->idnumber.'-'.$submit->id.$ext;
+        $filename = $dirname.'/'.$users[$submit->userid]->username.'-'.$submit->id.$ext;
         $files[] = $filename;
         $f = fopen($filename, 'w');
         fwrite($f, $submit->code);
