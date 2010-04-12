@@ -35,7 +35,7 @@
         $row[] = new tabobject('testcase', $CFG->wwwroot.'/mod/programming/testcase/list.php?a='.$programming->id, get_string('testcase','programming'));
         $row[] = new tabobject('datafile', $CFG->wwwroot.'/mod/programming/datafile/list.php?a='.$programming->id, get_string('datafile','programming'));
         $row[] = new tabobject('presetcode', $CFG->wwwroot.'/mod/programming/presetcode/list.php?a='.$programming->id, get_string('presetcode','programming'));
-        $row[] = new tabobject('validator', $CFG->wwwroot.'/mod/programming/edittest_validator.php?a='.$programming->id, get_string('validator','programming'));
+        $row[] = new tabobject('validator', $CFG->wwwroot.'/mod/programming/validator/edit.php?a='.$programming->id, get_string('validator','programming'));
 
         $tabs[] = $row;
     }

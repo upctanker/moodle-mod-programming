@@ -154,19 +154,34 @@ function get_problem($xmlrpcmsg)
 {
     $id = $xmlrpcmsg->getParam(0)->scalarVal();
     $p = get_record('programming', 'id', $id);
-    switch ($p->validatortype) {
-    case 1:
-        $vtype = 'python';
-        break;
-    default:
-        $vtype = 'internal';
+
+    $vtypes = array(0 => 'comparetext', 
+                    1 => 'comparetextwithpe',
+                    2 => 'comparefile',
+                    9 => 'customized');
+    if (isset($vtypes[$p->validatortype])) {
+        $vtype = $vtypes[$p->validatortype];
+    } else {
+        $vtype = 0;
     }
+    if ($p->validatortype == 9) {
+        $vlangs = array();
+        foreach (get_records('programming_languages') as $k => $r){
+            $vlangs[$r->id] = $r->name;
+        }
+        $vlang = $vlangs[$p->validatorlang];
+        $vcode = $p->validator;
+    } else {
+        $vlang = $vcode = '';
+    }
+
     $ret = new xmlrpcval(array(
             'id' => new xmlrpcval(sprintf('%010d', $p->id), 'string'),
             'timemodified' => new xmlrpcval($p->timemodified, 'int'),
             'input_filename' => new xmlrpcval($p->inputfile, 'string'),
             'output_filename' => new xmlrpcval($p->outputfile, 'string'),
-            'validator_code' => new xmlrpcval($p->validator, 'base64'),
+            'validator_code' => new xmlrpcval($vcode, 'base64'),
+            'validator_lang' => new xmlrpcval($vlang, 'string'),
             'validator_type' => new xmlrpcval($vtype, 'string'),
             'generator_code' =>  new xmlrpcval('', 'base64'),
             'generator_type' => new xmlrpcval('', 'string'),

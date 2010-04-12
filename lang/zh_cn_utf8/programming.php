@@ -70,9 +70,6 @@ $string['rejudge'] = '重新测试';
 $string['showall'] = '显示全部';
 $string['showlatestonly'] = '显示最新';
 $string['rejudgeprograms'] = '要重新测试“{$a->name}”吗？';
-$string['validator'] = '验证程序';
-$string['setvalidator'] = '设定';
-$string['delvalidator'] = '删除';
 $string['package'] = '源码打包';
 $string['packagesuccess'] = '打包成功';
 $string['download'] = '下载';
@@ -302,7 +299,14 @@ $string['notestcase'] = '没有测试用例';
 $string['noresemble'] = '暂时还没有发现相似的情况';
 $string['packagedesc'] = '将所有的程序打包以便下载';
 $string['retestdesc'] = '删除测试结果并重新测试提交的程序';
-$string['validatortype'] = '验证程序类型';
-$string['validatorcode'] = '验证程序代码';
+$string['validator'] = '验证程序';
+$string['validatormodified'] = '已修改验证程序';
+$string['validatortype'] = '类型';
+$string['validatorlang'] = '语言';
+$string['validatorcode'] = '代码';
+$string['comparetext'] = '字符串比较';
+$string['comparetextwithpe'] = '字符串比较，支持 PE 错误';
+$string['comparefilesizeandmd5'] = '比较文件尺寸和 MD5 校验码';
+$string['customizedjudgescript'] = '自定义的验证脚本';
 
 ?>

@@ -563,6 +563,21 @@ function xmldb_programming_upgrade($oldversion=0) {
         }
     }
 
+    if ($result && $oldversion < 2010041202) {
+    /// Add field to table programming
+        $table = new XMLDBTable('programming');
+        $field = new XMLDBField('validatorlang');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='validatortype');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010041203) {
+        $sql = "UPDATE {$CFG->prefix}programming
+                   SET validatortype=9, validatorlang=6
+                 WHERE validatortype=1";
+        execute_sql($sql, false);
+    }
+
     return $result;
 }
 

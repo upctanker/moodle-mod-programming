@@ -851,7 +851,8 @@ function programming_judgeresult_options($addempty = false) {
 function programming_submit_judgeresult(&$results) {
     $err = array('JSE' => 20, 'JGE' => 19, 'RFC' => 18,
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,
-                 'KS' => 14, 'FPE' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
+                 'KS' => 14, 'FPE' => 13, 'RE' => 12, 'WA' => 11,
+                 'PE' => 1, 'AC' => 0);
 
     $c = -1;
     $errstr = null;
