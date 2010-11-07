@@ -456,23 +456,6 @@ function xmldb_programming_upgrade($oldversion=0) {
         $result = $result && create_table($table);
     }
 
-    if ($result && $oldversion < 2009112511) {
-    /// Move presetcode to separate table
-        $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
-        foreach ($programmings as $p) {
-            if (!empty($p->presetcode)) {
-                $code = new stdClass;
-                $code->programmingid = $p->id;
-                $code->languageid = 1;
-                $code->name = '<prepend>';
-                $code->sequence = 1;
-                $code->presetcode = $p->presetcode;
-                $code->presetcodeforcheck = NULL;
-                insert_record('programming_presetcode', $code);
-            }
-        }
-    }
-
     if ($result && $oldversion < 2009113002) {
     /// Define table programming_datafile to be created
         $table = new XMLDBTable('programming_datafile');
@@ -547,6 +530,52 @@ function xmldb_programming_upgrade($oldversion=0) {
         $field = new XMLDBField('pub');
         $field->setAttributes(XMLDB_TYPE_INTEGER, 3, false, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='nproc');
         $result = change_field_type($table, $field);
+    }
+
+    if ($result && $oldversion < 2010031004) {
+    /// Move presetcode to separate table
+        $programmings = get_records('programming', null, null, $sort='id', $fields='id, presetcode');
+        foreach ($programmings as $p) {
+            if (!empty($p->presetcode)) {
+                $code = new stdClass;
+                $code->programmingid = $p->id;
+                $code->languageid = 1;
+                $code->name = '<prepend>';
+                $code->sequence = 1;
+                $code->presetcode = addslashes($p->presetcode);
+                $code->presetcodeforcheck = '';
+                print_r($code);
+                insert_record('programming_presetcode', $code);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2010031201) {
+    /// Calc seq of testcases
+        $programmings = get_records('programming', null, null, $sort='id', $fields='id');
+        foreach ($programmings as $p) {
+            $cases = get_records('programming_tests', 'programmingid', $p->id, $sort='seq, id', $fields='id, seq');
+            $i = 1;
+            foreach ($cases as $c) {
+                $c->seq = $i++;
+                update_record('programming_tests', $c);
+            }
+        }
+    }
+
+    if ($result && $oldversion < 2010041202) {
+    /// Add field to table programming
+        $table = new XMLDBTable('programming');
+        $field = new XMLDBField('validatorlang');
+        $field->setAttributes(XMLDB_TYPE_INTEGER, 10, XMLDB_UNSIGNED, $notnull=null, $sequence=null, $enum=null, $enumvalues=null, $default=null, $previous='validatortype');
+        $result = add_field($table, $field);
+    }
+
+    if ($result && $oldversion < 2010041203) {
+        $sql = "UPDATE {$CFG->prefix}programming
+                   SET validatortype=9, validatorlang=6
+                 WHERE validatortype=1";
+        execute_sql($sql, false);
     }
 
     return $result;

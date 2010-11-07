@@ -86,10 +86,10 @@
             if ($submit) {
                 programming_submit_add_instance($programming, $submit);
                 if (!$submitfor) {
-                    add_to_log($course->id, 'programming', 'submit', 'view.php?a='.$programming->id, 'submit code');
+                    add_to_log($course->id, 'programming', 'submit', 'submit.php?a='.$programming->id, $programming->name);
                 } else {
                     $u = get_record('user', 'id', $submitfor);
-                    add_to_log($course->id, 'programming', 'submit', 'view.php?a='.$programming->id, 'submit code for '.fullname($u));
+                    add_to_log($course->id, 'programming', 'submit for', 'submit.php?a='.$programming->id, $programming->name);
                 }
             }
         }

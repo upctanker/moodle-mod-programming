@@ -63,6 +63,7 @@
 
         fwrite($bf, full_tag('TIMELIMIT', 4, false, $programming->timelimit));
         fwrite($bf, full_tag('MEMLIMIT', 4, false, $programming->memlimit));
+        fwrite($bf, full_tag('NPROC', 4, false, $programming->nproc));
 
         fwrite($bf, full_tag('TIMEDISCOUNT', 4, false, $programming->timediscount));
         fwrite($bf, full_tag('DISCOUNT', 4, false, $programming->discount));
@@ -173,12 +174,14 @@
             foreach ($tests as $test) {
                 fwrite($bf, start_tag('TESTCASE', 5, true));
                 fwrite($bf, full_tag('ID', 6, false, $test->id));
+                fwrite($bf, full_tag('SEQ', 6, false, $test->seq));
                 fwrite($bf, full_tag('INPUT', 6, false, base64_encode($test->input)));
                 fwrite($bf, full_tag('GZINPUT', 6, false, base64_encode($test->gzinput)));
                 fwrite($bf, full_tag('OUTPUT', 6, false, base64_encode($test->output)));
                 fwrite($bf, full_tag('GZOUTPUT', 6, false, base64_encode($test->gzoutput)));
                 fwrite($bf, full_tag('TIMELIMIT', 6, false, $test->timelimit));
                 fwrite($bf, full_tag('MEMLIMIT', 6, false, $test->memlimit));
+                fwrite($bf, full_tag('NPROC', 6, false, $test->nproc));
                 fwrite($bf, full_tag('PUB', 6, false, $test->pub));
                 fwrite($bf, full_tag('WEIGHT', 6, false, $test->weight));
                 fwrite($bf, full_tag('TIMEMODIFIED', 6, false, $test->timemodified));

@@ -49,7 +49,6 @@
     $strmediumdegree = get_string('mediumsimilitude', 'programming');
     $strhighdegree = get_string('highsimilitude', 'programming');
 
-    echo '<div class="resemble-list">';
     if (! $programmings = get_all_instances_in_course('programming', $course)) {
         notice('There are no programmings', '../../course/view.php?id='.$course->id);
         die;
@@ -132,7 +131,14 @@
             }
         }
     }
-    print_table($table);
+
+    echo '<div class="maincontent generalbox">';
+    echo '<h1>'.get_string('resemble', 'programming').'</h1>';
+    if (is_array($rows)) {
+        print_table($table);
+    } else {
+        echo get_string('noresemble', 'programming');
+    }
     echo '</div>';
 
 /// Finish the page

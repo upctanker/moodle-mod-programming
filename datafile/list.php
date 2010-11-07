@@ -20,7 +20,7 @@
 
     require_login($course->id);
 
-    require_capability('mod/programming:viewtestcase', $context);
+    require_capability('mod/programming:viewhiddentestcase', $context);
 
 /// Print the page header
     $pagename = get_string('datafiles', 'programming');
@@ -32,7 +32,7 @@
 
 /// Print page content
     echo '<div class="maincontent generalbox">';
-    echo '<h1>'.get_string('datafiles', 'programming').'</h1>';
+    echo '<h1>'.get_string('datafiles', 'programming').helpbutton('datafile', 'datafile', 'programming', true, false, '', true).'</h1>';
     print_datafile_table();
     echo '</div>';
 

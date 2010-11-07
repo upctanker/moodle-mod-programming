@@ -31,7 +31,7 @@ define('PROGRAMMING_TEST_SHOWINRESULT', 0);
 define('PROGRAMMING_TEST_SHOW', 1);
 
 define('PROGRAMMING_PRESET_BEGIN', "/* PRESET CODE BEGIN - NEVER TOUCH CODE BELOW */");
-define('PROGRAMMING_PRESET_END', "/* PRESET CODE END - NEVER TOUCH CODE ABOVE*/");
+define('PROGRAMMING_PRESET_END', "/* PRESET CODE END - NEVER TOUCH CODE ABOVE */");
 
 define('PROGRAMMING_RANGE_ALL', 0);
 define('PROGRAMMING_RANGE_LATEST', 1);
@@ -496,18 +496,26 @@ function programming_test_add_instance($testcase) {
 }
 
 function programming_test_update_instance($testcase) {
-    if (strlen($testcase->input) > 1024) {
+    # If input is not provided, do not update input and gzinput
+    if (empty($testcase->input)) {
+        unset($testcase->input);
+        unset($testcase->gzinput);
+    } else {
         $testcase->gzinput = addslashes(bzcompress($testcase->input));
-        $testcase->input = substr($testcase->input, 0, 1024);
+        $testcase->input = addslashes(substr($testcase->input, 0, 1024));
     }
-    if (strlen($testcase->output) > 1024) {
+
+    # If output is not provided, do not update output and gzoutput
+    if (empty($testcase->output)) {
+        unset($testcase->output);
+        unset($testcase->gzoutput);
+    } else {
         $testcase->gzoutput = addslashes(bzcompress($testcase->output));
-        $testcase->output = substr($testcase->output, 0, 1024);
+        $testcase->output = addslashes(substr($testcase->output, 0, 1024));
     }
-    $testcase->input = addslashes($testcase->input);
-    $testcase->output = addslashes($testcase->output);
+
     $testcase->timemodified = time();
-    return update_record("programming_tests", $testcase);
+    return update_record('programming_tests', $testcase);
 }
 
 function programming_submit_add_instance($programming, $submit) {
@@ -843,7 +851,8 @@ function programming_judgeresult_options($addempty = false) {
 function programming_submit_judgeresult(&$results) {
     $err = array('JSE' => 20, 'JGE' => 19, 'RFC' => 18,
                  'TLE' => 10, 'MLE' => 9, 'OLE' => 8,
-                 'KS' => 14, 'FPE' => 13, 'RE' => 12, 'WA' => 11, 'AC' => 0);
+                 'KS' => 14, 'FPE' => 13, 'RE' => 12, 'WA' => 11,
+                 'PE' => 1, 'AC' => 0);
 
     $c = -1;
     $errstr = null;

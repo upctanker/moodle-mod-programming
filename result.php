@@ -34,7 +34,7 @@
 
     $viewhiddentestcase = has_capability('mod/programming:viewhiddentestcase', $context);
 
-    add_to_log($course->id, 'programming', 'result', 'result.php?a'.$programming->id, $programming->name);
+    add_to_log($course->id, 'programming', 'result', 'result.php?a='.$programming->id, $programming->name);
 
     // get title of the page
     if ($submit && $submit->userid != $USER->id) {
@@ -71,16 +71,18 @@
         if (!empty($submit->judgeresult)) {
             $results = get_records('programming_test_results', 'submitid', $submit->id, 'testid');
 
-            if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL || has_capability('mod/programming:viewdetailresultincontest', $context)) {
-                $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
-                uasort($results, 'cmp_results_by_test_seq');
-                echo '<div id="test-result-detail">';
-                echo '<p>'.get_string('testresult', 'programming', programming_get_test_results_desc($submit, $results)).'</p>';
-                echo '<p>'.get_string('iostripped', 'programming', '1').'</p>';
-                print_test_result_table();
-                echo '</div>';
-            } else {
-                echo'<p>'.programming_contest_get_judgeresult($results).'</p>';
+            if (!empty($results)) {
+                if ($programming->showmode == PROGRAMMING_SHOWMODE_NORMAL || has_capability('mod/programming:viewdetailresultincontest', $context)) {
+                    $tests = get_records('programming_tests', 'programmingid', $programming->id, 'id');
+                    uasort($results, 'cmp_results_by_test_seq');
+                    echo '<div id="test-result-detail">';
+                    echo '<p>'.get_string('testresult', 'programming', programming_get_test_results_desc($submit, $results)).'</p>';
+                    echo '<p>'.get_string('iostripped', 'programming', '1').'</p>';
+                    print_test_result_table();
+                    echo '</div>';
+                } else {
+                    echo'<p>'.programming_contest_get_judgeresult($results).'</p>';
+                }
             }
         }
 
@@ -132,7 +134,7 @@ function print_test_result_table()
     $table->column_class('input', 'programming-io');
     $table->column_class('expectedoutput', 'programming-io');
     $table->column_class('output', 'programming-io');
-    $table->column_class('errormessag', 'programming-io');
+    $table->column_class('errormessage', 'programming-io');
     $table->setup();
 
     if (!is_array($results)) $results = array();
@@ -145,7 +147,7 @@ function print_test_result_table()
         $data[] = $tests[$result->testid]->weight;
         $data[] = programming_format_timelimit($tests[$result->testid]->timelimit);
         $data[] = programming_format_memlimit($tests[$result->testid]->memlimit);
-        $downloadurl = $CFG->wwwroot."/mod/programming/download_io.php?a={$programming->id}&amp;test={$result->testid}";
+        $downloadurl = $CFG->wwwroot."/mod/programming/testcase/download_io.php?a={$programming->id}&amp;test={$result->testid}";
         if ($viewhiddentestcase || programming_testcase_visible($tests, $result, true, $programming->timediscount <= time())) {
             // input
             $html = link_to_popup_window($downloadurl.'&amp;type=in&amp;download=0', '_blank', $strshowasplaintext, 300, 400, null, null, true);
@@ -190,7 +192,7 @@ function print_test_result_table()
         $data[] = round($result->timeused, 3);
         $data[] = $result->memused;
     
-        if ($viewhiddentestcase || programming_test_case_visible($tests, $results)) {
+        if ($viewhiddentestcase || programming_testcase_visible($tests, $results)) {
             $data[] = $result->exitcode;
         } else {
             $data[] = $strsecuretestcase;

@@ -28,7 +28,7 @@
         if (! $test = get_record('programming_tests', 'id', $testid)) {
             error('Test ID was incorrect');
         }
-        programming_testcase_require_view_capability($test, $context);
+        programming_testcase_require_view_capability($context, $test);
         $filename = sprintf('test-%d.%s', $testid, $type);
         if ($type == 'in') {
             $content = !empty($test->gzinput) ? bzdecompress($test->gzinput) : $test->input;

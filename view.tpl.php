@@ -58,11 +58,11 @@
   <tr>
     <th><?php echo get_string('testcasen', 'programming', $programmingtest->seq); ?></th>
     <td class="programming-io cell">
-    <?php echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
+    <?php echo "<a href='testcase/download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=in&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
 	  <?php echo programming_format_io($programmingtest->input, true); ?>
 	</td>
 	<td class="programming-io cell">
-    <?php echo "<a href='download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
+    <?php echo "<a href='testcase/download_io.php?a={$programming->id}&amp;test={$programmingtest->id}&amp;type=out&amp;download=0' class='showasplaintext small'>$strshowasplaintext</a>"; ?>
 	  <?php echo programming_format_io($programmingtest->output, true); ?>
 	</td>
     <td class="cell">

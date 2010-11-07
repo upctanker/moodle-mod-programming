@@ -48,8 +48,8 @@
     echo '<div class="maincontent generalbox">';
     echo '<h1>'.get_string('summary', 'programming').'</h1>';
     print_summary_table($stat_results);
-    print_summary_chart($stat_results);
     print_action_table();
+    print_summary_chart($stat_results);
     echo '</div>';
 
 /// Finish the page
@@ -75,11 +75,8 @@ function print_summary_table($stat_results) {
         get_string('stataveragelines', 'programming'));
     $table->define_headers($headers);
 
-    $table->set_attribute('cellspacing', '0');
     $table->set_attribute('id', 'summary-stat-table');
     $table->set_attribute('class', 'generaltable generalbox');
-    $table->set_attribute('align', 'center');
-    $table->set_attribute('cellpadding', '3');
     $table->set_attribute('cellspacing', '1');
     $table->setup();
 
@@ -142,7 +139,6 @@ function print_summary_chart($stat_results) {
         echo "<div id='summary-group-count-chart' $style class='googlechart'><p>$strvisitgoogleneeded</p></div>";
     }
     echo "<div id='summary-percent-chart' $style class='googlechart'><p>$strvisitgoogleneeded</p></div>";
-    echo '</div>';
 
     echo "
 <script type='text/javascript'>
@@ -182,6 +178,8 @@ function print_summary_chart($stat_results) {
 
     }
 </script>";
+
+    echo '</div>';
 }
 
 /**
@@ -294,22 +292,15 @@ function summary_stat(&$stat_results, $group = null) {
 function print_action_table() {
     global $CFG, $programming, $context;
 
-    echo '<table class="generaltable" align="center">';
+    echo '<table><tr><td>';
     if (has_capability('mod/programming:viewotherprogram', $context)) {
-        echo '<tr><td>';
-        print_single_button($CFG->wwwroot.'/mod/programming/package.php', array('a' => $programming->id), get_string('package', 'programming'));
-        echo '</td><td>';
-        echo get_string('packagedesc', 'programming');
-        echo '</td></tr>';
+        print_single_button($CFG->wwwroot.'/mod/programming/package.php', array('a' => $programming->id), get_string('package', 'programming'), 'get', '_self', false, get_string('packagedesc', 'programming'));
     }
+    echo '</td><td>';
     if (has_capability('mod/programming:edittestcase', $context)) {
-        echo '<tr><td>';
-        print_single_button($CFG->wwwroot.'/mod/programming/rejudge.php', array('a' => $programming->id), get_string('rejudge', 'programming'));
-        echo '</td><td>';
-        echo get_string('retestdesc', 'programming');
-        echo '</td></tr>';
+        print_single_button($CFG->wwwroot.'/mod/programming/rejudge.php', array('a' => $programming->id), get_string('rejudge', 'programming'), 'get', '_self', false, get_string('retestdesc', 'programming'));
     }
-    echo '</table>';
+    echo '</td></tr></table>';
 }
 
 ?>

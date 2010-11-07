@@ -46,7 +46,7 @@
 
     /// Print page content
     if ($format == 'json') {
-        require_once('JSON.php');
+        require_once('lib/JSON.php');
         $data = array(array_keys($resemble), array_values($resemble), array_keys($users), array_values($users));
         $json = new Services_JSON();
         echo $json->encode($data);

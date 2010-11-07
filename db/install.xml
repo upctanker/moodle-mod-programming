@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/programming/db" VERSION="20100303" COMMENT="XMLDB file for Moodle mod/programming"
+<XMLDB PATH="mod/programming/db" VERSION="20100412" COMMENT="XMLDB file for Moodle mod/programming"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -11,14 +11,15 @@
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="course" NEXT="description"/>
         <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="descformat"/>
         <FIELD NAME="descformat" TYPE="int" LENGTH="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="description" NEXT="grade"/>
-        <FIELD NAME="grade" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="descformat" NEXT="timeopen"/>
-        <FIELD NAME="timeopen" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="timeclose"/>
+        <FIELD NAME="grade" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="descformat" NEXT="globalid"/>
+        <FIELD NAME="globalid" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" ENUM="false" PREVIOUS="grade" NEXT="timeopen"/>
+        <FIELD NAME="timeopen" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="globalid" NEXT="timeclose"/>
         <FIELD NAME="timeclose" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timeopen" NEXT="timelimit"/>
         <FIELD NAME="timelimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timeclose" NEXT="memlimit"/>
         <FIELD NAME="memlimit" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="timelimit" NEXT="nproc"/>
         <FIELD NAME="nproc" TYPE="int" LENGTH="2" NOTNULL="false" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="memlimit" NEXT="timediscount"/>
         <FIELD NAME="timediscount" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="130000000" SEQUENCE="false" ENUM="false" PREVIOUS="nproc" NEXT="discount"/>
-        <FIELD NAME="discount" TYPE="text" LENGTH="small" NOTNULL="true" DEFAULT="8" SEQUENCE="false" ENUM="false" PREVIOUS="timediscount" NEXT="allowlate"/>
+        <FIELD NAME="discount" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="9" SEQUENCE="false" ENUM="false" PREVIOUS="timediscount" NEXT="allowlate"/>
         <FIELD NAME="allowlate" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="discount" NEXT="attempts"/>
         <FIELD NAME="attempts" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="allowlate" NEXT="keeplatestonly"/>
         <FIELD NAME="keeplatestonly" TYPE="int" LENGTH="3" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="attempts" NEXT="inputfile"/>
@@ -28,8 +29,9 @@
         <FIELD NAME="generator" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="presetcode" NEXT="validator"/>
         <FIELD NAME="validator" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="generator" NEXT="generatortype"/>
         <FIELD NAME="generatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="validator" NEXT="validatortype"/>
-        <FIELD NAME="validatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="generatortype" NEXT="showmode"/>
-        <FIELD NAME="showmode" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="validatortype" NEXT="timemodified"/>
+        <FIELD NAME="validatortype" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="generatortype" NEXT="validatorlang"/>
+        <FIELD NAME="validatorlang" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="validatortype" NEXT="showmode"/>
+        <FIELD NAME="showmode" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="1" SEQUENCE="false" ENUM="false" PREVIOUS="validatorlang" NEXT="timemodified"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" PREVIOUS="showmode"/>
       </FIELDS>
       <KEYS>
@@ -240,7 +242,6 @@
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('fpc-2.2', 'Pascal (Free Pascal 2)', '.pas', NULL)" />
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('python-2.5', 'Python 2.5', '.py', NULL)" />
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('gmcs-2.0', 'C# (Mono 2.0)', '.cs', NULL)" />
-        <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
         <SENTENCE TEXT="(name, description, sourceext, headerext) VALUES ('bash-3', 'Bash (Bash 3)', '.sh', NULL)" />
       </SENTENCES>
     </STATEMENT>

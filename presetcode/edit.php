@@ -43,7 +43,7 @@
         include_once('../pageheader.php');
 
         echo '<div class="maincontent generalbox">';
-        echo '<h1>'.get_string('editpresetcode', 'programming').'</h1>';
+        echo '<h1>'.get_string('editpresetcode', 'programming').helpbutton('presetcode', 'presetcode', 'programming', true, false, '', true).'</h1>';
 
         /// Print tabs
         $currenttab = 'edittest';
