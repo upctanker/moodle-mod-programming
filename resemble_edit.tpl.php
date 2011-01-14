@@ -23,9 +23,9 @@
 <tbody>
   <tr>
     <th><input type="checkbox" onchange="$('input[@type=checkbox]').attr('checked', this.checked);"/></th>
-    <th colspan="3"><?php echo get_string('program1', 'programming'); ?></th>
+    <th colspan="4"><?php echo get_string('program1', 'programming'); ?></th>
     <th><?php echo get_string('percent1', 'programming'); ?></th>
-    <th colspan="3"><?php echo get_string('program2', 'programming'); ?></th>
+    <th colspan="4"><?php echo get_string('program2', 'programming'); ?></th>
     <th><?php echo get_string('percent2', 'programming'); ?></th>
     <th><?php echo get_string('matchedlines', 'programming'); ?></th>
   </tr>
@@ -65,8 +65,11 @@
         <?php echo '<a href="'.$CFG->wwwroot.'/user/view.php?id='.$r->userid1.'&amp;course='.$course->id.'">'.fullname($users[$r->userid1]).'</a>'; ?>
 	</td>
 	<td class="<?php echo $styleclass1 ?>">
-    <?php echo $users[$r->userid1]->idnumber; ?>
-  </td>
+      <?php echo $users[$r->userid1]->idnumber; ?>
+    </td>
+	<td class="<?php echo $styleclass1 ?>">
+      <?php echo "<a href='result.php?a=$a&submitid=$r->submitid1'>".$submits[$r->submitid1]->judgeresult."</a>"; ?></a>
+    </td>
 	<td class="<?php echo $styleclass1; ?>"><?php echo $r->percent1; ?></td>
 	<td class="<?php echo $styleclass2; ?>">
         <?php print_user_picture($r->userid2, $course->id, $users[$r->userid2]->picture); ?>
@@ -76,6 +79,9 @@
     </td>
 	<td class="<?php echo $styleclass2; ?>">
       <?php echo $users[$r->userid2]->idnumber; ?>
+    </td>
+	<td class="<?php echo $styleclass2; ?>">
+      <?php echo "<a href='result.php?a=$a&submitid=$r->submitid2'>".$submits[$r->submitid2]->judgeresult."</a>"; ?></a>
     </td>
 	<td class="<?php echo $styleclass2; ?>"><?php echo $r->percent2; ?></td>
 	<td class="<?php echo $styleclass; ?>"><a href="resemble_compare.php?a=<?php echo $programming->id ?>&amp;rid=<?php echo $r->id ?>&amp;page=<?php echo $page; ?>&amp;perpage=<?php echo $perpage; ?>"><?php echo $r->matchedcount; ?></a></td>

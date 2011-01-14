@@ -42,13 +42,18 @@
                  LIMIT $offset, $perpage";
         $resemble = get_records_sql($sql);
         if (!is_array($resemble)) $resemble = array();
-        $uids = array();
+        $uids = array(); $sids = array();
         foreach($resemble as $r) {
             $uids[] = $r->userid1;
             $uids[] = $r->userid2;
+            $sids[] = $r->submitid1;
+            $sids[] = $r->submitid2;
         }
         if (!empty($uids)) {
             $users = get_records_select('user', 'id IN ('.implode($uids, ',').')');
+        }
+        if (!empty($sids)) {
+            $submits = get_records_select('programming_submits', 'id IN ('.implode($sids, ',').')');
         }
         $totalcount = count_records_select('programming_resemble', 'programmingid='.$programming->id.' AND flag>=0');
 

@@ -127,7 +127,7 @@
                     "<span class='$styleclass1'>$row->percent1</span>",
                     "<span class='$styleclass2'>$user2</span>",
                     "<span class='$styleclass2'>$row->percent2</span>",
-                    "<a href='resemble_compare.php?a=$row->programmingid&amp;rid=$row->id'>$row->matchedcount</a>");
+                    "<a href='../resemble_compare.php?a=$row->programmingid&amp;rid=$row->id'>$row->matchedcount</a>");
             }
         }
     }
